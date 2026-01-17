@@ -1,2 +1,5 @@
 target
 node_modules
+proto_js/src
+proto_js/dist
+proto/entity/parameters
