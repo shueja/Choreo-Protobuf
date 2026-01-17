@@ -4,9 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-tonic = "*"
+tonic = "0.14.2"
 prost = "0.14"
 tonic-prost = "*"
 proto_rs = { version = "0.1.0", path = "../proto_rs", features=["entity", "service"] }
 tokio = "1.49.0"
 tonic-web = "0.14.2"
+tower-http = {version = "0.6.8", features = ["cors"]}

@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server": "cargo run -p server_example",
+    "frontend": "vite apps/frontend",
     "updateProto": "pnpx @bufbuild/buf generate && vite build proto_js && cargo build -p proto_rs && cargo build -p server_example"
   },
   "keywords": [],
