@@ -1,0 +1,26 @@
+version: v2
+plugins:
+  - local: .\node_modules\ts-proto\node_modules\.bin\protoc-gen-ts_proto.CMD
+    strategy: all
+    out: ./proto_js/src
+    opt:
+      - outputClientImpl=grpc-web
+      - outputIndex=true
+      - esModuleInterop=true
+  - local: protoc-gen-prost
+    out: ./proto_rs/src
+    opt:
+      - compile_well_known_types
+      - extern_path=.google.protobuf=::pbjson_types
+  - local: protoc-gen-prost-serde
+    out: ./proto_rs/src
+  - local: protoc-gen-tonic
+    out: ./proto_rs/src
+    opt:
+      - compile_well_known_types
+      - extern_path=.google.protobuf=::pbjson_types
+  - local: protoc-gen-prost-crate
+    out: ./proto_rs
+    strategy: all
+    opt:
+      - gen_crate=Cargo.toml.rs.tpl

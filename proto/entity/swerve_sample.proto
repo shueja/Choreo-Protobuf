@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package entity;
+
+
+message ForceVector {
+    double x = 1;
+    double y = 2;
+}
+message SwerveSample {
+    double t = 1;
+    double x = 2;
+    double y = 3;
+    double heading = 4;
+    double vx = 5;
+    double vy = 6; 
+    double omega = 7;
+    double ax = 8;
+    double ay = 9;
+    double alpha = 10;
+    ForceVector fl = 11;
+    ForceVector fr = 12;
+    ForceVector bl = 13;
+    ForceVector br = 14;
+}

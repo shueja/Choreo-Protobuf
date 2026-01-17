@@ -1,0 +1,21 @@
+{
+  "name": "choreo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "updateProto": "pnpx @bufbuild/buf generate && vite build proto_js && cargo build -p proto_rs && cargo build -p server_example"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bufbuild/buf": "^1.63.0",
+    "@protobuf-ts/protoc": "^2.11.1",
+    "ts-proto": "^2.11.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  }
+}

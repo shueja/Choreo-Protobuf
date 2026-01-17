@@ -1,0 +1,9 @@
+syntax="proto3";
+package service.commands;
+import "entity/swerve_sample.proto";
+message EchoSwerveSampleRequest{
+    entity.SwerveSample sample = 1;
+}
+message EchoSwerveSampleResponse {
+    entity.SwerveSample sample = 1;
+}

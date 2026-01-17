@@ -1,0 +1,34 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      from-protobuf-object:
+        specifier: ^3.0.1
+        version: 3.0.1(google-protobuf@3.21.4)
+      proto_js:
+        specifier: link:..\proto_js
+        version: link:../proto_js
+
+packages:
+
+  from-protobuf-object@3.0.1:
+    resolution: {integrity: sha512-9IkPPRZdxgrl/DlU82ALqtqRRdkmi27CqXrvAiJOdLTNT/LbvRjmINkw5JU/QnnrFmCIQLCClbv9er3MqyI32A==}
+    peerDependencies:
+      google-protobuf: ^3.0.0
+
+  google-protobuf@3.21.4:
+    resolution: {integrity: sha512-MnG7N936zcKTco4Jd2PX2U96Kf9PxygAPKBug+74LHzmHXmceN16MmRcdgZv+DGef/S9YvQAfRsNCn4cjf9yyQ==}
+
+snapshots:
+
+  from-protobuf-object@3.0.1(google-protobuf@3.21.4):
+    dependencies:
+      google-protobuf: 3.21.4
+
+  google-protobuf@3.21.4: {}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package entity;
+
+message DifferentialSample {
+    double t = 1;
+    double x = 2;
+    double y = 3;
+    double heading = 4;
+    double vl = 5;
+    double vr = 6; 
+    double omega = 7;
+    double al = 8;
+    double ar = 9;
+    double alpha = 10;
+    double fl = 11;
+    double fr = 12;
+}

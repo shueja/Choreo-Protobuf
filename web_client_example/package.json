@@ -1,0 +1,16 @@
+{
+  "name": "web_client_example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "from-protobuf-object": "^3.0.1",
+    "proto_js": "link:..\\proto_js"
+  }
+}

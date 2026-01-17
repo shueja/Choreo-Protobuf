@@ -1,0 +1,7 @@
+syntax="proto3";
+package service;
+import "service/commands/echo_swerve_sample.proto";
+
+service ChoreoService {
+    rpc EchoSwerveSample(service.commands.EchoSwerveSampleRequest) returns (service.commands.EchoSwerveSampleResponse);
+}
