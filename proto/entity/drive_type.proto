@@ -1,0 +1,7 @@
+syntax="proto3";
+package entity;
+enum DriveType {
+    DRIVETYPE_SWERVE = 0;
+    DRIVETYPE_DIFFERENTIAL = 1;
+    DRIVETYPE_MECANUM = 2;
+}

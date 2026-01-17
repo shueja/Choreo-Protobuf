@@ -27,6 +27,35 @@ pub struct DifferentialSample {
     #[prost(double, tag = "12")]
     pub fr: f64,
 }
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DriveType {
+    DrivetypeSwerve = 0,
+    DrivetypeDifferential = 1,
+    DrivetypeMecanum = 2,
+}
+impl DriveType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::DrivetypeSwerve => "DRIVETYPE_SWERVE",
+            Self::DrivetypeDifferential => "DRIVETYPE_DIFFERENTIAL",
+            Self::DrivetypeMecanum => "DRIVETYPE_MECANUM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DRIVETYPE_SWERVE" => Some(Self::DrivetypeSwerve),
+            "DRIVETYPE_DIFFERENTIAL" => Some(Self::DrivetypeDifferential),
+            "DRIVETYPE_MECANUM" => Some(Self::DrivetypeMecanum),
+            _ => None,
+        }
+    }
+}
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ForceVector {
     #[prost(double, tag = "1")]
@@ -64,6 +93,40 @@ pub struct SwerveSample {
     pub bl: ::core::option::Option<ForceVector>,
     #[prost(message, optional, tag = "14")]
     pub br: ::core::option::Option<ForceVector>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SwerveTrajectory {
+    #[prost(message, repeated, tag = "1")]
+    pub samples: ::prost::alloc::vec::Vec<SwerveSample>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DifferentialTrajectory {
+    #[prost(message, repeated, tag = "1")]
+    pub samples: ::prost::alloc::vec::Vec<DifferentialSample>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerationOutput {
+    #[prost(uint64, repeated, tag = "3")]
+    pub splits: ::prost::alloc::vec::Vec<u64>,
+    #[prost(double, repeated, tag = "4")]
+    pub waypoints: ::prost::alloc::vec::Vec<f64>,
+    #[prost(oneof = "generation_output::Trajectory", tags = "1, 2")]
+    pub trajectory: ::core::option::Option<generation_output::Trajectory>,
+}
+/// Nested message and enum types in `GenerationOutput`.
+pub mod generation_output {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Trajectory {
+        #[prost(message, tag = "1")]
+        Swerve(super::SwerveTrajectory),
+        #[prost(message, tag = "2")]
+        Differential(super::DifferentialTrajectory),
+    }
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrajectoryFile {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 include!("entity.serde.rs");
 // @@protoc_insertion_point(module)

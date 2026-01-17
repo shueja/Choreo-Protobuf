@@ -1,0 +1,9 @@
+syntax="proto3";
+package entity.parameters.constraint.maxvelocity;
+__comment__
+message __message__MaxVelocity {
+    __field__ max = 1;
+}
+message Test__message__ {
+    string test = 1;
+}

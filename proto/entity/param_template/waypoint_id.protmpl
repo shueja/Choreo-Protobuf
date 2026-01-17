@@ -1,0 +1,14 @@
+syntax="proto3";
+package entity.parameters;
+message WaypointIDFirst{}
+message WaypointIDLast{}
+message WaypointIDX{
+    uint64 idx = 1;
+}
+message WaypointID {
+    oneof id {
+        WaypointIDFirst first = 1;
+        WaypointIDLast last = 2;
+        WaypointIDX idx = 3;
+    }
+}

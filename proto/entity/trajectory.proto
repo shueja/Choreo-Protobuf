@@ -1,0 +1,19 @@
+syntax="proto3";
+package entity;
+import "entity/swerve_sample.proto";
+import "entity/differential_sample.proto";
+import "entity/drive_type.proto";
+message SwerveTrajectory {
+    repeated SwerveSample samples = 1;
+}
+message DifferentialTrajectory {
+    repeated DifferentialSample samples = 1;
+}
+message GenerationOutput {
+    oneof trajectory {
+        SwerveTrajectory swerve = 1;
+        DifferentialTrajectory differential = 2;
+    }
+    repeated uint64 splits = 3;
+    repeated double waypoints = 4;
+}

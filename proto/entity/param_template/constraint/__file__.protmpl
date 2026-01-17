@@ -1,0 +1,19 @@
+syntax="proto3";
+package entity.parameters.constraint;
+import "entity/parameters/constraint/maxvelocity/__file__.proto";
+import "entity/parameters/waypoint_id.proto";
+
+import "entity/parameters/constraint/max_acceleration/__file__.proto";
+message __message__Constraint {
+    
+    bool enabled = 1;
+    WaypointID from = 2;
+    WaypointID to = 3;
+    //ExprMaxVelocity maxvelocity = 4;
+        // __message__MaxAcceleration max_acceleration = 5;
+    oneof data {
+        entity.parameters.constraint.maxvelocity.__message__MaxVelocity max_velocity = 4;
+        entity.parameters.constraint.max_acceleration.__message__MaxAcceleration max_acceleration = 5;
+    };
+
+}

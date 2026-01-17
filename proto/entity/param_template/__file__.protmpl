@@ -1,0 +1,10 @@
+syntax="proto3";
+package entity.parameters;
+import "entity/parameters/waypoint/__file__.proto";
+import "entity/parameters/constraint/__file__.proto";
+__comment__
+message __message__Parameters {
+    __field__ target_dt = 1;
+    repeated entity.parameters.waypoint.__message__Waypoint waypoints = 2;
+    repeated entity.parameters.constraint.__message__Constraint constraints = 3;
+}

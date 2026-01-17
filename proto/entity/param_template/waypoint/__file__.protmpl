@@ -1,0 +1,14 @@
+syntax="proto3";
+package entity.parameters.waypoint;
+__comment__ 
+message __message__Waypoint{
+    __field__ x = 1;
+    __field__ y = 2;
+    __field__ heading = 3;
+    uint64 intervals = 4;
+    bool split = 5;
+    bool fix_translation = 6;
+    bool fix_heading = 7;
+    bool override_intervals = 8;
+}
+

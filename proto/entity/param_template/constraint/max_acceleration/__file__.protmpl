@@ -1,0 +1,6 @@
+syntax="proto3";
+package entity.parameters.constraint.max_acceleration;
+__comment__
+message __message__MaxAcceleration {
+    __field__ max = 1;
+}
