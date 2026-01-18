@@ -1,0 +1,9 @@
+syntax="proto3";
+package service.commands;
+import "entity/trajectory_file.proto";
+message GenerateRequest{
+    entity.TrajectoryFile trajectory = 1;
+}
+message GenerateResponse {
+    entity.TrajectoryFile trajectory = 1;
+}

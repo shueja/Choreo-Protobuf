@@ -592,6 +592,9 @@ impl serde::Serialize for GenerationOutput {
         if !self.waypoints.is_empty() {
             len += 1;
         }
+        if self.config.is_some() {
+            len += 1;
+        }
         if self.trajectory.is_some() {
             len += 1;
         }
@@ -601,6 +604,9 @@ impl serde::Serialize for GenerationOutput {
         }
         if !self.waypoints.is_empty() {
             struct_ser.serialize_field("waypoints", &self.waypoints)?;
+        }
+        if let Some(v) = self.config.as_ref() {
+            struct_ser.serialize_field("config", v)?;
         }
         if let Some(v) = self.trajectory.as_ref() {
             match v {
@@ -624,6 +630,7 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
         const FIELDS: &[&str] = &[
             "splits",
             "waypoints",
+            "config",
             "swerve",
             "differential",
         ];
@@ -632,6 +639,7 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
         enum GeneratedField {
             Splits,
             Waypoints,
+            Config,
             Swerve,
             Differential,
         }
@@ -657,6 +665,7 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
                         match value {
                             "splits" => Ok(GeneratedField::Splits),
                             "waypoints" => Ok(GeneratedField::Waypoints),
+                            "config" => Ok(GeneratedField::Config),
                             "swerve" => Ok(GeneratedField::Swerve),
                             "differential" => Ok(GeneratedField::Differential),
                             _ => Err(serde::de::Error::unknown_field(value, FIELDS)),
@@ -680,6 +689,7 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
             {
                 let mut splits__ = None;
                 let mut waypoints__ = None;
+                let mut config__ = None;
                 let mut trajectory__ = None;
                 while let Some(k) = map_.next_key()? {
                     match k {
@@ -701,6 +711,12 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
                                     .into_iter().map(|x| x.0).collect())
                             ;
                         }
+                        GeneratedField::Config => {
+                            if config__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("config"));
+                            }
+                            config__ = map_.next_value()?;
+                        }
                         GeneratedField::Swerve => {
                             if trajectory__.is_some() {
                                 return Err(serde::de::Error::duplicate_field("swerve"));
@@ -720,6 +736,7 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
                 Ok(GenerationOutput {
                     splits: splits__.unwrap_or_default(),
                     waypoints: waypoints__.unwrap_or_default(),
+                    config: config__,
                     trajectory: trajectory__,
                 })
             }
@@ -1161,9 +1178,27 @@ impl serde::Serialize for TrajectoryFile {
         if !self.name.is_empty() {
             len += 1;
         }
+        if self.params.is_some() {
+            len += 1;
+        }
+        if self.snapshot.is_some() {
+            len += 1;
+        }
+        if self.trajectory.is_some() {
+            len += 1;
+        }
         let mut struct_ser = serializer.serialize_struct("entity.TrajectoryFile", len)?;
         if !self.name.is_empty() {
             struct_ser.serialize_field("name", &self.name)?;
+        }
+        if let Some(v) = self.params.as_ref() {
+            struct_ser.serialize_field("params", v)?;
+        }
+        if let Some(v) = self.snapshot.as_ref() {
+            struct_ser.serialize_field("snapshot", v)?;
+        }
+        if let Some(v) = self.trajectory.as_ref() {
+            struct_ser.serialize_field("trajectory", v)?;
         }
         struct_ser.end()
     }
@@ -1176,11 +1211,17 @@ impl<'de> serde::Deserialize<'de> for TrajectoryFile {
     {
         const FIELDS: &[&str] = &[
             "name",
+            "params",
+            "snapshot",
+            "trajectory",
         ];
 
         #[allow(clippy::enum_variant_names)]
         enum GeneratedField {
             Name,
+            Params,
+            Snapshot,
+            Trajectory,
         }
         impl<'de> serde::Deserialize<'de> for GeneratedField {
             fn deserialize<D>(deserializer: D) -> std::result::Result<GeneratedField, D::Error>
@@ -1203,6 +1244,9 @@ impl<'de> serde::Deserialize<'de> for TrajectoryFile {
                     {
                         match value {
                             "name" => Ok(GeneratedField::Name),
+                            "params" => Ok(GeneratedField::Params),
+                            "snapshot" => Ok(GeneratedField::Snapshot),
+                            "trajectory" => Ok(GeneratedField::Trajectory),
                             _ => Err(serde::de::Error::unknown_field(value, FIELDS)),
                         }
                     }
@@ -1223,6 +1267,9 @@ impl<'de> serde::Deserialize<'de> for TrajectoryFile {
                     V: serde::de::MapAccess<'de>,
             {
                 let mut name__ = None;
+                let mut params__ = None;
+                let mut snapshot__ = None;
+                let mut trajectory__ = None;
                 while let Some(k) = map_.next_key()? {
                     match k {
                         GeneratedField::Name => {
@@ -1231,10 +1278,31 @@ impl<'de> serde::Deserialize<'de> for TrajectoryFile {
                             }
                             name__ = Some(map_.next_value()?);
                         }
+                        GeneratedField::Params => {
+                            if params__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("params"));
+                            }
+                            params__ = map_.next_value()?;
+                        }
+                        GeneratedField::Snapshot => {
+                            if snapshot__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("snapshot"));
+                            }
+                            snapshot__ = map_.next_value()?;
+                        }
+                        GeneratedField::Trajectory => {
+                            if trajectory__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("trajectory"));
+                            }
+                            trajectory__ = map_.next_value()?;
+                        }
                     }
                 }
                 Ok(TrajectoryFile {
                     name: name__.unwrap_or_default(),
+                    params: params__,
+                    snapshot: snapshot__,
+                    trajectory: trajectory__,
                 })
             }
         }

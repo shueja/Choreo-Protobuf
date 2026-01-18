@@ -1,0 +1,38 @@
+syntax="proto3";
+package entity.parameters.robotconfig;
+__comment__
+message __message__Module {
+    __field__ x = 1;
+    __field__ y = 2;
+}
+
+message __message__Bumper {
+    __field__ front = 1;
+    __field__ left = 2;
+    __field__ right = 3;
+    __field__ back = 4;
+}
+
+message __message__RobotConfig {
+    __field__ mass = 1;
+    __field__ inertia = 2;
+    __field__ gearing = 3;
+    __field__ radius = 4;
+    __field__ vmax = 5;
+    __field__ tmax = 6;
+    __field__ cof = 7;
+    __field__ differential_track_width = 8;
+    // __field__ bumper_front = 9;
+    // __field__ bumper_left = 10;
+    // __field__ bumper_back = 11;
+    // __field__ bumper_right = 12;
+    // __field__ fl_x = 13;
+    // __field__ fl_y = 14;
+    // __field__ fr_x = 15;
+    // __field__ fl_
+    __message__Bumper bumper = 9;
+    __message__Module front_left = 10;
+    __message__Module front_right = 11;
+    __message__Module back_left = 12;
+    __message__Module back_right = 13;
+}

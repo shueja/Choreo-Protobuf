@@ -1,7 +1,12 @@
 syntax="proto3";
 package service;
 import "service/commands/echo_swerve_sample.proto";
-
+import "service/commands/generate.proto";
+import "service/commands/get_default_trajectory.proto";
+import "google/protobuf/empty.proto";
 service ChoreoService {
+    
     rpc EchoSwerveSample(service.commands.EchoSwerveSampleRequest) returns (service.commands.EchoSwerveSampleResponse);
+    rpc Generate(service.commands.GenerateRequest) returns (service.commands.GenerateResponse);
+    rpc GetDefaultTrajectory(google.protobuf.Empty) returns (service.commands.GetDefaultTrajectoryResponse);
 }

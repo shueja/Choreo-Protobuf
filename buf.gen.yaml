@@ -8,11 +8,18 @@ plugins:
       - outputIndex=true
       - esModuleInterop=true
       - oneof=unions
+      - rpcAfterResponse=true
+      - rpcBeforeRequest=true
   - local: protoc-gen-prost
     out: ./proto_rs/src
     opt:
       - compile_well_known_types
       - extern_path=.google.protobuf=::pbjson_types
+      - type_attribute=.=#[derive(::required_proc::Required)]
+      - type_attribute=.=#[required(prefix="Required")]
+      # Mark all the fields that should remain optional in the Rust gen
+      - field_attribute=TrajectoryFile.snapshot=#[required(optional)]
+      - field_attribute=TrajectoryFile.output=#[required(optional)]
   - local: protoc-gen-prost-serde
     out: ./proto_rs/src
   - local: protoc-gen-tonic

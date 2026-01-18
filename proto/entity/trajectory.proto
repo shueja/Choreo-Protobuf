@@ -3,6 +3,7 @@ package entity;
 import "entity/swerve_sample.proto";
 import "entity/differential_sample.proto";
 import "entity/drive_type.proto";
+import "entity/parameters/robotconfig/double.proto";
 message SwerveTrajectory {
     repeated SwerveSample samples = 1;
 }
@@ -16,4 +17,5 @@ message GenerationOutput {
     }
     repeated uint64 splits = 3;
     repeated double waypoints = 4;
+    entity.parameters.robotconfig.DoubleRobotConfig config = 5;
 }

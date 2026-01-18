@@ -116,6 +116,58 @@ pub mod choreo_service_client {
                 .insert(GrpcMethod::new("service.ChoreoService", "EchoSwerveSample"));
             self.inner.unary(req, path, codec).await
         }
+        ///
+        pub async fn generate(
+            &mut self,
+            request: impl tonic::IntoRequest<super::commands::GenerateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::commands::GenerateResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/service.ChoreoService/Generate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("service.ChoreoService", "Generate"));
+            self.inner.unary(req, path, codec).await
+        }
+        ///
+        pub async fn get_default_trajectory(
+            &mut self,
+            request: impl tonic::IntoRequest<::pbjson_types::Empty>,
+        ) -> std::result::Result<
+            tonic::Response<super::commands::GetDefaultTrajectoryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/service.ChoreoService/GetDefaultTrajectory",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("service.ChoreoService", "GetDefaultTrajectory"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -137,6 +189,22 @@ pub mod choreo_service_server {
             request: tonic::Request<super::commands::EchoSwerveSampleRequest>,
         ) -> std::result::Result<
             tonic::Response<super::commands::EchoSwerveSampleResponse>,
+            tonic::Status,
+        >;
+        ///
+        async fn generate(
+            &self,
+            request: tonic::Request<super::commands::GenerateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::commands::GenerateResponse>,
+            tonic::Status,
+        >;
+        ///
+        async fn get_default_trajectory(
+            &self,
+            request: tonic::Request<::pbjson_types::Empty>,
+        ) -> std::result::Result<
+            tonic::Response<super::commands::GetDefaultTrajectoryResponse>,
             tonic::Status,
         >;
     }
@@ -251,6 +319,100 @@ pub mod choreo_service_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let method = EchoSwerveSampleSvc(inner);
+                        let codec = tonic_prost::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/service.ChoreoService/Generate" => {
+                    #[allow(non_camel_case_types)]
+                    struct GenerateSvc<T: ChoreoService>(pub Arc<T>);
+                    impl<
+                        T: ChoreoService,
+                    > tonic::server::UnaryService<super::commands::GenerateRequest>
+                    for GenerateSvc<T> {
+                        type Response = super::commands::GenerateResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::commands::GenerateRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as ChoreoService>::generate(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = GenerateSvc(inner);
+                        let codec = tonic_prost::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/service.ChoreoService/GetDefaultTrajectory" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetDefaultTrajectorySvc<T: ChoreoService>(pub Arc<T>);
+                    impl<
+                        T: ChoreoService,
+                    > tonic::server::UnaryService<::pbjson_types::Empty>
+                    for GetDefaultTrajectorySvc<T> {
+                        type Response = super::commands::GetDefaultTrajectoryResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<::pbjson_types::Empty>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as ChoreoService>::get_default_trajectory(
+                                        &inner,
+                                        request,
+                                    )
+                                    .await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = GetDefaultTrajectorySvc(inner);
                         let codec = tonic_prost::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

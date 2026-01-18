@@ -8,4 +8,4 @@ edition = "2024"
 
 [workspace]
 resolver = "3"
-members = ["server_example", "proto_rs", "rs_client_example"]
+members = ["server_example", "proto_rs", "rs_client_example", "required_proc"]

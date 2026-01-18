@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import {service} from "@choreo/proto"
 import './App.css'
 import { grpc } from '@improbable-eng/grpc-web';
@@ -12,6 +10,10 @@ const rpc = new service.GrpcWebImpl('http://localhost:50051', {
   metadata: new grpc.Metadata({ SomeHeader: 'bar' }),
 });
 const client = new service.ChoreoServiceClientImpl(rpc);
+async function getTrajectory(){
+  const response = await client.GetDefaultTrajectory({});
+  return response.trajectory;
+}
 function App() {
   const [count, setCount] = useState(0)
   async function echoSwerveSample() {
@@ -35,29 +37,20 @@ function App() {
   }
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => {
           setCount((count) => count + 1);
           echoSwerveSample();
+          getTrajectory().then((trajectory)=>{
+            console.log(trajectory);
+            // mutate the trajectory
+            trajectory!.name = "HI MOM";
+            return client.Generate({trajectory});}
+          ).then((trajectory)=>console.log("result:", trajectory));
         }}>
-          count is {count}
+          Generate!
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

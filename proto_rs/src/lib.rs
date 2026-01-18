@@ -27,6 +27,12 @@ pub mod entity {
                 // @@protoc_insertion_point(entity.parameters.constraint.maxvelocity)
             }
         }
+        #[cfg(feature = "entity-parameters-robotconfig")]
+        // @@protoc_insertion_point(attribute:entity.parameters.robotconfig)
+        pub mod robotconfig {
+            include!("entity/parameters/robotconfig/entity.parameters.robotconfig.rs");
+            // @@protoc_insertion_point(entity.parameters.robotconfig)
+        }
         #[cfg(feature = "entity-parameters-waypoint")]
         // @@protoc_insertion_point(attribute:entity.parameters.waypoint)
         pub mod waypoint {

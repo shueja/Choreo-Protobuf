@@ -1,7 +1,22 @@
-use std::{str::FromStr, time::Duration};
-
-use proto_rs::{entity::{ForceVector, SwerveSample}, service::{choreo_service_server::{ChoreoService, ChoreoServiceServer}, commands::{EchoSwerveSampleRequest, EchoSwerveSampleResponse}}};
-use tonic::{transport::Server, Request, Response, Status};
+use proto_rs::{
+    entity::{
+        ForceVector, GenerationOutput, RequiredGenerationOutput, RequiredTrajectoryFile,
+        SwerveSample, SwerveTrajectory, TrajectoryFile,
+        parameters::{
+            DoubleParameters, Expr, ExprParameters, RequiredDoubleParameters, RequiredExpr,
+            RequiredExprParameters, robotconfig::{RequiredDoubleBumper, RequiredDoubleModule, RequiredDoubleRobotConfig},
+        },
+    },
+    service::{
+        choreo_service_server::{ChoreoService, ChoreoServiceServer},
+        commands::{
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse,
+            GetDefaultTrajectoryResponse, RequiredGetDefaultTrajectoryResponse,
+        },
+    },
+};
+use std::{str::FromStr, time::Duration, vec};
+use tonic::{Request, Response, Status, transport::Server};
 use tonic_web::GrpcWebLayer;
 use tower_http::cors::{AllowHeaders, AllowOrigin, Any, CorsLayer, ExposeHeaders};
 struct ChoreoServerImpl {}
@@ -10,22 +25,73 @@ impl ChoreoService for ChoreoServerImpl {
     async fn echo_swerve_sample(
         &self,
         request: Request<EchoSwerveSampleRequest>, // Accept request of type HelloRequest
-    ) -> Result<Response<EchoSwerveSampleResponse>, Status> { // Return an instance of type HelloReply
+    ) -> Result<Response<EchoSwerveSampleResponse>, Status> {
+        // Return an instance of type HelloReply
         println!("Got a request: {:?}", request);
         let request = request.into_inner();
         let _alpha = request.sample.unwrap().alpha;
         let reply = EchoSwerveSampleResponse {
-            sample: request.sample
+            sample: request.sample,
         };
 
         Ok(Response::new(reply)) // Send back our formatted greeting
     }
+
+    async fn generate(
+        &self,
+        request: Request<GenerateRequest>,
+    ) -> Result<Response<GenerateResponse>, Status> {
+        Ok(Response::new(GenerateResponse {
+            trajectory: request.into_inner().trajectory,
+        }))
+    }
+    async fn get_default_trajectory(
+        &self,
+        _: Request<pbjson_types::Empty>,
+    ) -> Result<Response<GetDefaultTrajectoryResponse>, Status> {
+        let params: RequiredTrajectoryFile = RequiredTrajectoryFile {
+            name: "NewPath".to_string(),
+            params: RequiredExprParameters {
+                target_dt: RequiredExpr {
+                    expr: "".to_string(),
+                    value: 0.05,
+                },
+                waypoints: vec![],
+                constraints: vec![],
+            },
+            snapshot: None,
+            trajectory: RequiredGenerationOutput {
+                splits: vec![],
+                waypoints: vec![],
+                config: RequiredDoubleRobotConfig {
+                    mass: 0.0,
+                    inertia: 0.0,
+                    gearing: 0.0,
+                    radius: 0.0,
+                    vmax: 0.0,
+                    tmax: 0.0,
+                    cof: 0.0,
+                    differential_track_width: 0.0,
+                    bumper: RequiredDoubleBumper {front: 0.0, left:0.0, right:0.0, back:0.0},
+                    front_left: RequiredDoubleModule { x: 0.0, y: 0.0 },
+                    front_right: RequiredDoubleModule { x: 0.0, y: 0.0 },
+                    back_left: RequiredDoubleModule { x: 0.0, y: 0.0 },
+                    back_right: RequiredDoubleModule { x: 0.0, y: 0.0 },
+                },
+                trajectory: proto_rs::entity::generation_output::Trajectory::Swerve(
+                    SwerveTrajectory { samples: vec![] },
+                ),
+            },
+        };
+        Ok(Response::new(GetDefaultTrajectoryResponse::from(RequiredGetDefaultTrajectoryResponse{
+            trajectory: params
+        })))
+    }
 }
+const DEFAULT_MAX_AGE: Duration = Duration::from_secs(24 * 60 * 60);
 
-    const DEFAULT_MAX_AGE: Duration = Duration::from_secs(24 * 60 * 60);
-
-            // HeaderName::from_static("grpc-message),
-            // HeaderName::from_static("grpc-status-details-bin")]
+// HeaderName::from_static("grpc-message),
+// HeaderName::from_static("grpc-status-details-bin")]
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -34,18 +100,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cors_layer = CorsLayer::new()
         .allow_origin(AllowOrigin::mirror_request())
         .max_age(DEFAULT_MAX_AGE)
-        .expose_headers(
-            ExposeHeaders::any()
-        )
-        .allow_headers(
-            AllowHeaders::any()
-        );
+        .expose_headers(ExposeHeaders::any())
+        .allow_headers(AllowHeaders::any());
     Server::builder()
         .accept_http1(true)
-       // This will apply the gRPC-Web translation layer
-       .layer(cors_layer)
+        // This will apply the gRPC-Web translation layer
+        .layer(cors_layer)
         .layer(GrpcWebLayer::new())
-        
         .add_service(ChoreoServiceServer::new(greeter))
         .serve(addr)
         .await?;
