@@ -80,20 +80,31 @@ fn convert_field(field: &Field) -> Field {
     new_field.attrs = filter_prost_attributes(new_field.attrs);
     // new_field.ident = new_field.ident.map(|i| format_ident!("req{i}"));
     new_field.ty = convert_type(&new_field.ty, false);
+    
     new_field
 }
 fn make_required_ident(ident: &Ident) -> Ident {
     format_ident!("Required{ident}")
 }
+
 use syn::Fields;
-fn make_required_fields(fields: Fields) -> Fields {
-    match fields {
+
+
+fn make_required_fields(fields: Fields) -> (bool, Fields) {
+    let mut is_different = false;
+    let convert = |f:&Field| {
+        let new_field = convert_field(f);
+        is_different |= (new_field.ty != f.ty);
+        new_field
+    };
+    let new_fields = match fields {
         syn::Fields::Named(syn::FieldsNamed { brace_token, named }) => {
+            
             syn::Fields::Named(syn::FieldsNamed {
                 brace_token,
                 named: named
                     .iter()
-                    .map(convert_field)
+                    .map(convert)
                     .collect::<Punctuated<Field, Comma>>(),
             })
         }
@@ -104,13 +115,14 @@ fn make_required_fields(fields: Fields) -> Fields {
             paren_token,
             unnamed: unnamed
                 .iter()
-                .map(convert_field)
+                .map(convert)
                 .collect::<Punctuated<Field, Comma>>(),
         }),
-        syn::Fields::Unit => fields.clone()
-    }
+        syn::Fields::Unit => fields.clone(),
+    };
+    (is_different, new_fields)
 }
-fn make_required_struct(input: &DeriveInput) -> (proc_macro2::TokenStream, DeriveInput) {
+fn make_required_struct(input: &DeriveInput) -> (proc_macro2::TokenStream, Option<DeriveInput>) {
     let DeriveInput {
         attrs,
         vis,
@@ -118,48 +130,63 @@ fn make_required_struct(input: &DeriveInput) -> (proc_macro2::TokenStream, Deriv
         generics,
         data,
     } = input.clone();
-    
-    
+
     let mut traits: Vec<Type> = vec![];
-    attrs.iter().for_each(|a|{
+
+    attrs.iter().for_each(|a| {
         if !a.path().is_ident("derive") {
             return;
         }
-        let _ = a.parse_nested_meta(|meta|{
-        let args = meta.path.to_token_stream();
-        let parse = |args|{
-           syn::parse::Parser::parse2(
-    Punctuated::<Type, syn::token::Comma>::parse_terminated,
-    args,
-)
-        };
-        let res = parse(args);
-        if let Err(e) = res {
-            unimplemented!("unparseable");
-        }
-        let res = res.unwrap();
+        let _ = a.parse_nested_meta(|meta| {
+            let args = meta.path.to_token_stream();
+            let parse = |args| {
+                syn::parse::Parser::parse2(
+                    Punctuated::<Type, syn::token::Comma>::parse_terminated,
+                    args,
+                )
+            };
+            let res = parse(args);
+            if let Err(e) = res {
+                unimplemented!("unparseable");
+            }
+            let res = res.unwrap();
 
-        for a in res
-            .into_iter() {
-            traits.push(a);
-        };
-        Ok(())
-    });});
-    let filtered_traits = traits.iter().filter(|t|match t {
-        Type::Path(type_path) => type_path.path.segments.iter().find(|s|s.ident.to_string()=="prost").is_none(),
+            for a in res.into_iter() {
+                traits.push(a);
+            }
+            Ok(())
+        });
+    });
+    let filtered_traits = traits.iter().filter(|t| match t {
+        Type::Path(type_path) => type_path
+            .path
+            .segments
+            .iter()
+            .find(|s| s.ident.to_string() == "prost")
+            .is_none(),
         _ => true,
     });
     let trait_tokens = quote! {#[derive(#(#filtered_traits,)*)]};
+    // fully remove the derive attribute since all derive attributes are coalesced into trait_tokens
+    let attrs = attrs.iter().filter(|a|!a.path().is_ident("derive")).map(Attribute::clone).collect();
     let ident = make_required_ident(&ident);
+    let mut is_different = false;
+    let gen_required = |f: Fields, is_different: &mut bool| {
+        let (did_change, fields) = make_required_fields(f);
+        *is_different |= did_change;
+        fields
+    };
     let data = match data {
         syn::Data::Struct(DataStruct {
             struct_token,
             fields,
             semi_token,
-        }) => syn::Data::Struct(DataStruct {
+        }) =>
+            
+            syn::Data::Struct(DataStruct {
             struct_token,
             semi_token,
-            fields: make_required_fields(fields),
+            fields: gen_required(fields, &mut is_different),
         }),
         syn::Data::Enum(DataEnum {
             enum_token,
@@ -180,7 +207,7 @@ fn make_required_struct(input: &DeriveInput) -> (proc_macro2::TokenStream, Deriv
                     Variant {
                         attrs: filter_prost_attributes(attrs),
                         ident,
-                        fields: make_required_fields(fields),
+                        fields: gen_required(fields, &mut is_different),
                         discriminant,
                     }
                 })
@@ -188,21 +215,27 @@ fn make_required_struct(input: &DeriveInput) -> (proc_macro2::TokenStream, Deriv
         }),
         _ => unimplemented!("unimplemented syn::Data"),
     };
-    (trait_tokens, DeriveInput {
-        attrs: vec![],
-        vis,
-        ident,
-        generics,
-        data,
-    })
+    if !is_different {
+        let original_ident = &input.ident;
+        return (quote! {pub type #ident = #original_ident;}, None);
+    }
+    (
+        trait_tokens,
+        Some(DeriveInput {
+            attrs,
+            vis,
+            ident,
+            generics,
+            data,
+        }),
+    )
 }
 
 fn filter_prost_attributes(attrs: Vec<Attribute>) -> Vec<Attribute> {
     attrs
         .iter()
-        .filter(|a| {
-            !a.path().is_ident("prost")
-        }).map(Attribute::clone)
+        .filter(|a| !a.path().is_ident("prost"))
+        .map(Attribute::clone)
         .collect::<Vec<Attribute>>()
 }
 
@@ -214,12 +247,13 @@ pub fn make_required(attr: TokenStream, item: TokenStream) -> proc_macro::TokenS
     };
     let input = parse_macro_input!(item as DeriveInput);
 
-    
     let (derive, required_tokens) = match &input.data {
         syn::Data::Struct(_data_struct) => make_required_struct(&input),
         syn::Data::Enum(_data_enum) => make_required_struct(&input),
         syn::Data::Union(_data_union) => unimplemented!("Only for structs and enums"),
     };
+
+    let required_tokens = required_tokens.map(DeriveInput::into_token_stream).unwrap_or(proc_macro2::TokenStream::new());
 
     quote! {
         #input

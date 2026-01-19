@@ -426,44 +426,7 @@ pub mod entity {
             builder.finish()
         }
     }
-    pub struct RequiredDifferentialSample {
-        pub t: f64,
-        pub x: f64,
-        pub y: f64,
-        pub heading: f64,
-        pub vl: f64,
-        pub vr: f64,
-        pub omega: f64,
-        pub al: f64,
-        pub ar: f64,
-        pub alpha: f64,
-        pub fl: f64,
-        pub fr: f64,
-    }
-    #[automatically_derived]
-    impl ::core::clone::Clone for RequiredDifferentialSample {
-        #[inline]
-        fn clone(&self) -> RequiredDifferentialSample {
-            let _: ::core::clone::AssertParamIsClone<f64>;
-            *self
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::Copy for RequiredDifferentialSample {}
-    #[automatically_derived]
-    impl ::core::marker::StructuralPartialEq for RequiredDifferentialSample {}
-    #[automatically_derived]
-    impl ::core::cmp::PartialEq for RequiredDifferentialSample {
-        #[inline]
-        fn eq(&self, other: &RequiredDifferentialSample) -> bool {
-            self.t == other.t && self.x == other.x && self.y == other.y
-                && self.heading == other.heading && self.vl == other.vl
-                && self.vr == other.vr && self.omega == other.omega
-                && self.al == other.al && self.ar == other.ar
-                && self.alpha == other.alpha && self.fl == other.fl
-                && self.fr == other.fr
-        }
-    }
+    pub type RequiredDifferentialSample = DifferentialSample;
     #[repr(i32)]
     pub enum DriveType {
         DrivetypeSwerve = 0,
@@ -584,81 +547,7 @@ pub mod entity {
             }
         }
     }
-    pub enum RequiredDriveType {
-        DrivetypeSwerve = 0,
-        DrivetypeDifferential = 1,
-        DrivetypeMecanum = 2,
-    }
-    #[automatically_derived]
-    impl ::core::clone::Clone for RequiredDriveType {
-        #[inline]
-        fn clone(&self) -> RequiredDriveType {
-            *self
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::Copy for RequiredDriveType {}
-    #[automatically_derived]
-    impl ::core::fmt::Debug for RequiredDriveType {
-        #[inline]
-        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-            ::core::fmt::Formatter::write_str(
-                f,
-                match self {
-                    RequiredDriveType::DrivetypeSwerve => "DrivetypeSwerve",
-                    RequiredDriveType::DrivetypeDifferential => "DrivetypeDifferential",
-                    RequiredDriveType::DrivetypeMecanum => "DrivetypeMecanum",
-                },
-            )
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::StructuralPartialEq for RequiredDriveType {}
-    #[automatically_derived]
-    impl ::core::cmp::PartialEq for RequiredDriveType {
-        #[inline]
-        fn eq(&self, other: &RequiredDriveType) -> bool {
-            let __self_discr = ::core::intrinsics::discriminant_value(self);
-            let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-            __self_discr == __arg1_discr
-        }
-    }
-    #[automatically_derived]
-    impl ::core::cmp::Eq for RequiredDriveType {
-        #[inline]
-        #[doc(hidden)]
-        #[coverage(off)]
-        fn assert_receiver_is_total_eq(&self) -> () {}
-    }
-    #[automatically_derived]
-    impl ::core::hash::Hash for RequiredDriveType {
-        #[inline]
-        fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
-            let __self_discr = ::core::intrinsics::discriminant_value(self);
-            ::core::hash::Hash::hash(&__self_discr, state)
-        }
-    }
-    #[automatically_derived]
-    impl ::core::cmp::PartialOrd for RequiredDriveType {
-        #[inline]
-        fn partial_cmp(
-            &self,
-            other: &RequiredDriveType,
-        ) -> ::core::option::Option<::core::cmp::Ordering> {
-            let __self_discr = ::core::intrinsics::discriminant_value(self);
-            let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-            ::core::cmp::PartialOrd::partial_cmp(&__self_discr, &__arg1_discr)
-        }
-    }
-    #[automatically_derived]
-    impl ::core::cmp::Ord for RequiredDriveType {
-        #[inline]
-        fn cmp(&self, other: &RequiredDriveType) -> ::core::cmp::Ordering {
-            let __self_discr = ::core::intrinsics::discriminant_value(self);
-            let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-            ::core::cmp::Ord::cmp(&__self_discr, &__arg1_discr)
-        }
-    }
+    pub type RequiredDriveType = DriveType;
     impl DriveType {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
@@ -795,29 +684,7 @@ pub mod entity {
             builder.finish()
         }
     }
-    pub struct RequiredForceVector {
-        pub x: f64,
-        pub y: f64,
-    }
-    #[automatically_derived]
-    impl ::core::clone::Clone for RequiredForceVector {
-        #[inline]
-        fn clone(&self) -> RequiredForceVector {
-            let _: ::core::clone::AssertParamIsClone<f64>;
-            *self
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::Copy for RequiredForceVector {}
-    #[automatically_derived]
-    impl ::core::marker::StructuralPartialEq for RequiredForceVector {}
-    #[automatically_derived]
-    impl ::core::cmp::PartialEq for RequiredForceVector {
-        #[inline]
-        fn eq(&self, other: &RequiredForceVector) -> bool {
-            self.x == other.x && self.y == other.y
-        }
-    }
+    pub type RequiredForceVector = ForceVector;
     pub struct SwerveSample {
         #[prost(double, tag = "1")]
         pub t: f64,
@@ -1425,27 +1292,7 @@ pub mod entity {
             builder.finish()
         }
     }
-    pub struct RequiredSwerveTrajectory {
-        pub samples: ::prost::alloc::vec::Vec<SwerveSample>,
-    }
-    #[automatically_derived]
-    impl ::core::clone::Clone for RequiredSwerveTrajectory {
-        #[inline]
-        fn clone(&self) -> RequiredSwerveTrajectory {
-            RequiredSwerveTrajectory {
-                samples: ::core::clone::Clone::clone(&self.samples),
-            }
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::StructuralPartialEq for RequiredSwerveTrajectory {}
-    #[automatically_derived]
-    impl ::core::cmp::PartialEq for RequiredSwerveTrajectory {
-        #[inline]
-        fn eq(&self, other: &RequiredSwerveTrajectory) -> bool {
-            self.samples == other.samples
-        }
-    }
+    pub type RequiredSwerveTrajectory = SwerveTrajectory;
     pub struct DifferentialTrajectory {
         #[prost(message, repeated, tag = "1")]
         pub samples: ::prost::alloc::vec::Vec<DifferentialSample>,
@@ -1526,27 +1373,7 @@ pub mod entity {
             builder.finish()
         }
     }
-    pub struct RequiredDifferentialTrajectory {
-        pub samples: ::prost::alloc::vec::Vec<DifferentialSample>,
-    }
-    #[automatically_derived]
-    impl ::core::clone::Clone for RequiredDifferentialTrajectory {
-        #[inline]
-        fn clone(&self) -> RequiredDifferentialTrajectory {
-            RequiredDifferentialTrajectory {
-                samples: ::core::clone::Clone::clone(&self.samples),
-            }
-        }
-    }
-    #[automatically_derived]
-    impl ::core::marker::StructuralPartialEq for RequiredDifferentialTrajectory {}
-    #[automatically_derived]
-    impl ::core::cmp::PartialEq for RequiredDifferentialTrajectory {
-        #[inline]
-        fn eq(&self, other: &RequiredDifferentialTrajectory) -> bool {
-            self.samples == other.samples
-        }
-    }
+    pub type RequiredDifferentialTrajectory = DifferentialTrajectory;
     pub struct GenerationOutput {
         #[prost(uint64, repeated, tag = "3")]
         pub splits: ::prost::alloc::vec::Vec<u64>,
@@ -1891,48 +1718,7 @@ pub mod entity {
                 }
             }
         }
-        pub enum RequiredTrajectory {
-            Swerve(super::SwerveTrajectory),
-            Differential(super::DifferentialTrajectory),
-        }
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredTrajectory {
-            #[inline]
-            fn clone(&self) -> RequiredTrajectory {
-                match self {
-                    RequiredTrajectory::Swerve(__self_0) => {
-                        RequiredTrajectory::Swerve(::core::clone::Clone::clone(__self_0))
-                    }
-                    RequiredTrajectory::Differential(__self_0) => {
-                        RequiredTrajectory::Differential(
-                            ::core::clone::Clone::clone(__self_0),
-                        )
-                    }
-                }
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredTrajectory {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredTrajectory {
-            #[inline]
-            fn eq(&self, other: &RequiredTrajectory) -> bool {
-                let __self_discr = ::core::intrinsics::discriminant_value(self);
-                let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-                __self_discr == __arg1_discr
-                    && match (self, other) {
-                        (
-                            RequiredTrajectory::Swerve(__self_0),
-                            RequiredTrajectory::Swerve(__arg1_0),
-                        ) => __self_0 == __arg1_0,
-                        (
-                            RequiredTrajectory::Differential(__self_0),
-                            RequiredTrajectory::Differential(__arg1_0),
-                        ) => __self_0 == __arg1_0,
-                        _ => unsafe { ::core::intrinsics::unreachable() }
-                    }
-            }
-        }
+        pub type RequiredTrajectory = Trajectory;
     }
     pub struct TrajectoryFile {
         #[prost(string, tag = "1")]
@@ -3651,37 +3437,7 @@ pub mod entity {
                 builder.finish()
             }
         }
-        pub struct RequiredWaypointIdFirst {}
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredWaypointIdFirst {
-            #[inline]
-            fn clone(&self) -> RequiredWaypointIdFirst {
-                *self
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::Copy for RequiredWaypointIdFirst {}
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredWaypointIdFirst {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredWaypointIdFirst {
-            #[inline]
-            fn eq(&self, other: &RequiredWaypointIdFirst) -> bool {
-                true
-            }
-        }
-        #[automatically_derived]
-        impl ::core::cmp::Eq for RequiredWaypointIdFirst {
-            #[inline]
-            #[doc(hidden)]
-            #[coverage(off)]
-            fn assert_receiver_is_total_eq(&self) -> () {}
-        }
-        #[automatically_derived]
-        impl ::core::hash::Hash for RequiredWaypointIdFirst {
-            #[inline]
-            fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {}
-        }
+        pub type RequiredWaypointIdFirst = WaypointIdFirst;
         pub struct WaypointIdLast {}
         #[automatically_derived]
         impl ::core::clone::Clone for WaypointIdLast {
@@ -3745,37 +3501,7 @@ pub mod entity {
                 builder.finish()
             }
         }
-        pub struct RequiredWaypointIdLast {}
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredWaypointIdLast {
-            #[inline]
-            fn clone(&self) -> RequiredWaypointIdLast {
-                *self
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::Copy for RequiredWaypointIdLast {}
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredWaypointIdLast {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredWaypointIdLast {
-            #[inline]
-            fn eq(&self, other: &RequiredWaypointIdLast) -> bool {
-                true
-            }
-        }
-        #[automatically_derived]
-        impl ::core::cmp::Eq for RequiredWaypointIdLast {
-            #[inline]
-            #[doc(hidden)]
-            #[coverage(off)]
-            fn assert_receiver_is_total_eq(&self) -> () {}
-        }
-        #[automatically_derived]
-        impl ::core::hash::Hash for RequiredWaypointIdLast {
-            #[inline]
-            fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {}
-        }
+        pub type RequiredWaypointIdLast = WaypointIdLast;
         pub struct WaypointIdx {
             #[prost(uint64, tag = "1")]
             pub idx: u64,
@@ -3877,44 +3603,7 @@ pub mod entity {
                 builder.finish()
             }
         }
-        pub struct RequiredWaypointIdx {
-            pub idx: u64,
-        }
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredWaypointIdx {
-            #[inline]
-            fn clone(&self) -> RequiredWaypointIdx {
-                let _: ::core::clone::AssertParamIsClone<u64>;
-                *self
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::Copy for RequiredWaypointIdx {}
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredWaypointIdx {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredWaypointIdx {
-            #[inline]
-            fn eq(&self, other: &RequiredWaypointIdx) -> bool {
-                self.idx == other.idx
-            }
-        }
-        #[automatically_derived]
-        impl ::core::cmp::Eq for RequiredWaypointIdx {
-            #[inline]
-            #[doc(hidden)]
-            #[coverage(off)]
-            fn assert_receiver_is_total_eq(&self) -> () {
-                let _: ::core::cmp::AssertParamIsEq<u64>;
-            }
-        }
-        #[automatically_derived]
-        impl ::core::hash::Hash for RequiredWaypointIdx {
-            #[inline]
-            fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
-                ::core::hash::Hash::hash(&self.idx, state)
-            }
-        }
+        pub type RequiredWaypointIdx = WaypointIdx;
         pub struct WaypointId {
             #[prost(oneof = "waypoint_id::Id", tags = "1, 2, 3")]
             pub id: ::core::option::Option<waypoint_id::Id>,
@@ -4254,77 +3943,7 @@ pub mod entity {
                     }
                 }
             }
-            pub enum RequiredId {
-                First(super::WaypointIdFirst),
-                Last(super::WaypointIdLast),
-                Idx(super::WaypointIdx),
-            }
-            #[automatically_derived]
-            impl ::core::clone::Clone for RequiredId {
-                #[inline]
-                fn clone(&self) -> RequiredId {
-                    let _: ::core::clone::AssertParamIsClone<super::WaypointIdFirst>;
-                    let _: ::core::clone::AssertParamIsClone<super::WaypointIdLast>;
-                    let _: ::core::clone::AssertParamIsClone<super::WaypointIdx>;
-                    *self
-                }
-            }
-            #[automatically_derived]
-            impl ::core::marker::Copy for RequiredId {}
-            #[automatically_derived]
-            impl ::core::marker::StructuralPartialEq for RequiredId {}
-            #[automatically_derived]
-            impl ::core::cmp::PartialEq for RequiredId {
-                #[inline]
-                fn eq(&self, other: &RequiredId) -> bool {
-                    let __self_discr = ::core::intrinsics::discriminant_value(self);
-                    let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-                    __self_discr == __arg1_discr
-                        && match (self, other) {
-                            (
-                                RequiredId::First(__self_0),
-                                RequiredId::First(__arg1_0),
-                            ) => __self_0 == __arg1_0,
-                            (RequiredId::Last(__self_0), RequiredId::Last(__arg1_0)) => {
-                                __self_0 == __arg1_0
-                            }
-                            (RequiredId::Idx(__self_0), RequiredId::Idx(__arg1_0)) => {
-                                __self_0 == __arg1_0
-                            }
-                            _ => unsafe { ::core::intrinsics::unreachable() }
-                        }
-                }
-            }
-            #[automatically_derived]
-            impl ::core::cmp::Eq for RequiredId {
-                #[inline]
-                #[doc(hidden)]
-                #[coverage(off)]
-                fn assert_receiver_is_total_eq(&self) -> () {
-                    let _: ::core::cmp::AssertParamIsEq<super::WaypointIdFirst>;
-                    let _: ::core::cmp::AssertParamIsEq<super::WaypointIdLast>;
-                    let _: ::core::cmp::AssertParamIsEq<super::WaypointIdx>;
-                }
-            }
-            #[automatically_derived]
-            impl ::core::hash::Hash for RequiredId {
-                #[inline]
-                fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
-                    let __self_discr = ::core::intrinsics::discriminant_value(self);
-                    ::core::hash::Hash::hash(&__self_discr, state);
-                    match self {
-                        RequiredId::First(__self_0) => {
-                            ::core::hash::Hash::hash(__self_0, state)
-                        }
-                        RequiredId::Last(__self_0) => {
-                            ::core::hash::Hash::hash(__self_0, state)
-                        }
-                        RequiredId::Idx(__self_0) => {
-                            ::core::hash::Hash::hash(__self_0, state)
-                        }
-                    }
-                }
-            }
+            pub type RequiredId = Id;
         }
         pub struct DoubleParameters {
             #[prost(double, tag = "1")]
@@ -4471,32 +4090,7 @@ pub mod entity {
                 builder.finish()
             }
         }
-        pub struct RequiredDoubleParameters {
-            pub target_dt: f64,
-            pub waypoints: ::prost::alloc::vec::Vec<waypoint::DoubleWaypoint>,
-            pub constraints: ::prost::alloc::vec::Vec<constraint::DoubleConstraint>,
-        }
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredDoubleParameters {
-            #[inline]
-            fn clone(&self) -> RequiredDoubleParameters {
-                RequiredDoubleParameters {
-                    target_dt: ::core::clone::Clone::clone(&self.target_dt),
-                    waypoints: ::core::clone::Clone::clone(&self.waypoints),
-                    constraints: ::core::clone::Clone::clone(&self.constraints),
-                }
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredDoubleParameters {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredDoubleParameters {
-            #[inline]
-            fn eq(&self, other: &RequiredDoubleParameters) -> bool {
-                self.target_dt == other.target_dt && self.waypoints == other.waypoints
-                    && self.constraints == other.constraints
-            }
-        }
+        pub type RequiredDoubleParameters = DoubleParameters;
         pub struct Expr {
             #[prost(double, tag = "1")]
             pub value: f64,
@@ -4614,29 +4208,7 @@ pub mod entity {
                 builder.finish()
             }
         }
-        pub struct RequiredExpr {
-            pub value: f64,
-            pub expr: ::prost::alloc::string::String,
-        }
-        #[automatically_derived]
-        impl ::core::clone::Clone for RequiredExpr {
-            #[inline]
-            fn clone(&self) -> RequiredExpr {
-                RequiredExpr {
-                    value: ::core::clone::Clone::clone(&self.value),
-                    expr: ::core::clone::Clone::clone(&self.expr),
-                }
-            }
-        }
-        #[automatically_derived]
-        impl ::core::marker::StructuralPartialEq for RequiredExpr {}
-        #[automatically_derived]
-        impl ::core::cmp::PartialEq for RequiredExpr {
-            #[inline]
-            fn eq(&self, other: &RequiredExpr) -> bool {
-                self.value == other.value && self.expr == other.expr
-            }
-        }
+        pub type RequiredExpr = Expr;
         pub struct ExprParameters {
             #[prost(message, optional, tag = "1")]
             pub target_dt: ::core::option::Option<Expr>,
@@ -6021,47 +5593,7 @@ pub mod entity {
                         }
                     }
                 }
-                pub enum RequiredData {
-                    MaxVelocity(super::maxvelocity::DoubleMaxVelocity),
-                    MaxAcceleration(super::max_acceleration::DoubleMaxAcceleration),
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredData {
-                    #[inline]
-                    fn clone(&self) -> RequiredData {
-                        let _: ::core::clone::AssertParamIsClone<
-                            super::maxvelocity::DoubleMaxVelocity,
-                        >;
-                        let _: ::core::clone::AssertParamIsClone<
-                            super::max_acceleration::DoubleMaxAcceleration,
-                        >;
-                        *self
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::Copy for RequiredData {}
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq for RequiredData {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredData {
-                    #[inline]
-                    fn eq(&self, other: &RequiredData) -> bool {
-                        let __self_discr = ::core::intrinsics::discriminant_value(self);
-                        let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-                        __self_discr == __arg1_discr
-                            && match (self, other) {
-                                (
-                                    RequiredData::MaxVelocity(__self_0),
-                                    RequiredData::MaxVelocity(__arg1_0),
-                                ) => __self_0 == __arg1_0,
-                                (
-                                    RequiredData::MaxAcceleration(__self_0),
-                                    RequiredData::MaxAcceleration(__arg1_0),
-                                ) => __self_0 == __arg1_0,
-                                _ => unsafe { ::core::intrinsics::unreachable() }
-                            }
-                    }
-                }
+                pub type RequiredData = Data;
             }
             pub struct ExprConstraint {
                 #[prost(bool, tag = "1")]
@@ -6429,50 +5961,7 @@ pub mod entity {
                         }
                     }
                 }
-                pub enum RequiredData {
-                    MaxVelocity(super::maxvelocity::ExprMaxVelocity),
-                    MaxAcceleration(super::max_acceleration::ExprMaxAcceleration),
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredData {
-                    #[inline]
-                    fn clone(&self) -> RequiredData {
-                        match self {
-                            RequiredData::MaxVelocity(__self_0) => {
-                                RequiredData::MaxVelocity(
-                                    ::core::clone::Clone::clone(__self_0),
-                                )
-                            }
-                            RequiredData::MaxAcceleration(__self_0) => {
-                                RequiredData::MaxAcceleration(
-                                    ::core::clone::Clone::clone(__self_0),
-                                )
-                            }
-                        }
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq for RequiredData {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredData {
-                    #[inline]
-                    fn eq(&self, other: &RequiredData) -> bool {
-                        let __self_discr = ::core::intrinsics::discriminant_value(self);
-                        let __arg1_discr = ::core::intrinsics::discriminant_value(other);
-                        __self_discr == __arg1_discr
-                            && match (self, other) {
-                                (
-                                    RequiredData::MaxVelocity(__self_0),
-                                    RequiredData::MaxVelocity(__arg1_0),
-                                ) => __self_0 == __arg1_0,
-                                (
-                                    RequiredData::MaxAcceleration(__self_0),
-                                    RequiredData::MaxAcceleration(__arg1_0),
-                                ) => __self_0 == __arg1_0,
-                                _ => unsafe { ::core::intrinsics::unreachable() }
-                            }
-                    }
-                }
+                pub type RequiredData = Data;
             }
             impl serde::Serialize for DoubleConstraint {
                 #[allow(deprecated)]
@@ -6955,29 +6444,7 @@ pub mod entity {
                         builder.finish()
                     }
                 }
-                pub struct RequiredDoubleMaxAcceleration {
-                    pub max: f64,
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredDoubleMaxAcceleration {
-                    #[inline]
-                    fn clone(&self) -> RequiredDoubleMaxAcceleration {
-                        let _: ::core::clone::AssertParamIsClone<f64>;
-                        *self
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::Copy for RequiredDoubleMaxAcceleration {}
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq
-                for RequiredDoubleMaxAcceleration {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredDoubleMaxAcceleration {
-                    #[inline]
-                    fn eq(&self, other: &RequiredDoubleMaxAcceleration) -> bool {
-                        self.max == other.max
-                    }
-                }
+                pub type RequiredDoubleMaxAcceleration = DoubleMaxAcceleration;
                 pub struct ExprMaxAcceleration {
                     #[prost(message, optional, tag = "1")]
                     pub max: ::core::option::Option<super::super::Expr>,
@@ -7412,28 +6879,7 @@ pub mod entity {
                         builder.finish()
                     }
                 }
-                pub struct RequiredDoubleMaxVelocity {
-                    pub max: f64,
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredDoubleMaxVelocity {
-                    #[inline]
-                    fn clone(&self) -> RequiredDoubleMaxVelocity {
-                        let _: ::core::clone::AssertParamIsClone<f64>;
-                        *self
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::Copy for RequiredDoubleMaxVelocity {}
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq for RequiredDoubleMaxVelocity {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredDoubleMaxVelocity {
-                    #[inline]
-                    fn eq(&self, other: &RequiredDoubleMaxVelocity) -> bool {
-                        self.max == other.max
-                    }
-                }
+                pub type RequiredDoubleMaxVelocity = DoubleMaxVelocity;
                 pub struct TestDouble {
                     #[prost(string, tag = "1")]
                     pub test: ::prost::alloc::string::String,
@@ -7541,45 +6987,7 @@ pub mod entity {
                         builder.finish()
                     }
                 }
-                pub struct RequiredTestDouble {
-                    pub test: ::prost::alloc::string::String,
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredTestDouble {
-                    #[inline]
-                    fn clone(&self) -> RequiredTestDouble {
-                        RequiredTestDouble {
-                            test: ::core::clone::Clone::clone(&self.test),
-                        }
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq for RequiredTestDouble {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredTestDouble {
-                    #[inline]
-                    fn eq(&self, other: &RequiredTestDouble) -> bool {
-                        self.test == other.test
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::cmp::Eq for RequiredTestDouble {
-                    #[inline]
-                    #[doc(hidden)]
-                    #[coverage(off)]
-                    fn assert_receiver_is_total_eq(&self) -> () {
-                        let _: ::core::cmp::AssertParamIsEq<
-                            ::prost::alloc::string::String,
-                        >;
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::hash::Hash for RequiredTestDouble {
-                    #[inline]
-                    fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
-                        ::core::hash::Hash::hash(&self.test, state)
-                    }
-                }
+                pub type RequiredTestDouble = TestDouble;
                 pub struct ExprMaxVelocity {
                     #[prost(message, optional, tag = "1")]
                     pub max: ::core::option::Option<super::super::Expr>,
@@ -7798,45 +7206,7 @@ pub mod entity {
                         builder.finish()
                     }
                 }
-                pub struct RequiredTestExpr {
-                    pub test: ::prost::alloc::string::String,
-                }
-                #[automatically_derived]
-                impl ::core::clone::Clone for RequiredTestExpr {
-                    #[inline]
-                    fn clone(&self) -> RequiredTestExpr {
-                        RequiredTestExpr {
-                            test: ::core::clone::Clone::clone(&self.test),
-                        }
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::marker::StructuralPartialEq for RequiredTestExpr {}
-                #[automatically_derived]
-                impl ::core::cmp::PartialEq for RequiredTestExpr {
-                    #[inline]
-                    fn eq(&self, other: &RequiredTestExpr) -> bool {
-                        self.test == other.test
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::cmp::Eq for RequiredTestExpr {
-                    #[inline]
-                    #[doc(hidden)]
-                    #[coverage(off)]
-                    fn assert_receiver_is_total_eq(&self) -> () {
-                        let _: ::core::cmp::AssertParamIsEq<
-                            ::prost::alloc::string::String,
-                        >;
-                    }
-                }
-                #[automatically_derived]
-                impl ::core::hash::Hash for RequiredTestExpr {
-                    #[inline]
-                    fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
-                        ::core::hash::Hash::hash(&self.test, state)
-                    }
-                }
+                pub type RequiredTestExpr = TestExpr;
                 impl serde::Serialize for DoubleMaxVelocity {
                     #[allow(deprecated)]
                     fn serialize<S>(
@@ -8416,29 +7786,7 @@ pub mod entity {
                     builder.finish()
                 }
             }
-            pub struct RequiredDoubleModule {
-                pub x: f64,
-                pub y: f64,
-            }
-            #[automatically_derived]
-            impl ::core::clone::Clone for RequiredDoubleModule {
-                #[inline]
-                fn clone(&self) -> RequiredDoubleModule {
-                    let _: ::core::clone::AssertParamIsClone<f64>;
-                    *self
-                }
-            }
-            #[automatically_derived]
-            impl ::core::marker::Copy for RequiredDoubleModule {}
-            #[automatically_derived]
-            impl ::core::marker::StructuralPartialEq for RequiredDoubleModule {}
-            #[automatically_derived]
-            impl ::core::cmp::PartialEq for RequiredDoubleModule {
-                #[inline]
-                fn eq(&self, other: &RequiredDoubleModule) -> bool {
-                    self.x == other.x && self.y == other.y
-                }
-            }
+            pub type RequiredDoubleModule = DoubleModule;
             pub struct DoubleBumper {
                 #[prost(double, tag = "1")]
                 pub front: f64,
@@ -8617,32 +7965,7 @@ pub mod entity {
                     builder.finish()
                 }
             }
-            pub struct RequiredDoubleBumper {
-                pub front: f64,
-                pub left: f64,
-                pub right: f64,
-                pub back: f64,
-            }
-            #[automatically_derived]
-            impl ::core::clone::Clone for RequiredDoubleBumper {
-                #[inline]
-                fn clone(&self) -> RequiredDoubleBumper {
-                    let _: ::core::clone::AssertParamIsClone<f64>;
-                    *self
-                }
-            }
-            #[automatically_derived]
-            impl ::core::marker::Copy for RequiredDoubleBumper {}
-            #[automatically_derived]
-            impl ::core::marker::StructuralPartialEq for RequiredDoubleBumper {}
-            #[automatically_derived]
-            impl ::core::cmp::PartialEq for RequiredDoubleBumper {
-                #[inline]
-                fn eq(&self, other: &RequiredDoubleBumper) -> bool {
-                    self.front == other.front && self.left == other.left
-                        && self.right == other.right && self.back == other.back
-                }
-            }
+            pub type RequiredDoubleBumper = DoubleBumper;
             pub struct DoubleRobotConfig {
                 #[prost(double, tag = "1")]
                 pub mass: f64,
@@ -11717,42 +11040,7 @@ pub mod entity {
                     builder.finish()
                 }
             }
-            pub struct RequiredDoubleWaypoint {
-                pub x: f64,
-                pub y: f64,
-                pub heading: f64,
-                pub intervals: u64,
-                pub split: bool,
-                pub fix_translation: bool,
-                pub fix_heading: bool,
-                pub override_intervals: bool,
-            }
-            #[automatically_derived]
-            impl ::core::clone::Clone for RequiredDoubleWaypoint {
-                #[inline]
-                fn clone(&self) -> RequiredDoubleWaypoint {
-                    let _: ::core::clone::AssertParamIsClone<f64>;
-                    let _: ::core::clone::AssertParamIsClone<u64>;
-                    let _: ::core::clone::AssertParamIsClone<bool>;
-                    *self
-                }
-            }
-            #[automatically_derived]
-            impl ::core::marker::Copy for RequiredDoubleWaypoint {}
-            #[automatically_derived]
-            impl ::core::marker::StructuralPartialEq for RequiredDoubleWaypoint {}
-            #[automatically_derived]
-            impl ::core::cmp::PartialEq for RequiredDoubleWaypoint {
-                #[inline]
-                fn eq(&self, other: &RequiredDoubleWaypoint) -> bool {
-                    self.x == other.x && self.y == other.y
-                        && self.heading == other.heading
-                        && self.intervals == other.intervals && self.split == other.split
-                        && self.fix_translation == other.fix_translation
-                        && self.fix_heading == other.fix_heading
-                        && self.override_intervals == other.override_intervals
-                }
-            }
+            pub type RequiredDoubleWaypoint = DoubleWaypoint;
             pub struct ExprWaypoint {
                 #[prost(message, optional, tag = "1")]
                 pub x: ::core::option::Option<super::Expr>,
