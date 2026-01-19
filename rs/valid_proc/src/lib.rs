@@ -1,18 +1,16 @@
-use core::error;
 use std::vec;
 
 use deluxe::ParseMetaItem;
 use proc_macro::TokenStream;
 use quote::{ToTokens, format_ident, quote};
-use syn::parse::ParseBuffer;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
 use syn::{
-    AngleBracketedGenericArguments, Attribute, FieldsNamed, GenericArgument, Generics, Ident, Path,
-    PathArguments, PathSegment, QSelf, Token, Variant, Visibility,
+    AngleBracketedGenericArguments, Attribute, GenericArgument, Ident, Path,
+    PathArguments, Variant,
 };
 use syn::{
-    DataEnum, DataStruct, DeriveInput, Field, Type, TypePath, parse_macro_input, token::Token,
+    DataEnum, DataStruct, DeriveInput, Field, Type, TypePath, parse_macro_input,
 };
 mod utils;
 
@@ -71,9 +69,9 @@ fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type) {
     };
     if let Some(Type::Path(path)) = inner_type_opt {
         let valid_path = convert_type_path_to_valid(path);
-        return (true, syn::Type::Path(valid_path));
+        (true, syn::Type::Path(valid_path))
     } else {
-        return (false, input.clone());
+        (false, input.clone())
     }
 }
 fn convert_field(field: &Field) -> (bool, Field) {
@@ -100,7 +98,7 @@ fn named_field_tryfrom_conversion(ident: &Ident) -> proc_macro2::TokenStream {
     quote! {#ident: optional.#ident}
 }
 fn named_field_option_tryfrom(ident: &Ident) -> proc_macro2::TokenStream {
-    let missing_message = format!("{} is missing", ident.to_string());
+    let missing_message = format!("{} is missing", ident);
     quote! {
     #ident: match optional.#ident {
                 Some(object)=> match object.try_into().map_err(|e| format!("{}", e).to_string()) {
@@ -134,7 +132,7 @@ fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
     let convert = |tup: (usize, &Field)| {
         let (index, field) = tup;
         let (was_option, new_field) = convert_field(field);
-        is_different |= (new_field.ty != field.ty);
+        is_different |= new_field.ty != field.ty;
 
         tryfrom_conversions.push(match &field.ident {
             Some(ident) => {
@@ -217,12 +215,10 @@ fn get_filtered_derive_macro(attrs: Vec<Attribute>) -> (proc_macro2::TokenStream
         });
     });
     let filtered_traits = traits.iter().filter(|t| match t {
-        Type::Path(type_path) => type_path
+        Type::Path(type_path) => !type_path
             .path
             .segments
-            .iter()
-            .find(|s| s.ident.to_string() == "prost")
-            .is_none(),
+            .iter().any(|s| s.ident == "prost"),
         _ => true,
     });
 

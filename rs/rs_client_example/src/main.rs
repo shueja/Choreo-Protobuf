@@ -1,6 +1,6 @@
 use tokio::time::Instant;
 
-use proto_rs::{entity::{ValidTrajectoryFile, SwerveSample, generation_output::Trajectory}, service::{choreo_service_client::ChoreoServiceClient, commands::{EchoSwerveSampleRequest, GenerateRequest}}};
+use proto_rs::service::{choreo_service_client::ChoreoServiceClient, commands::GenerateRequest};
 
 async fn timeit<F: AsyncFnOnce() -> T, T>(f: F) -> T {
   let start = Instant::now();
@@ -24,7 +24,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let generate_response = client.generate(generate_request).await?;
     println!("GENERATE_RESPONSE={:?}", generate_response);
 
-    let mut broken_trajectory = response.trajectory.clone().unwrap();
+    let broken_trajectory = response.trajectory.clone().unwrap();
     // broken_trajectory.params = None;
     // broken_trajectory.snapshot = None;
     let generate_request = tonic::Request::new(GenerateRequest{

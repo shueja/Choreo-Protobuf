@@ -1,23 +1,21 @@
 use proto_rs::{
     entity::{
-        ForceVector, GenerationOutput, ValidGenerationOutput, ValidTrajectoryFile,
-        SwerveSample, SwerveTrajectory, TrajectoryFile, Expr,
+        GenerationOutput, SwerveTrajectory, TrajectoryFile, Expr,
         parameters::{
-            DoubleParameters, ExprParameters, ValidDoubleParameters,
-            ValidExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig, ValidDoubleBumper, ValidDoubleModule, ValidDoubleRobotConfig},
+            DoubleParameters, ExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig},
         },
     },
     service::{
         choreo_service_server::{ChoreoService, ChoreoServiceServer},
         commands::{
-            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, ValidGenerateRequest, ValidGenerateResponse, ValidGetDefaultTrajectoryResponse
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, ValidGenerateRequest, ValidGenerateResponse
         },
     }, validate::{response, validate},
 };
-use std::{str::FromStr, time::Duration, vec};
+use std::{time::Duration, vec};
 use tonic::{Request, Response, Status, transport::Server};
 use tonic_web::GrpcWebLayer;
-use tower_http::cors::{AllowHeaders, AllowOrigin, Any, CorsLayer, ExposeHeaders};
+use tower_http::cors::{AllowHeaders, AllowOrigin, CorsLayer, ExposeHeaders};
 struct ChoreoServerImpl {}
 #[tonic::async_trait]
 impl ChoreoService for ChoreoServerImpl {

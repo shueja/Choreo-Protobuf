@@ -80,7 +80,7 @@ pub fn setup_progress_sender() -> Receiver<HandledLocalProgressUpdate> {
 }
 
 pub fn generate(
-    chor: ProjectFile,
+    chor: ValidProjectFile,
     trajectory_file: TrajectoryFile,
     handle: i64,
 ) -> ChoreoResult<TrajectoryFile> {

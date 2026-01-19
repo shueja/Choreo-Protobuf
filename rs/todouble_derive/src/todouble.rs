@@ -18,7 +18,7 @@
 use proc_macro::{self, TokenStream};
 use proc_macro2::Span;
 use quote::quote;
-use syn::{Data::{Enum, Struct, Union}, DataEnum, DataStruct, DataUnion, DeriveInput, Fields::{Named, Unit, Unnamed}, FieldsNamed, FieldsUnnamed, Ident, Type, parse_macro_input};
+use syn::{Data::{Enum, Struct, Union}, DataEnum, DataStruct, DeriveInput, Fields::{Named, Unit, Unnamed}, FieldsNamed, FieldsUnnamed, Ident, parse_macro_input};
 
 pub fn to_double_ident(ident: &Ident) -> Ident {
     syn::Ident::new(ident.to_string().replace("Expr", "Double").as_str(), Span::call_site())
@@ -77,7 +77,7 @@ fn handle_unnamed_fields(fields: FieldsUnnamed) -> String {
   format!("a struct with {} unnamed fields", my_unnamed_fields_count)
 }
 
-fn handle_unit() -> String { format!("a unit struct") }
+fn handle_unit() -> String { "a unit struct".to_string() }
 
 fn gen_to_double_for_enum(my_enum: DataEnum) -> String {
   let my_variant_idents = my_enum
