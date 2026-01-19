@@ -7,7 +7,6 @@
 
 export * as constraint from "./index.entity.parameters.constraint";
 export * from "./entity/parameters/waypoint_id";
-export * from "./entity/parameters/expression";
 export * as waypoint from "./index.entity.parameters.waypoint";
 export * from "./entity/parameters/double";
 export * from "./entity/parameters/expr";

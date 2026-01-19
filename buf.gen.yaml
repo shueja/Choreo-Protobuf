@@ -15,7 +15,8 @@ plugins:
     opt:
       - compile_well_known_types
       - extern_path=.google.protobuf=::pbjson_types
-      - type_attribute=.=#[required_proc::make_required]
+      - type_attribute=.=#[valid_proc::make_valid]
+      - type_attribute=.entity.parameters=#[derive(todouble_derive::ToDouble)]
       # Mark all the fields that should remain optional in the Rust gen
       # - field_attribute=TrajectoryFile.snapshot=#[required(optional)]
       # - field_attribute=TrajectoryFile.output=#[required(optional)]

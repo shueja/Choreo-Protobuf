@@ -1,6 +1,0 @@
-syntax="proto3";
-package entity.parameters;
-message Expr{
-    double value = 1;
-    string expr = 2;
-}

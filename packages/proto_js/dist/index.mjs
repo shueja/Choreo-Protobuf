@@ -1,4 +1,4 @@
-function Fe() {
+function We() {
   let t = 0, e = 0;
   for (let o = 0; o < 28; o += 7) {
     let i = this.buf[this.pos++];
@@ -15,7 +15,7 @@ function Fe() {
   }
   throw new Error("invalid varint");
 }
-function xt(t, e, r) {
+function gt(t, e, r) {
   for (let n = 0; n < 28; n = n + 7) {
     const f = t >>> n, s = !(!(f >>> 7) && e == 0), m = (s ? f | 128 : f) & 255;
     if (r.push(m), !s)
@@ -31,47 +31,47 @@ function xt(t, e, r) {
     r.push(e >>> 31 & 1);
   }
 }
-const ut = 4294967296;
-function Pt(t) {
+const lt = 4294967296;
+function At(t) {
   const e = t[0] === "-";
   e && (t = t.slice(1));
   const r = 1e6;
   let o = 0, i = 0;
   function n(f, s) {
     const m = Number(t.slice(f, s));
-    i *= r, o = o * r + m, o >= ut && (i = i + (o / ut | 0), o = o % ut);
+    i *= r, o = o * r + m, o >= lt && (i = i + (o / lt | 0), o = o % lt);
   }
-  return n(-24, -18), n(-18, -12), n(-12, -6), n(-6), e ? Oe(o, i) : Nt(o, i);
+  return n(-24, -18), n(-18, -12), n(-12, -6), n(-6), e ? Pe(o, i) : Tt(o, i);
 }
-function Ue(t, e) {
-  let r = Nt(t, e);
+function Xe(t, e) {
+  let r = Tt(t, e);
   const o = r.hi & 2147483648;
-  o && (r = Oe(r.lo, r.hi));
-  const i = we(r.lo, r.hi);
+  o && (r = Pe(r.lo, r.hi));
+  const i = _e(r.lo, r.hi);
   return o ? "-" + i : i;
 }
-function we(t, e) {
-  if ({ lo: t, hi: e } = $e(t, e), e <= 2097151)
-    return String(ut * e + t);
+function _e(t, e) {
+  if ({ lo: t, hi: e } = qe(t, e), e <= 2097151)
+    return String(lt * e + t);
   const r = t & 16777215, o = (t >>> 24 | e << 8) & 16777215, i = e >> 16 & 65535;
   let n = r + o * 6777216 + i * 6710656, f = o + i * 8147497, s = i * 2;
   const m = 1e7;
-  return n >= m && (f += Math.floor(n / m), n %= m), f >= m && (s += Math.floor(f / m), f %= m), s.toString() + Jt(f) + Jt(n);
+  return n >= m && (f += Math.floor(n / m), n %= m), f >= m && (s += Math.floor(f / m), f %= m), s.toString() + Rt(f) + Rt(n);
 }
-function $e(t, e) {
+function qe(t, e) {
   return { lo: t >>> 0, hi: e >>> 0 };
 }
-function Nt(t, e) {
+function Tt(t, e) {
   return { lo: t | 0, hi: e | 0 };
 }
-function Oe(t, e) {
-  return e = ~e, t ? t = ~t + 1 : e += 1, Nt(t, e);
+function Pe(t, e) {
+  return e = ~e, t ? t = ~t + 1 : e += 1, Tt(t, e);
 }
-const Jt = (t) => {
+const Rt = (t) => {
   const e = String(t);
   return "0000000".slice(e.length) + e;
 };
-function Mt(t, e) {
+function It(t, e) {
   if (t >= 0) {
     for (; t > 127; )
       e.push(t & 127 | 128), t = t >>> 7;
@@ -82,7 +82,7 @@ function Mt(t, e) {
     e.push(1);
   }
 }
-function ze() {
+function Ke() {
   let t = this.buf[this.pos++], e = t & 127;
   if ((t & 128) == 0)
     return this.assertBounds(), e;
@@ -99,8 +99,8 @@ function ze() {
     throw new Error("invalid varint");
   return this.assertBounds(), e >>> 0;
 }
-const D = /* @__PURE__ */ Ge();
-function Ge() {
+const D = /* @__PURE__ */ Ye();
+function Ye() {
   const t = new DataView(new ArrayBuffer(8));
   if (typeof BigInt == "function" && typeof t.getBigInt64 == "function" && typeof t.getBigUint64 == "function" && typeof t.setBigInt64 == "function" && typeof t.setBigUint64 == "function" && (!!globalThis.Deno || typeof process != "object" || typeof process.env != "object" || process.env.BUF_BIGINT_DISABLE !== "1")) {
     const r = BigInt("-9223372036854775808"), o = BigInt("9223372036854775807"), i = BigInt("0"), n = BigInt("18446744073709551615");
@@ -143,38 +143,38 @@ function Ge() {
     zero: "0",
     supported: !1,
     parse(r) {
-      return typeof r != "string" && (r = r.toString()), At(r), r;
+      return typeof r != "string" && (r = r.toString()), Ht(r), r;
     },
     uParse(r) {
-      return typeof r != "string" && (r = r.toString()), Rt(r), r;
+      return typeof r != "string" && (r = r.toString()), Bt(r), r;
     },
     enc(r) {
-      return typeof r != "string" && (r = r.toString()), At(r), Pt(r);
+      return typeof r != "string" && (r = r.toString()), Ht(r), At(r);
     },
     uEnc(r) {
-      return typeof r != "string" && (r = r.toString()), Rt(r), Pt(r);
+      return typeof r != "string" && (r = r.toString()), Bt(r), At(r);
     },
     dec(r, o) {
-      return Ue(r, o);
+      return Xe(r, o);
     },
     uDec(r, o) {
-      return we(r, o);
+      return _e(r, o);
     }
   };
 }
-function At(t) {
+function Ht(t) {
   if (!/^-?[0-9]+$/.test(t))
     throw new Error("invalid int64: " + t);
 }
-function Rt(t) {
+function Bt(t) {
   if (!/^[0-9]+$/.test(t))
     throw new Error("invalid uint64: " + t);
 }
-const kt = /* @__PURE__ */ Symbol.for("@bufbuild/protobuf/text-encoding");
-function Ee() {
-  if (globalThis[kt] == null) {
+const St = /* @__PURE__ */ Symbol.for("@bufbuild/protobuf/text-encoding");
+function Je() {
+  if (globalThis[St] == null) {
     const t = new globalThis.TextEncoder(), e = new globalThis.TextDecoder();
-    globalThis[kt] = {
+    globalThis[St] = {
       encodeUtf8(r) {
         return t.encode(r);
       },
@@ -190,15 +190,15 @@ function Ee() {
       }
     };
   }
-  return globalThis[kt];
+  return globalThis[St];
 }
 var C;
 (function(t) {
   t[t.Varint = 0] = "Varint", t[t.Bit64 = 1] = "Bit64", t[t.LengthDelimited = 2] = "LengthDelimited", t[t.StartGroup = 3] = "StartGroup", t[t.EndGroup = 4] = "EndGroup", t[t.Bit32 = 5] = "Bit32";
 })(C || (C = {}));
-const We = 34028234663852886e22, Xe = -34028234663852886e22, qe = 4294967295, Ke = 2147483647, Ye = -2147483648;
+const Ze = 34028234663852886e22, Qe = -34028234663852886e22, je = 4294967295, tr = 2147483647, er = -2147483648;
 class S {
-  constructor(e = Ee().encodeUtf8) {
+  constructor(e = Je().encodeUtf8) {
     this.encodeUtf8 = e, this.stack = [], this.chunks = [], this.buf = [];
   }
   /**
@@ -253,7 +253,7 @@ class S {
    * Write a `uint32` value, an unsigned 32 bit varint.
    */
   uint32(e) {
-    for (It(e); e > 127; )
+    for (Dt(e); e > 127; )
       this.buf.push(e & 127 | 128), e = e >>> 7;
     return this.buf.push(e), this;
   }
@@ -261,7 +261,7 @@ class S {
    * Write a `int32` value, a signed 32 bit varint.
    */
   int32(e) {
-    return gt(e), Mt(e, this.buf), this;
+    return Nt(e), It(e, this.buf), this;
   }
   /**
    * Write a `bool` value, a variant.
@@ -286,7 +286,7 @@ class S {
    * Write a `float` value, 32-bit floating point number.
    */
   float(e) {
-    Ze(e);
+    rr(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setFloat32(0, e, !0), this.raw(r);
   }
@@ -301,7 +301,7 @@ class S {
    * Write a `fixed32` value, an unsigned, fixed-length 32-bit integer.
    */
   fixed32(e) {
-    It(e);
+    Dt(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setUint32(0, e, !0), this.raw(r);
   }
@@ -309,7 +309,7 @@ class S {
    * Write a `sfixed32` value, a signed, fixed-length 32-bit integer.
    */
   sfixed32(e) {
-    gt(e);
+    Nt(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setInt32(0, e, !0), this.raw(r);
   }
@@ -317,7 +317,7 @@ class S {
    * Write a `sint32` value, a signed, zigzag-encoded 32-bit varint.
    */
   sint32(e) {
-    return gt(e), e = (e << 1 ^ e >> 31) >>> 0, Mt(e, this.buf), this;
+    return Nt(e), e = (e << 1 ^ e >> 31) >>> 0, It(e, this.buf), this;
   }
   /**
    * Write a `fixed64` value, a signed, fixed-length 64-bit integer.
@@ -338,26 +338,26 @@ class S {
    */
   int64(e) {
     let r = D.enc(e);
-    return xt(r.lo, r.hi, this.buf), this;
+    return gt(r.lo, r.hi, this.buf), this;
   }
   /**
    * Write a `sint64` value, a signed, zig-zag-encoded 64-bit varint.
    */
   sint64(e) {
     const r = D.enc(e), o = r.hi >> 31, i = r.lo << 1 ^ o, n = (r.hi << 1 | r.lo >>> 31) ^ o;
-    return xt(i, n, this.buf), this;
+    return gt(i, n, this.buf), this;
   }
   /**
    * Write a `uint64` value, an unsigned 64-bit varint.
    */
   uint64(e) {
     const r = D.uEnc(e);
-    return xt(r.lo, r.hi, this.buf), this;
+    return gt(r.lo, r.hi, this.buf), this;
   }
 }
 class k {
-  constructor(e, r = Ee().decodeUtf8) {
-    this.decodeUtf8 = r, this.varint64 = Fe, this.uint32 = ze, this.buf = e, this.len = e.length, this.pos = 0, this.view = new DataView(e.buffer, e.byteOffset, e.byteLength);
+  constructor(e, r = Je().decodeUtf8) {
+    this.decodeUtf8 = r, this.varint64 = We, this.uint32 = Ke, this.buf = e, this.len = e.length, this.pos = 0, this.view = new DataView(e.buffer, e.byteOffset, e.byteLength);
   }
   /**
    * Reads a tag - field number and wire type.
@@ -503,33 +503,33 @@ class k {
     return this.decodeUtf8(this.bytes());
   }
 }
-function gt(t) {
+function Nt(t) {
   if (typeof t == "string")
     t = Number(t);
   else if (typeof t != "number")
     throw new Error("invalid int32: " + typeof t);
-  if (!Number.isInteger(t) || t > Ke || t < Ye)
+  if (!Number.isInteger(t) || t > tr || t < er)
     throw new Error("invalid int32: " + t);
 }
-function It(t) {
+function Dt(t) {
   if (typeof t == "string")
     t = Number(t);
   else if (typeof t != "number")
     throw new Error("invalid uint32: " + typeof t);
-  if (!Number.isInteger(t) || t > qe || t < 0)
+  if (!Number.isInteger(t) || t > je || t < 0)
     throw new Error("invalid uint32: " + t);
 }
-function Ze(t) {
+function rr(t) {
   if (typeof t == "string") {
     const e = t;
     if (t = Number(t), Number.isNaN(t) && e !== "NaN")
       throw new Error("invalid float32: " + e);
   } else if (typeof t != "number")
     throw new Error("invalid float32: " + typeof t);
-  if (Number.isFinite(t) && (t > We || t < Xe))
+  if (Number.isFinite(t) && (t > Ze || t < Qe))
     throw new Error("invalid float32: " + t);
 }
-function Ht() {
+function Ct() {
   return { t: 0, x: 0, y: 0, heading: 0, vl: 0, vr: 0, omega: 0, al: 0, ar: 0, alpha: 0, fl: 0, fr: 0 };
 }
 const W = {
@@ -537,7 +537,7 @@ const W = {
     return t.t !== 0 && e.uint32(9).double(t.t), t.x !== 0 && e.uint32(17).double(t.x), t.y !== 0 && e.uint32(25).double(t.y), t.heading !== 0 && e.uint32(33).double(t.heading), t.vl !== 0 && e.uint32(41).double(t.vl), t.vr !== 0 && e.uint32(49).double(t.vr), t.omega !== 0 && e.uint32(57).double(t.omega), t.al !== 0 && e.uint32(65).double(t.al), t.ar !== 0 && e.uint32(73).double(t.ar), t.alpha !== 0 && e.uint32(81).double(t.alpha), t.fl !== 0 && e.uint32(89).double(t.fl), t.fr !== 0 && e.uint32(97).double(t.fr), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ht();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ct();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -644,15 +644,15 @@ const W = {
     return W.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Ht();
+    const e = Ct();
     return e.t = t.t ?? 0, e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.vl = t.vl ?? 0, e.vr = t.vr ?? 0, e.omega = t.omega ?? 0, e.al = t.al ?? 0, e.ar = t.ar ?? 0, e.alpha = t.alpha ?? 0, e.fl = t.fl ?? 0, e.fr = t.fr ?? 0, e;
   }
 };
 function I(t) {
   return t != null;
 }
-var Te = /* @__PURE__ */ ((t) => (t[t.DRIVETYPE_SWERVE = 0] = "DRIVETYPE_SWERVE", t[t.DRIVETYPE_DIFFERENTIAL = 1] = "DRIVETYPE_DIFFERENTIAL", t[t.DRIVETYPE_MECANUM = 2] = "DRIVETYPE_MECANUM", t[t.UNRECOGNIZED = -1] = "UNRECOGNIZED", t))(Te || {});
-function Qe(t) {
+var Me = /* @__PURE__ */ ((t) => (t[t.DRIVETYPE_SWERVE = 0] = "DRIVETYPE_SWERVE", t[t.DRIVETYPE_DIFFERENTIAL = 1] = "DRIVETYPE_DIFFERENTIAL", t[t.DRIVETYPE_MECANUM = 2] = "DRIVETYPE_MECANUM", t[t.UNRECOGNIZED = -1] = "UNRECOGNIZED", t))(Me || {});
+function Ot(t) {
   switch (t) {
     case 0:
     case "DRIVETYPE_SWERVE":
@@ -667,7 +667,7 @@ function Qe(t) {
       return -1;
   }
 }
-function je(t) {
+function Ae(t) {
   switch (t) {
     case 0:
       return "DRIVETYPE_SWERVE";
@@ -679,90 +679,7 @@ function je(t) {
       return "UNRECOGNIZED";
   }
 }
-function Bt() {
-  return { max: 0 };
-}
-const V = {
-  encode(t, e = new S()) {
-    return t.max !== 0 && e.uint32(9).double(t.max), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Bt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.max = r.double();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { max: Pe(t.max) ? globalThis.Number(t.max) : 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.max !== 0 && (e.max = t.max), e;
-  },
-  create(t) {
-    return V.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Bt();
-    return e.max = t.max ?? 0, e;
-  }
-};
-function Dt() {
-  return { test: "" };
-}
-const _e = {
-  encode(t, e = new S()) {
-    return t.test !== "" && e.uint32(10).string(t.test), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Dt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.test = r.string();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { test: Pe(t.test) ? globalThis.String(t.test) : "" };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.test !== "" && (e.test = t.test), e;
-  },
-  create(t) {
-    return _e.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Dt();
-    return e.test = t.test ?? "", e;
-  }
-};
-function Pe(t) {
-  return t != null;
-}
-function Ct() {
+function Vt() {
   return { value: 0, expr: "" };
 }
 const y = {
@@ -770,7 +687,7 @@ const y = {
     return t.value !== 0 && e.uint32(9).double(t.value), t.expr !== "" && e.uint32(18).string(t.expr), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ct();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Vt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -795,8 +712,8 @@ const y = {
   },
   fromJSON(t) {
     return {
-      value: Vt(t.value) ? globalThis.Number(t.value) : 0,
-      expr: Vt(t.expr) ? globalThis.String(t.expr) : ""
+      value: Lt(t.value) ? globalThis.Number(t.value) : 0,
+      expr: Lt(t.expr) ? globalThis.String(t.expr) : ""
     };
   },
   toJSON(t) {
@@ -807,112 +724,22 @@ const y = {
     return y.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Ct();
+    const e = Vt();
     return e.value = t.value ?? 0, e.expr = t.expr ?? "", e;
   }
 };
-function Vt(t) {
+function Lt(t) {
   return t != null;
 }
-function Lt() {
-  return { max: void 0 };
-}
-const L = {
-  encode(t, e = new S()) {
-    return t.max !== void 0 && y.encode(t.max, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Lt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.max = y.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { max: Me(t.max) ? y.fromJSON(t.max) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.max !== void 0 && (e.max = y.toJSON(t.max)), e;
-  },
-  create(t) {
-    return L.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Lt();
-    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : void 0, e;
-  }
-};
 function Ft() {
-  return { test: "" };
-}
-const Je = {
-  encode(t, e = new S()) {
-    return t.test !== "" && e.uint32(10).string(t.test), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ft();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.test = r.string();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { test: Me(t.test) ? globalThis.String(t.test) : "" };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.test !== "" && (e.test = t.test), e;
-  },
-  create(t) {
-    return Je.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Ft();
-    return e.test = t.test ?? "", e;
-  }
-};
-function Me(t) {
-  return t != null;
-}
-const tr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  DoubleMaxVelocity: V,
-  ExprMaxVelocity: L,
-  TestDouble: _e,
-  TestExpr: Je
-}, Symbol.toStringTag, { value: "Module" }));
-function Ut() {
   return { max: 0 };
 }
-const F = {
+const V = {
   encode(t, e = new S()) {
     return t.max !== 0 && e.uint32(9).double(t.max), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ut();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ft();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -930,27 +757,67 @@ const F = {
     return i;
   },
   fromJSON(t) {
-    return { max: er(t.max) ? globalThis.Number(t.max) : 0 };
+    return { max: Ie(t.max) ? globalThis.Number(t.max) : 0 };
   },
   toJSON(t) {
     const e = {};
     return t.max !== 0 && (e.max = t.max), e;
   },
   create(t) {
-    return F.fromPartial(t ?? {});
+    return V.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Ut();
+    const e = Ft();
     return e.max = t.max ?? 0, e;
   }
 };
-function er(t) {
+function Ut() {
+  return { test: "" };
+}
+const Re = {
+  encode(t, e = new S()) {
+    return t.test !== "" && e.uint32(10).string(t.test), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ut();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.test = r.string();
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { test: Ie(t.test) ? globalThis.String(t.test) : "" };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.test !== "" && (e.test = t.test), e;
+  },
+  create(t) {
+    return Re.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = Ut();
+    return e.test = t.test ?? "", e;
+  }
+};
+function Ie(t) {
   return t != null;
 }
 function $t() {
   return { max: void 0 };
 }
-const U = {
+const L = {
   encode(t, e = new S()) {
     return t.max !== void 0 && y.encode(t.max, e.uint32(10).fork()).join(), e;
   },
@@ -973,7 +840,140 @@ const U = {
     return i;
   },
   fromJSON(t) {
-    return { max: rr(t.max) ? y.fromJSON(t.max) : void 0 };
+    return { max: Be(t.max) ? y.fromJSON(t.max) : void 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.max !== void 0 && (e.max = y.toJSON(t.max)), e;
+  },
+  create(t) {
+    return L.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = $t();
+    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : void 0, e;
+  }
+};
+function zt() {
+  return { test: "" };
+}
+const He = {
+  encode(t, e = new S()) {
+    return t.test !== "" && e.uint32(10).string(t.test), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = zt();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.test = r.string();
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { test: Be(t.test) ? globalThis.String(t.test) : "" };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.test !== "" && (e.test = t.test), e;
+  },
+  create(t) {
+    return He.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = zt();
+    return e.test = t.test ?? "", e;
+  }
+};
+function Be(t) {
+  return t != null;
+}
+const nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  DoubleMaxVelocity: V,
+  ExprMaxVelocity: L,
+  TestDouble: Re,
+  TestExpr: He
+}, Symbol.toStringTag, { value: "Module" }));
+function Gt() {
+  return { max: 0 };
+}
+const F = {
+  encode(t, e = new S()) {
+    return t.max !== 0 && e.uint32(9).double(t.max), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Gt();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 9)
+            break;
+          i.max = r.double();
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { max: ir(t.max) ? globalThis.Number(t.max) : 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.max !== 0 && (e.max = t.max), e;
+  },
+  create(t) {
+    return F.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = Gt();
+    return e.max = t.max ?? 0, e;
+  }
+};
+function ir(t) {
+  return t != null;
+}
+function Wt() {
+  return { max: void 0 };
+}
+const U = {
+  encode(t, e = new S()) {
+    return t.max !== void 0 && y.encode(t.max, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Wt();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.max = y.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { max: or(t.max) ? y.fromJSON(t.max) : void 0 };
   },
   toJSON(t) {
     const e = {};
@@ -983,19 +983,19 @@ const U = {
     return U.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = $t();
+    const e = Wt();
     return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : void 0, e;
   }
 };
-function rr(t) {
+function or(t) {
   return t != null;
 }
-const nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const ar = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DoubleMaxAcceleration: F,
   ExprMaxAcceleration: U
 }, Symbol.toStringTag, { value: "Module" }));
-function zt() {
+function Xt() {
   return {};
 }
 const X = {
@@ -1003,7 +1003,7 @@ const X = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = zt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Xt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
@@ -1022,10 +1022,10 @@ const X = {
     return X.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return zt();
+    return Xt();
   }
 };
-function Gt() {
+function qt() {
   return {};
 }
 const q = {
@@ -1033,7 +1033,7 @@ const q = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Gt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = qt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
@@ -1052,10 +1052,10 @@ const q = {
     return q.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return Gt();
+    return qt();
   }
 };
-function Wt() {
+function Kt() {
   return { idx: 0 };
 }
 const K = {
@@ -1063,14 +1063,14 @@ const K = {
     return t.idx !== 0 && e.uint32(8).uint64(t.idx), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Wt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Kt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 8)
             break;
-          i.idx = ir(r.uint64());
+          i.idx = sr(r.uint64());
           continue;
         }
       }
@@ -1081,7 +1081,7 @@ const K = {
     return i;
   },
   fromJSON(t) {
-    return { idx: dt(t.idx) ? globalThis.Number(t.idx) : 0 };
+    return { idx: ct(t.idx) ? globalThis.Number(t.idx) : 0 };
   },
   toJSON(t) {
     const e = {};
@@ -1091,11 +1091,11 @@ const K = {
     return K.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Wt();
+    const e = Kt();
     return e.idx = t.idx ?? 0, e;
   }
 };
-function Xt() {
+function Yt() {
   return { id: void 0 };
 }
 const P = {
@@ -1114,7 +1114,7 @@ const P = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Xt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Yt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1145,7 +1145,7 @@ const P = {
   },
   fromJSON(t) {
     return {
-      id: dt(t.first) ? { $case: "first", first: X.fromJSON(t.first) } : dt(t.last) ? { $case: "last", last: q.fromJSON(t.last) } : dt(t.idx) ? { $case: "idx", idx: K.fromJSON(t.idx) } : void 0
+      id: ct(t.first) ? { $case: "first", first: X.fromJSON(t.first) } : ct(t.last) ? { $case: "last", last: q.fromJSON(t.last) } : ct(t.idx) ? { $case: "idx", idx: K.fromJSON(t.idx) } : void 0
     };
   },
   toJSON(t) {
@@ -1156,7 +1156,7 @@ const P = {
     return P.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Xt();
+    const e = Yt();
     switch (t.id?.$case) {
       case "first": {
         t.id?.first !== void 0 && t.id?.first !== null && (e.id = { $case: "first", first: X.fromPartial(t.id.first) });
@@ -1174,7 +1174,7 @@ const P = {
     return e;
   }
 };
-function ir(t) {
+function sr(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -1182,10 +1182,10 @@ function ir(t) {
     throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
   return e;
 }
-function dt(t) {
+function ct(t) {
   return t != null;
 }
-function qt() {
+function Zt() {
   return { enabled: !1, from: void 0, to: void 0, data: void 0 };
 }
 const Y = {
@@ -1201,7 +1201,7 @@ const Y = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = qt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Zt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1261,7 +1261,7 @@ const Y = {
     return Y.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = qt();
+    const e = Zt();
     switch (e.enabled = t.enabled ?? !1, e.from = t.from !== void 0 && t.from !== null ? P.fromPartial(t.from) : void 0, e.to = t.to !== void 0 && t.to !== null ? P.fromPartial(t.to) : void 0, t.data?.$case) {
       case "maxVelocity": {
         t.data?.maxVelocity !== void 0 && t.data?.maxVelocity !== null && (e.data = { $case: "maxVelocity", maxVelocity: V.fromPartial(t.data.maxVelocity) });
@@ -1281,7 +1281,7 @@ const Y = {
 function z(t) {
   return t != null;
 }
-function Kt() {
+function Qt() {
   return { enabled: !1, from: void 0, to: void 0, data: void 0 };
 }
 const Z = {
@@ -1297,7 +1297,7 @@ const Z = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Kt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Qt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1357,7 +1357,7 @@ const Z = {
     return Z.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Kt();
+    const e = Qt();
     switch (e.enabled = t.enabled ?? !1, e.from = t.from !== void 0 && t.from !== null ? P.fromPartial(t.from) : void 0, e.to = t.to !== void 0 && t.to !== null ? P.fromPartial(t.to) : void 0, t.data?.$case) {
       case "maxVelocity": {
         t.data?.maxVelocity !== void 0 && t.data?.maxVelocity !== null && (e.data = { $case: "maxVelocity", maxVelocity: L.fromPartial(t.data.maxVelocity) });
@@ -1377,14 +1377,14 @@ const Z = {
 function G(t) {
   return t != null;
 }
-const or = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DoubleConstraint: Y,
   ExprConstraint: Z,
-  max_acceleration: nr,
-  maxvelocity: tr
+  max_acceleration: ar,
+  maxvelocity: nr
 }, Symbol.toStringTag, { value: "Module" }));
-function Yt() {
+function jt() {
   return {
     x: 0,
     y: 0,
@@ -1401,7 +1401,7 @@ const Q = {
     return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), t.heading !== 0 && e.uint32(25).double(t.heading), t.intervals !== 0 && e.uint32(32).uint64(t.intervals), t.split !== !1 && e.uint32(40).bool(t.split), t.fixTranslation !== !1 && e.uint32(48).bool(t.fixTranslation), t.fixHeading !== !1 && e.uint32(56).bool(t.fixHeading), t.overrideIntervals !== !1 && e.uint32(64).bool(t.overrideIntervals), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Yt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = jt();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1426,7 +1426,7 @@ const Q = {
         case 4: {
           if (n !== 32)
             break;
-          i.intervals = ar(r.uint64());
+          i.intervals = ur(r.uint64());
           continue;
         }
         case 5: {
@@ -1480,11 +1480,11 @@ const Q = {
     return Q.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Yt();
+    const e = jt();
     return e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.intervals = t.intervals ?? 0, e.split = t.split ?? !1, e.fixTranslation = t.fixTranslation ?? !1, e.fixHeading = t.fixHeading ?? !1, e.overrideIntervals = t.overrideIntervals ?? !1, e;
   }
 };
-function ar(t) {
+function ur(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -1495,7 +1495,7 @@ function ar(t) {
 function H(t) {
   return t != null;
 }
-function Zt() {
+function te() {
   return {
     x: void 0,
     y: void 0,
@@ -1512,7 +1512,7 @@ const j = {
     return t.x !== void 0 && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && y.encode(t.y, e.uint32(18).fork()).join(), t.heading !== void 0 && y.encode(t.heading, e.uint32(26).fork()).join(), t.intervals !== 0 && e.uint32(32).uint64(t.intervals), t.split !== !1 && e.uint32(40).bool(t.split), t.fixTranslation !== !1 && e.uint32(48).bool(t.fixTranslation), t.fixHeading !== !1 && e.uint32(56).bool(t.fixHeading), t.overrideIntervals !== !1 && e.uint32(64).bool(t.overrideIntervals), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Zt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = te();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1537,7 +1537,7 @@ const j = {
         case 4: {
           if (n !== 32)
             break;
-          i.intervals = sr(r.uint64());
+          i.intervals = dr(r.uint64());
           continue;
         }
         case 5: {
@@ -1591,11 +1591,11 @@ const j = {
     return j.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Zt();
+    const e = te();
     return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : void 0, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : void 0, e.heading = t.heading !== void 0 && t.heading !== null ? y.fromPartial(t.heading) : void 0, e.intervals = t.intervals ?? 0, e.split = t.split ?? !1, e.fixTranslation = t.fixTranslation ?? !1, e.fixHeading = t.fixHeading ?? !1, e.overrideIntervals = t.overrideIntervals ?? !1, e;
   }
 };
-function sr(t) {
+function dr(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -1606,12 +1606,12 @@ function sr(t) {
 function B(t) {
   return t != null;
 }
-const fr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const lr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DoubleWaypoint: Q,
   ExprWaypoint: j
 }, Symbol.toStringTag, { value: "Module" }));
-function Qt() {
+function ee() {
   return { targetDt: 0, waypoints: [], constraints: [] };
 }
 const tt = {
@@ -1624,7 +1624,7 @@ const tt = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Qt();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ee();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1655,7 +1655,7 @@ const tt = {
   },
   fromJSON(t) {
     return {
-      targetDt: jt(t.targetDt) ? globalThis.Number(t.targetDt) : jt(t.target_dt) ? globalThis.Number(t.target_dt) : 0,
+      targetDt: re(t.targetDt) ? globalThis.Number(t.targetDt) : re(t.target_dt) ? globalThis.Number(t.target_dt) : 0,
       waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => Q.fromJSON(e)) : [],
       constraints: globalThis.Array.isArray(t?.constraints) ? t.constraints.map((e) => Y.fromJSON(e)) : []
     };
@@ -1668,14 +1668,14 @@ const tt = {
     return tt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Qt();
+    const e = ee();
     return e.targetDt = t.targetDt ?? 0, e.waypoints = t.waypoints?.map((r) => Q.fromPartial(r)) || [], e.constraints = t.constraints?.map((r) => Y.fromPartial(r)) || [], e;
   }
 };
-function jt(t) {
+function re(t) {
   return t != null;
 }
-function te() {
+function ne() {
   return { targetDt: void 0, waypoints: [], constraints: [] };
 }
 const et = {
@@ -1688,7 +1688,7 @@ const et = {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = te();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ne();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1719,7 +1719,7 @@ const et = {
   },
   fromJSON(t) {
     return {
-      targetDt: ee(t.targetDt) ? y.fromJSON(t.targetDt) : ee(t.target_dt) ? y.fromJSON(t.target_dt) : void 0,
+      targetDt: ie(t.targetDt) ? y.fromJSON(t.targetDt) : ie(t.target_dt) ? y.fromJSON(t.target_dt) : void 0,
       waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => j.fromJSON(e)) : [],
       constraints: globalThis.Array.isArray(t?.constraints) ? t.constraints.map((e) => Z.fromJSON(e)) : []
     };
@@ -1732,14 +1732,14 @@ const et = {
     return et.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = te();
+    const e = ne();
     return e.targetDt = t.targetDt !== void 0 && t.targetDt !== null ? y.fromPartial(t.targetDt) : void 0, e.waypoints = t.waypoints?.map((r) => j.fromPartial(r)) || [], e.constraints = t.constraints?.map((r) => Z.fromPartial(r)) || [], e;
   }
 };
-function ee(t) {
+function ie(t) {
   return t != null;
 }
-function re() {
+function oe() {
   return { x: 0, y: 0 };
 }
 const w = {
@@ -1747,7 +1747,7 @@ const w = {
     return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = re();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = oe();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1772,8 +1772,8 @@ const w = {
   },
   fromJSON(t) {
     return {
-      x: E(t.x) ? globalThis.Number(t.x) : 0,
-      y: E(t.y) ? globalThis.Number(t.y) : 0
+      x: T(t.x) ? globalThis.Number(t.x) : 0,
+      y: T(t.y) ? globalThis.Number(t.y) : 0
     };
   },
   toJSON(t) {
@@ -1784,11 +1784,11 @@ const w = {
     return w.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = re();
+    const e = oe();
     return e.x = t.x ?? 0, e.y = t.y ?? 0, e;
   }
 };
-function ne() {
+function ae() {
   return { front: 0, left: 0, right: 0, back: 0 };
 }
 const rt = {
@@ -1796,7 +1796,7 @@ const rt = {
     return t.front !== 0 && e.uint32(9).double(t.front), t.left !== 0 && e.uint32(17).double(t.left), t.right !== 0 && e.uint32(25).double(t.right), t.back !== 0 && e.uint32(33).double(t.back), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ne();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ae();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1833,10 +1833,10 @@ const rt = {
   },
   fromJSON(t) {
     return {
-      front: E(t.front) ? globalThis.Number(t.front) : 0,
-      left: E(t.left) ? globalThis.Number(t.left) : 0,
-      right: E(t.right) ? globalThis.Number(t.right) : 0,
-      back: E(t.back) ? globalThis.Number(t.back) : 0
+      front: T(t.front) ? globalThis.Number(t.front) : 0,
+      left: T(t.left) ? globalThis.Number(t.left) : 0,
+      right: T(t.right) ? globalThis.Number(t.right) : 0,
+      back: T(t.back) ? globalThis.Number(t.back) : 0
     };
   },
   toJSON(t) {
@@ -1847,11 +1847,11 @@ const rt = {
     return rt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ne();
+    const e = ae();
     return e.front = t.front ?? 0, e.left = t.left ?? 0, e.right = t.right ?? 0, e.back = t.back ?? 0, e;
   }
 };
-function ie() {
+function se() {
   return {
     mass: 0,
     inertia: 0,
@@ -1873,7 +1873,7 @@ const nt = {
     return t.mass !== 0 && e.uint32(9).double(t.mass), t.inertia !== 0 && e.uint32(17).double(t.inertia), t.gearing !== 0 && e.uint32(25).double(t.gearing), t.radius !== 0 && e.uint32(33).double(t.radius), t.vmax !== 0 && e.uint32(41).double(t.vmax), t.tmax !== 0 && e.uint32(49).double(t.tmax), t.cof !== 0 && e.uint32(57).double(t.cof), t.differentialTrackWidth !== 0 && e.uint32(65).double(t.differentialTrackWidth), t.bumper !== void 0 && rt.encode(t.bumper, e.uint32(74).fork()).join(), t.frontLeft !== void 0 && w.encode(t.frontLeft, e.uint32(82).fork()).join(), t.frontRight !== void 0 && w.encode(t.frontRight, e.uint32(90).fork()).join(), t.backLeft !== void 0 && w.encode(t.backLeft, e.uint32(98).fork()).join(), t.backRight !== void 0 && w.encode(t.backRight, e.uint32(106).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ie();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = se();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -1964,19 +1964,19 @@ const nt = {
   },
   fromJSON(t) {
     return {
-      mass: E(t.mass) ? globalThis.Number(t.mass) : 0,
-      inertia: E(t.inertia) ? globalThis.Number(t.inertia) : 0,
-      gearing: E(t.gearing) ? globalThis.Number(t.gearing) : 0,
-      radius: E(t.radius) ? globalThis.Number(t.radius) : 0,
-      vmax: E(t.vmax) ? globalThis.Number(t.vmax) : 0,
-      tmax: E(t.tmax) ? globalThis.Number(t.tmax) : 0,
-      cof: E(t.cof) ? globalThis.Number(t.cof) : 0,
-      differentialTrackWidth: E(t.differentialTrackWidth) ? globalThis.Number(t.differentialTrackWidth) : E(t.differential_track_width) ? globalThis.Number(t.differential_track_width) : 0,
-      bumper: E(t.bumper) ? rt.fromJSON(t.bumper) : void 0,
-      frontLeft: E(t.frontLeft) ? w.fromJSON(t.frontLeft) : E(t.front_left) ? w.fromJSON(t.front_left) : void 0,
-      frontRight: E(t.frontRight) ? w.fromJSON(t.frontRight) : E(t.front_right) ? w.fromJSON(t.front_right) : void 0,
-      backLeft: E(t.backLeft) ? w.fromJSON(t.backLeft) : E(t.back_left) ? w.fromJSON(t.back_left) : void 0,
-      backRight: E(t.backRight) ? w.fromJSON(t.backRight) : E(t.back_right) ? w.fromJSON(t.back_right) : void 0
+      mass: T(t.mass) ? globalThis.Number(t.mass) : 0,
+      inertia: T(t.inertia) ? globalThis.Number(t.inertia) : 0,
+      gearing: T(t.gearing) ? globalThis.Number(t.gearing) : 0,
+      radius: T(t.radius) ? globalThis.Number(t.radius) : 0,
+      vmax: T(t.vmax) ? globalThis.Number(t.vmax) : 0,
+      tmax: T(t.tmax) ? globalThis.Number(t.tmax) : 0,
+      cof: T(t.cof) ? globalThis.Number(t.cof) : 0,
+      differentialTrackWidth: T(t.differentialTrackWidth) ? globalThis.Number(t.differentialTrackWidth) : T(t.differential_track_width) ? globalThis.Number(t.differential_track_width) : 0,
+      bumper: T(t.bumper) ? rt.fromJSON(t.bumper) : void 0,
+      frontLeft: T(t.frontLeft) ? w.fromJSON(t.frontLeft) : T(t.front_left) ? w.fromJSON(t.front_left) : void 0,
+      frontRight: T(t.frontRight) ? w.fromJSON(t.frontRight) : T(t.front_right) ? w.fromJSON(t.front_right) : void 0,
+      backLeft: T(t.backLeft) ? w.fromJSON(t.backLeft) : T(t.back_left) ? w.fromJSON(t.back_left) : void 0,
+      backRight: T(t.backRight) ? w.fromJSON(t.backRight) : T(t.back_right) ? w.fromJSON(t.back_right) : void 0
     };
   },
   toJSON(t) {
@@ -1987,14 +1987,14 @@ const nt = {
     return nt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ie();
+    const e = se();
     return e.mass = t.mass ?? 0, e.inertia = t.inertia ?? 0, e.gearing = t.gearing ?? 0, e.radius = t.radius ?? 0, e.vmax = t.vmax ?? 0, e.tmax = t.tmax ?? 0, e.cof = t.cof ?? 0, e.differentialTrackWidth = t.differentialTrackWidth ?? 0, e.bumper = t.bumper !== void 0 && t.bumper !== null ? rt.fromPartial(t.bumper) : void 0, e.frontLeft = t.frontLeft !== void 0 && t.frontLeft !== null ? w.fromPartial(t.frontLeft) : void 0, e.frontRight = t.frontRight !== void 0 && t.frontRight !== null ? w.fromPartial(t.frontRight) : void 0, e.backLeft = t.backLeft !== void 0 && t.backLeft !== null ? w.fromPartial(t.backLeft) : void 0, e.backRight = t.backRight !== void 0 && t.backRight !== null ? w.fromPartial(t.backRight) : void 0, e;
   }
 };
-function E(t) {
+function T(t) {
   return t != null;
 }
-function oe() {
+function fe() {
   return { x: void 0, y: void 0 };
 }
 const O = {
@@ -2002,7 +2002,7 @@ const O = {
     return t.x !== void 0 && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && y.encode(t.y, e.uint32(18).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = oe();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = fe();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2027,8 +2027,8 @@ const O = {
   },
   fromJSON(t) {
     return {
-      x: T(t.x) ? y.fromJSON(t.x) : void 0,
-      y: T(t.y) ? y.fromJSON(t.y) : void 0
+      x: E(t.x) ? y.fromJSON(t.x) : void 0,
+      y: E(t.y) ? y.fromJSON(t.y) : void 0
     };
   },
   toJSON(t) {
@@ -2039,11 +2039,11 @@ const O = {
     return O.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = oe();
+    const e = fe();
     return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : void 0, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : void 0, e;
   }
 };
-function ae() {
+function ue() {
   return { front: void 0, left: void 0, right: void 0, back: void 0 };
 }
 const it = {
@@ -2051,7 +2051,7 @@ const it = {
     return t.front !== void 0 && y.encode(t.front, e.uint32(10).fork()).join(), t.left !== void 0 && y.encode(t.left, e.uint32(18).fork()).join(), t.right !== void 0 && y.encode(t.right, e.uint32(26).fork()).join(), t.back !== void 0 && y.encode(t.back, e.uint32(34).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ae();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ue();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2088,10 +2088,10 @@ const it = {
   },
   fromJSON(t) {
     return {
-      front: T(t.front) ? y.fromJSON(t.front) : void 0,
-      left: T(t.left) ? y.fromJSON(t.left) : void 0,
-      right: T(t.right) ? y.fromJSON(t.right) : void 0,
-      back: T(t.back) ? y.fromJSON(t.back) : void 0
+      front: E(t.front) ? y.fromJSON(t.front) : void 0,
+      left: E(t.left) ? y.fromJSON(t.left) : void 0,
+      right: E(t.right) ? y.fromJSON(t.right) : void 0,
+      back: E(t.back) ? y.fromJSON(t.back) : void 0
     };
   },
   toJSON(t) {
@@ -2102,11 +2102,11 @@ const it = {
     return it.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ae();
+    const e = ue();
     return e.front = t.front !== void 0 && t.front !== null ? y.fromPartial(t.front) : void 0, e.left = t.left !== void 0 && t.left !== null ? y.fromPartial(t.left) : void 0, e.right = t.right !== void 0 && t.right !== null ? y.fromPartial(t.right) : void 0, e.back = t.back !== void 0 && t.back !== null ? y.fromPartial(t.back) : void 0, e;
   }
 };
-function se() {
+function de() {
   return {
     mass: void 0,
     inertia: void 0,
@@ -2123,12 +2123,12 @@ function se() {
     backRight: void 0
   };
 }
-const Ae = {
+const ot = {
   encode(t, e = new S()) {
     return t.mass !== void 0 && y.encode(t.mass, e.uint32(10).fork()).join(), t.inertia !== void 0 && y.encode(t.inertia, e.uint32(18).fork()).join(), t.gearing !== void 0 && y.encode(t.gearing, e.uint32(26).fork()).join(), t.radius !== void 0 && y.encode(t.radius, e.uint32(34).fork()).join(), t.vmax !== void 0 && y.encode(t.vmax, e.uint32(42).fork()).join(), t.tmax !== void 0 && y.encode(t.tmax, e.uint32(50).fork()).join(), t.cof !== void 0 && y.encode(t.cof, e.uint32(58).fork()).join(), t.differentialTrackWidth !== void 0 && y.encode(t.differentialTrackWidth, e.uint32(66).fork()).join(), t.bumper !== void 0 && it.encode(t.bumper, e.uint32(74).fork()).join(), t.frontLeft !== void 0 && O.encode(t.frontLeft, e.uint32(82).fork()).join(), t.frontRight !== void 0 && O.encode(t.frontRight, e.uint32(90).fork()).join(), t.backLeft !== void 0 && O.encode(t.backLeft, e.uint32(98).fork()).join(), t.backRight !== void 0 && O.encode(t.backRight, e.uint32(106).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = se();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = de();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2219,19 +2219,19 @@ const Ae = {
   },
   fromJSON(t) {
     return {
-      mass: T(t.mass) ? y.fromJSON(t.mass) : void 0,
-      inertia: T(t.inertia) ? y.fromJSON(t.inertia) : void 0,
-      gearing: T(t.gearing) ? y.fromJSON(t.gearing) : void 0,
-      radius: T(t.radius) ? y.fromJSON(t.radius) : void 0,
-      vmax: T(t.vmax) ? y.fromJSON(t.vmax) : void 0,
-      tmax: T(t.tmax) ? y.fromJSON(t.tmax) : void 0,
-      cof: T(t.cof) ? y.fromJSON(t.cof) : void 0,
-      differentialTrackWidth: T(t.differentialTrackWidth) ? y.fromJSON(t.differentialTrackWidth) : T(t.differential_track_width) ? y.fromJSON(t.differential_track_width) : void 0,
-      bumper: T(t.bumper) ? it.fromJSON(t.bumper) : void 0,
-      frontLeft: T(t.frontLeft) ? O.fromJSON(t.frontLeft) : T(t.front_left) ? O.fromJSON(t.front_left) : void 0,
-      frontRight: T(t.frontRight) ? O.fromJSON(t.frontRight) : T(t.front_right) ? O.fromJSON(t.front_right) : void 0,
-      backLeft: T(t.backLeft) ? O.fromJSON(t.backLeft) : T(t.back_left) ? O.fromJSON(t.back_left) : void 0,
-      backRight: T(t.backRight) ? O.fromJSON(t.backRight) : T(t.back_right) ? O.fromJSON(t.back_right) : void 0
+      mass: E(t.mass) ? y.fromJSON(t.mass) : void 0,
+      inertia: E(t.inertia) ? y.fromJSON(t.inertia) : void 0,
+      gearing: E(t.gearing) ? y.fromJSON(t.gearing) : void 0,
+      radius: E(t.radius) ? y.fromJSON(t.radius) : void 0,
+      vmax: E(t.vmax) ? y.fromJSON(t.vmax) : void 0,
+      tmax: E(t.tmax) ? y.fromJSON(t.tmax) : void 0,
+      cof: E(t.cof) ? y.fromJSON(t.cof) : void 0,
+      differentialTrackWidth: E(t.differentialTrackWidth) ? y.fromJSON(t.differentialTrackWidth) : E(t.differential_track_width) ? y.fromJSON(t.differential_track_width) : void 0,
+      bumper: E(t.bumper) ? it.fromJSON(t.bumper) : void 0,
+      frontLeft: E(t.frontLeft) ? O.fromJSON(t.frontLeft) : E(t.front_left) ? O.fromJSON(t.front_left) : void 0,
+      frontRight: E(t.frontRight) ? O.fromJSON(t.frontRight) : E(t.front_right) ? O.fromJSON(t.front_right) : void 0,
+      backLeft: E(t.backLeft) ? O.fromJSON(t.backLeft) : E(t.back_left) ? O.fromJSON(t.back_left) : void 0,
+      backRight: E(t.backRight) ? O.fromJSON(t.backRight) : E(t.back_right) ? O.fromJSON(t.back_right) : void 0
     };
   },
   toJSON(t) {
@@ -2239,38 +2239,96 @@ const Ae = {
     return t.mass !== void 0 && (e.mass = y.toJSON(t.mass)), t.inertia !== void 0 && (e.inertia = y.toJSON(t.inertia)), t.gearing !== void 0 && (e.gearing = y.toJSON(t.gearing)), t.radius !== void 0 && (e.radius = y.toJSON(t.radius)), t.vmax !== void 0 && (e.vmax = y.toJSON(t.vmax)), t.tmax !== void 0 && (e.tmax = y.toJSON(t.tmax)), t.cof !== void 0 && (e.cof = y.toJSON(t.cof)), t.differentialTrackWidth !== void 0 && (e.differentialTrackWidth = y.toJSON(t.differentialTrackWidth)), t.bumper !== void 0 && (e.bumper = it.toJSON(t.bumper)), t.frontLeft !== void 0 && (e.frontLeft = O.toJSON(t.frontLeft)), t.frontRight !== void 0 && (e.frontRight = O.toJSON(t.frontRight)), t.backLeft !== void 0 && (e.backLeft = O.toJSON(t.backLeft)), t.backRight !== void 0 && (e.backRight = O.toJSON(t.backRight)), e;
   },
   create(t) {
-    return Ae.fromPartial(t ?? {});
+    return ot.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = se();
+    const e = de();
     return e.mass = t.mass !== void 0 && t.mass !== null ? y.fromPartial(t.mass) : void 0, e.inertia = t.inertia !== void 0 && t.inertia !== null ? y.fromPartial(t.inertia) : void 0, e.gearing = t.gearing !== void 0 && t.gearing !== null ? y.fromPartial(t.gearing) : void 0, e.radius = t.radius !== void 0 && t.radius !== null ? y.fromPartial(t.radius) : void 0, e.vmax = t.vmax !== void 0 && t.vmax !== null ? y.fromPartial(t.vmax) : void 0, e.tmax = t.tmax !== void 0 && t.tmax !== null ? y.fromPartial(t.tmax) : void 0, e.cof = t.cof !== void 0 && t.cof !== null ? y.fromPartial(t.cof) : void 0, e.differentialTrackWidth = t.differentialTrackWidth !== void 0 && t.differentialTrackWidth !== null ? y.fromPartial(t.differentialTrackWidth) : void 0, e.bumper = t.bumper !== void 0 && t.bumper !== null ? it.fromPartial(t.bumper) : void 0, e.frontLeft = t.frontLeft !== void 0 && t.frontLeft !== null ? O.fromPartial(t.frontLeft) : void 0, e.frontRight = t.frontRight !== void 0 && t.frontRight !== null ? O.fromPartial(t.frontRight) : void 0, e.backLeft = t.backLeft !== void 0 && t.backLeft !== null ? O.fromPartial(t.backLeft) : void 0, e.backRight = t.backRight !== void 0 && t.backRight !== null ? O.fromPartial(t.backRight) : void 0, e;
   }
 };
-function T(t) {
+function E(t) {
   return t != null;
 }
-const ur = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const cr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DoubleBumper: rt,
   DoubleModule: w,
   DoubleRobotConfig: nt,
   ExprBumper: it,
   ExprModule: O,
-  ExprRobotConfig: Ae
-}, Symbol.toStringTag, { value: "Module" })), dr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  ExprRobotConfig: ot
+}, Symbol.toStringTag, { value: "Module" })), hr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DoubleParameters: tt,
-  Expr: y,
   ExprParameters: et,
   WaypointID: P,
   WaypointIDFirst: X,
   WaypointIDLast: q,
   WaypointIDX: K,
-  constraint: or,
-  robotconfig: ur,
-  waypoint: fr
+  constraint: fr,
+  robotconfig: cr,
+  waypoint: lr
 }, Symbol.toStringTag, { value: "Module" }));
-function fe() {
+function le() {
+  return { name: "", config: void 0, driveType: 0 };
+}
+const De = {
+  encode(t, e = new S()) {
+    return t.name !== "" && e.uint32(10).string(t.name), t.config !== void 0 && ot.encode(t.config, e.uint32(18).fork()).join(), t.driveType !== 0 && e.uint32(24).int32(t.driveType), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = le();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.name = r.string();
+          continue;
+        }
+        case 2: {
+          if (n !== 18)
+            break;
+          i.config = ot.decode(r, r.uint32());
+          continue;
+        }
+        case 3: {
+          if (n !== 24)
+            break;
+          i.driveType = r.int32();
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return {
+      name: ut(t.name) ? globalThis.String(t.name) : "",
+      config: ut(t.config) ? ot.fromJSON(t.config) : void 0,
+      driveType: ut(t.driveType) ? Ot(t.driveType) : ut(t.drive_type) ? Ot(t.drive_type) : 0
+    };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.name !== "" && (e.name = t.name), t.config !== void 0 && (e.config = ot.toJSON(t.config)), t.driveType !== 0 && (e.driveType = Ae(t.driveType)), e;
+  },
+  create(t) {
+    return De.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = le();
+    return e.name = t.name ?? "", e.config = t.config !== void 0 && t.config !== null ? ot.fromPartial(t.config) : void 0, e.driveType = t.driveType ?? 0, e;
+  }
+};
+function ut(t) {
+  return t != null;
+}
+function ce() {
   return { x: 0, y: 0 };
 }
 const _ = {
@@ -2278,7 +2336,7 @@ const _ = {
     return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = fe();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ce();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2315,11 +2373,11 @@ const _ = {
     return _.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = fe();
+    const e = ce();
     return e.x = t.x ?? 0, e.y = t.y ?? 0, e;
   }
 };
-function ue() {
+function he() {
   return {
     t: 0,
     x: 0,
@@ -2342,7 +2400,7 @@ const J = {
     return t.t !== 0 && e.uint32(9).double(t.t), t.x !== 0 && e.uint32(17).double(t.x), t.y !== 0 && e.uint32(25).double(t.y), t.heading !== 0 && e.uint32(33).double(t.heading), t.vx !== 0 && e.uint32(41).double(t.vx), t.vy !== 0 && e.uint32(49).double(t.vy), t.omega !== 0 && e.uint32(57).double(t.omega), t.ax !== 0 && e.uint32(65).double(t.ax), t.ay !== 0 && e.uint32(73).double(t.ay), t.alpha !== 0 && e.uint32(81).double(t.alpha), t.fl !== void 0 && _.encode(t.fl, e.uint32(90).fork()).join(), t.fr !== void 0 && _.encode(t.fr, e.uint32(98).fork()).join(), t.bl !== void 0 && _.encode(t.bl, e.uint32(106).fork()).join(), t.br !== void 0 && _.encode(t.br, e.uint32(114).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ue();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = he();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2463,24 +2521,24 @@ const J = {
     return J.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ue();
+    const e = he();
     return e.t = t.t ?? 0, e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.vx = t.vx ?? 0, e.vy = t.vy ?? 0, e.omega = t.omega ?? 0, e.ax = t.ax ?? 0, e.ay = t.ay ?? 0, e.alpha = t.alpha ?? 0, e.fl = t.fl !== void 0 && t.fl !== null ? _.fromPartial(t.fl) : void 0, e.fr = t.fr !== void 0 && t.fr !== null ? _.fromPartial(t.fr) : void 0, e.bl = t.bl !== void 0 && t.bl !== null ? _.fromPartial(t.bl) : void 0, e.br = t.br !== void 0 && t.br !== null ? _.fromPartial(t.br) : void 0, e;
   }
 };
 function A(t) {
   return t != null;
 }
-function de() {
+function pe() {
   return { samples: [] };
 }
-const ot = {
+const at = {
   encode(t, e = new S()) {
     for (const r of t.samples)
       J.encode(r, e.uint32(10).fork()).join();
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = de();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = pe();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2507,24 +2565,24 @@ const ot = {
     return t.samples?.length && (e.samples = t.samples.map((r) => J.toJSON(r))), e;
   },
   create(t) {
-    return ot.fromPartial(t ?? {});
+    return at.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = de();
+    const e = pe();
     return e.samples = t.samples?.map((r) => J.fromPartial(r)) || [], e;
   }
 };
-function le() {
+function ve() {
   return { samples: [] };
 }
-const at = {
+const st = {
   encode(t, e = new S()) {
     for (const r of t.samples)
       W.encode(r, e.uint32(10).fork()).join();
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = le();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ve();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2551,24 +2609,24 @@ const at = {
     return t.samples?.length && (e.samples = t.samples.map((r) => W.toJSON(r))), e;
   },
   create(t) {
-    return at.fromPartial(t ?? {});
+    return st.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = le();
+    const e = ve();
     return e.samples = t.samples?.map((r) => W.fromPartial(r)) || [], e;
   }
 };
-function ce() {
+function ye() {
   return { trajectory: void 0, splits: [], waypoints: [], config: void 0 };
 }
-const st = {
+const ft = {
   encode(t, e = new S()) {
     switch (t.trajectory?.$case) {
       case "swerve":
-        ot.encode(t.trajectory.swerve, e.uint32(10).fork()).join();
+        at.encode(t.trajectory.swerve, e.uint32(10).fork()).join();
         break;
       case "differential":
-        at.encode(t.trajectory.differential, e.uint32(18).fork()).join();
+        st.encode(t.trajectory.differential, e.uint32(18).fork()).join();
         break;
     }
     e.uint32(26).fork();
@@ -2580,14 +2638,14 @@ const st = {
     return e.join(), t.config !== void 0 && nt.encode(t.config, e.uint32(42).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ce();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ye();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.trajectory = { $case: "swerve", swerve: ot.decode(r, r.uint32()) };
+          i.trajectory = { $case: "swerve", swerve: at.decode(r, r.uint32()) };
           continue;
         }
         case 2: {
@@ -2595,19 +2653,19 @@ const st = {
             break;
           i.trajectory = {
             $case: "differential",
-            differential: at.decode(r, r.uint32())
+            differential: st.decode(r, r.uint32())
           };
           continue;
         }
         case 3: {
           if (n === 24) {
-            i.splits.push(he(r.uint64()));
+            i.splits.push(me(r.uint64()));
             continue;
           }
           if (n === 26) {
             const f = r.uint32() + r.pos;
             for (; r.pos < f; )
-              i.splits.push(he(r.uint64()));
+              i.splits.push(me(r.uint64()));
             continue;
           }
           break;
@@ -2640,30 +2698,30 @@ const st = {
   },
   fromJSON(t) {
     return {
-      trajectory: St(t.swerve) ? { $case: "swerve", swerve: ot.fromJSON(t.swerve) } : St(t.differential) ? { $case: "differential", differential: at.fromJSON(t.differential) } : void 0,
+      trajectory: wt(t.swerve) ? { $case: "swerve", swerve: at.fromJSON(t.swerve) } : wt(t.differential) ? { $case: "differential", differential: st.fromJSON(t.differential) } : void 0,
       splits: globalThis.Array.isArray(t?.splits) ? t.splits.map((e) => globalThis.Number(e)) : [],
       waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => globalThis.Number(e)) : [],
-      config: St(t.config) ? nt.fromJSON(t.config) : void 0
+      config: wt(t.config) ? nt.fromJSON(t.config) : void 0
     };
   },
   toJSON(t) {
     const e = {};
-    return t.trajectory?.$case === "swerve" ? e.swerve = ot.toJSON(t.trajectory.swerve) : t.trajectory?.$case === "differential" && (e.differential = at.toJSON(t.trajectory.differential)), t.splits?.length && (e.splits = t.splits.map((r) => Math.round(r))), t.waypoints?.length && (e.waypoints = t.waypoints), t.config !== void 0 && (e.config = nt.toJSON(t.config)), e;
+    return t.trajectory?.$case === "swerve" ? e.swerve = at.toJSON(t.trajectory.swerve) : t.trajectory?.$case === "differential" && (e.differential = st.toJSON(t.trajectory.differential)), t.splits?.length && (e.splits = t.splits.map((r) => Math.round(r))), t.waypoints?.length && (e.waypoints = t.waypoints), t.config !== void 0 && (e.config = nt.toJSON(t.config)), e;
   },
   create(t) {
-    return st.fromPartial(t ?? {});
+    return ft.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ce();
+    const e = ye();
     switch (t.trajectory?.$case) {
       case "swerve": {
-        t.trajectory?.swerve !== void 0 && t.trajectory?.swerve !== null && (e.trajectory = { $case: "swerve", swerve: ot.fromPartial(t.trajectory.swerve) });
+        t.trajectory?.swerve !== void 0 && t.trajectory?.swerve !== null && (e.trajectory = { $case: "swerve", swerve: at.fromPartial(t.trajectory.swerve) });
         break;
       }
       case "differential": {
         t.trajectory?.differential !== void 0 && t.trajectory?.differential !== null && (e.trajectory = {
           $case: "differential",
-          differential: at.fromPartial(t.trajectory.differential)
+          differential: st.fromPartial(t.trajectory.differential)
         });
         break;
       }
@@ -2671,7 +2729,7 @@ const st = {
     return e.splits = t.splits?.map((r) => r) || [], e.waypoints = t.waypoints?.map((r) => r) || [], e.config = t.config !== void 0 && t.config !== null ? nt.fromPartial(t.config) : void 0, e;
   }
 };
-function he(t) {
+function me(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -2679,18 +2737,18 @@ function he(t) {
     throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
   return e;
 }
-function St(t) {
+function wt(t) {
   return t != null;
 }
-function pe() {
+function be() {
   return { name: "", params: void 0, snapshot: void 0, trajectory: void 0 };
 }
 const M = {
   encode(t, e = new S()) {
-    return t.name !== "" && e.uint32(10).string(t.name), t.params !== void 0 && et.encode(t.params, e.uint32(18).fork()).join(), t.snapshot !== void 0 && tt.encode(t.snapshot, e.uint32(26).fork()).join(), t.trajectory !== void 0 && st.encode(t.trajectory, e.uint32(34).fork()).join(), e;
+    return t.name !== "" && e.uint32(10).string(t.name), t.params !== void 0 && et.encode(t.params, e.uint32(18).fork()).join(), t.snapshot !== void 0 && tt.encode(t.snapshot, e.uint32(26).fork()).join(), t.trajectory !== void 0 && ft.encode(t.trajectory, e.uint32(34).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = pe();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = be();
     for (; r.pos < o; ) {
       const n = r.uint32();
       switch (n >>> 3) {
@@ -2715,7 +2773,7 @@ const M = {
         case 4: {
           if (n !== 34)
             break;
-          i.trajectory = st.decode(r, r.uint32());
+          i.trajectory = ft.decode(r, r.uint32());
           continue;
         }
       }
@@ -2727,213 +2785,49 @@ const M = {
   },
   fromJSON(t) {
     return {
-      name: ft(t.name) ? globalThis.String(t.name) : "",
-      params: ft(t.params) ? et.fromJSON(t.params) : void 0,
-      snapshot: ft(t.snapshot) ? tt.fromJSON(t.snapshot) : void 0,
-      trajectory: ft(t.trajectory) ? st.fromJSON(t.trajectory) : void 0
+      name: dt(t.name) ? globalThis.String(t.name) : "",
+      params: dt(t.params) ? et.fromJSON(t.params) : void 0,
+      snapshot: dt(t.snapshot) ? tt.fromJSON(t.snapshot) : void 0,
+      trajectory: dt(t.trajectory) ? ft.fromJSON(t.trajectory) : void 0
     };
   },
   toJSON(t) {
     const e = {};
-    return t.name !== "" && (e.name = t.name), t.params !== void 0 && (e.params = et.toJSON(t.params)), t.snapshot !== void 0 && (e.snapshot = tt.toJSON(t.snapshot)), t.trajectory !== void 0 && (e.trajectory = st.toJSON(t.trajectory)), e;
+    return t.name !== "" && (e.name = t.name), t.params !== void 0 && (e.params = et.toJSON(t.params)), t.snapshot !== void 0 && (e.snapshot = tt.toJSON(t.snapshot)), t.trajectory !== void 0 && (e.trajectory = ft.toJSON(t.trajectory)), e;
   },
   create(t) {
     return M.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = pe();
-    return e.name = t.name ?? "", e.params = t.params !== void 0 && t.params !== null ? et.fromPartial(t.params) : void 0, e.snapshot = t.snapshot !== void 0 && t.snapshot !== null ? tt.fromPartial(t.snapshot) : void 0, e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? st.fromPartial(t.trajectory) : void 0, e;
+    const e = be();
+    return e.name = t.name ?? "", e.params = t.params !== void 0 && t.params !== null ? et.fromPartial(t.params) : void 0, e.snapshot = t.snapshot !== void 0 && t.snapshot !== null ? tt.fromPartial(t.snapshot) : void 0, e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? ft.fromPartial(t.trajectory) : void 0, e;
   }
 };
-function ft(t) {
+function dt(t) {
   return t != null;
 }
-const gr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const wr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   DifferentialSample: W,
-  DifferentialTrajectory: at,
-  DriveType: Te,
+  DifferentialTrajectory: st,
+  DriveType: Me,
+  Expr: y,
   ForceVector: _,
-  GenerationOutput: st,
+  GenerationOutput: ft,
+  ProjectFile: De,
   SwerveSample: J,
-  SwerveTrajectory: ot,
+  SwerveTrajectory: at,
   TrajectoryFile: M,
-  driveTypeFromJSON: Qe,
-  driveTypeToJSON: je,
-  parameters: dr
+  driveTypeFromJSON: Ot,
+  driveTypeToJSON: Ae,
+  parameters: hr
 }, Symbol.toStringTag, { value: "Module" }));
-function ve() {
-  return { sample: void 0 };
-}
-const ht = {
-  encode(t, e = new S()) {
-    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ve();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.sample = J.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { sample: Re(t.sample) ? J.fromJSON(t.sample) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
-  },
-  create(t) {
-    return ht.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = ve();
-    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
-  }
-};
-function ye() {
-  return { sample: void 0 };
-}
-const wt = {
-  encode(t, e = new S()) {
-    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ye();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.sample = J.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { sample: Re(t.sample) ? J.fromJSON(t.sample) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
-  },
-  create(t) {
-    return wt.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = ye();
-    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
-  }
-};
-function Re(t) {
-  return t != null;
-}
-function me() {
-  return { trajectory: void 0 };
-}
-const pt = {
-  encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = me();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.trajectory = M.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { trajectory: Ie(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
-  },
-  create(t) {
-    return pt.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = me();
-    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
-  }
-};
-function be() {
-  return { trajectory: void 0 };
-}
-const Ot = {
-  encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = be();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.trajectory = M.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { trajectory: Ie(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
-  },
-  create(t) {
-    return Ot.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = be();
-    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
-  }
-};
-function Ie(t) {
-  return t != null;
-}
 function xe() {
-  return { trajectory: void 0 };
+  return { sample: void 0 };
 }
-const Et = {
+const vt = {
   encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
     const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = xe();
@@ -2943,6 +2837,89 @@ const Et = {
         case 1: {
           if (n !== 10)
             break;
+          i.sample = J.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { sample: Ce(t.sample) ? J.fromJSON(t.sample) : void 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
+  },
+  create(t) {
+    return vt.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = xe();
+    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
+  }
+};
+function ke() {
+  return { sample: void 0 };
+}
+const Et = {
+  encode(t, e = new S()) {
+    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ke();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.sample = J.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { sample: Ce(t.sample) ? J.fromJSON(t.sample) : void 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
+  },
+  create(t) {
+    return Et.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = ke();
+    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
+  }
+};
+function Ce(t) {
+  return t != null;
+}
+function ge() {
+  return { trajectory: void 0 };
+}
+const yt = {
+  encode(t, e = new S()) {
+    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ge();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
           i.trajectory = M.decode(r, r.uint32());
           continue;
         }
@@ -2954,37 +2931,120 @@ const Et = {
     return i;
   },
   fromJSON(t) {
-    return { trajectory: lr(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+    return { trajectory: Ve(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
   },
   toJSON(t) {
     const e = {};
     return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
   },
   create(t) {
-    return Et.fromPartial(t ?? {});
+    return yt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = xe();
+    const e = ge();
     return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
   }
 };
-function lr(t) {
+function Se() {
+  return { trajectory: void 0 };
+}
+const _t = {
+  encode(t, e = new S()) {
+    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Se();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.trajectory = M.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { trajectory: Ve(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
+  },
+  create(t) {
+    return _t.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = Se();
+    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
+  }
+};
+function Ve(t) {
   return t != null;
 }
-const cr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+function Ne() {
+  return { trajectory: void 0 };
+}
+const Pt = {
+  encode(t, e = new S()) {
+    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ne();
+    for (; r.pos < o; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.trajectory = M.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { trajectory: pr(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
+  },
+  create(t) {
+    return Pt.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = Ne();
+    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
+  }
+};
+function pr(t) {
+  return t != null;
+}
+const vr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  EchoSwerveSampleRequest: ht,
-  EchoSwerveSampleResponse: wt,
-  GenerateRequest: pt,
-  GenerateResponse: Ot,
-  GetDefaultTrajectoryResponse: Et
+  EchoSwerveSampleRequest: vt,
+  EchoSwerveSampleResponse: Et,
+  GenerateRequest: yt,
+  GenerateResponse: _t,
+  GetDefaultTrajectoryResponse: Pt
 }, Symbol.toStringTag, { value: "Module" }));
-var lt = { exports: {} }, hr = lt.exports, ke;
-function pr() {
-  return ke || (ke = 1, (function(t, e) {
+var ht = { exports: {} }, yr = ht.exports, we;
+function mr() {
+  return we || (we = 1, (function(t, e) {
     (function(r, o) {
       t.exports = o();
-    })(hr, (function() {
+    })(yr, (function() {
       return r = { 418: function(i, n) {
         (function(f, s) {
           for (var m in s) f[m] = s[m];
@@ -3180,18 +3240,18 @@ function pr() {
             if (this.buffer == null) this.buffer = c, this.position = 0;
             else if (this.position === this.buffer.byteLength) this.buffer = c, this.position = 0;
             else {
-              var R = this.buffer.byteLength - this.position, $ = new Uint8Array(R + c.byteLength), Ve = p(this.buffer, this.position);
-              $.set(Ve, 0);
-              var Le = new Uint8Array(c);
-              $.set(Le, R), this.buffer = $, this.position = 0;
+              var R = this.buffer.byteLength - this.position, $ = new Uint8Array(R + c.byteLength), ze = p(this.buffer, this.position);
+              $.set(ze, 0);
+              var Ge = new Uint8Array(c);
+              $.set(Ge, R), this.buffer = $, this.position = 0;
             }
             for (; ; ) {
               if (!h(this.buffer, this.position, 5)) return N;
-              var mt = p(this.buffer, this.position, this.position + 5), Tt = new DataView(mt.buffer, mt.byteOffset, mt.byteLength), bt = d(Tt);
-              if (!h(this.buffer, this.position, 5 + bt)) return N;
-              var _t = p(this.buffer, this.position + 5, this.position + 5 + bt);
-              if (this.position += 5 + bt, b(Tt)) return N.push({ chunkType: s.TRAILERS, trailers: (g = _t, new m.Metadata(l(g))) }), N;
-              N.push({ chunkType: s.MESSAGE, data: _t });
+              var xt = p(this.buffer, this.position, this.position + 5), Jt = new DataView(xt.buffer, xt.byteOffset, xt.byteLength), kt = d(Jt);
+              if (!h(this.buffer, this.position, 5 + kt)) return N;
+              var Mt = p(this.buffer, this.position + 5, this.position + 5 + kt);
+              if (this.position += 5 + kt, b(Jt)) return N.push({ chunkType: s.TRAILERS, trailers: (g = Mt, new m.Metadata(l(g))) }), N;
+              N.push({ chunkType: s.MESSAGE, data: Mt });
             }
           }, a;
         })();
@@ -3671,14 +3731,14 @@ function pr() {
       })(607);
       var r, o;
     }));
-  })(lt)), lt.exports;
+  })(ht)), ht.exports;
 }
-var ge = pr(), ct = { exports: {} }, vr = ct.exports, Se;
-function yr() {
-  return Se || (Se = 1, (function(t, e) {
+var Oe = mr(), pt = { exports: {} }, br = pt.exports, Te;
+function xr() {
+  return Te || (Te = 1, (function(t, e) {
     (function(o, i) {
       t.exports = i();
-    })(vr, function() {
+    })(br, function() {
       return (
         /******/
         (function(r) {
@@ -3902,18 +3962,18 @@ function yr() {
         ])
       );
     });
-  })(ct)), ct.exports;
+  })(pt)), pt.exports;
 }
-var mr = yr();
-function Ne() {
+var kr = xr();
+function Ee() {
   return {};
 }
-const vt = {
+const mt = {
   encode(t, e = new S()) {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ne();
+    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ee();
     for (; r.pos < o; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
@@ -3929,72 +3989,30 @@ const vt = {
     return {};
   },
   create(t) {
-    return vt.fromPartial(t ?? {});
+    return mt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return Ne();
+    return Ee();
   }
 };
-class br {
+class gr {
   rpc;
   constructor(e) {
     this.rpc = e, this.EchoSwerveSample = this.EchoSwerveSample.bind(this), this.Generate = this.Generate.bind(this), this.GetDefaultTrajectory = this.GetDefaultTrajectory.bind(this);
   }
   EchoSwerveSample(e, r) {
-    return this.rpc.unary(He, ht.fromPartial(e), r);
+    return this.rpc.unary(Le, vt.fromPartial(e), r);
   }
   Generate(e, r) {
-    return this.rpc.unary(Be, pt.fromPartial(e), r);
+    return this.rpc.unary(Fe, yt.fromPartial(e), r);
   }
   GetDefaultTrajectory(e, r) {
-    return this.rpc.unary(De, vt.fromPartial(e), r);
+    return this.rpc.unary(Ue, mt.fromPartial(e), r);
   }
 }
-const yt = { serviceName: "service.ChoreoService" }, He = {
+const bt = { serviceName: "service.ChoreoService" }, Le = {
   methodName: "EchoSwerveSample",
-  service: yt,
-  requestStream: !1,
-  responseStream: !1,
-  requestType: {
-    serializeBinary() {
-      return ht.encode(this).finish();
-    }
-  },
-  responseType: {
-    deserializeBinary(t) {
-      const e = wt.decode(t);
-      return {
-        ...e,
-        toObject() {
-          return e;
-        }
-      };
-    }
-  }
-}, Be = {
-  methodName: "Generate",
-  service: yt,
-  requestStream: !1,
-  responseStream: !1,
-  requestType: {
-    serializeBinary() {
-      return pt.encode(this).finish();
-    }
-  },
-  responseType: {
-    deserializeBinary(t) {
-      const e = Ot.decode(t);
-      return {
-        ...e,
-        toObject() {
-          return e;
-        }
-      };
-    }
-  }
-}, De = {
-  methodName: "GetDefaultTrajectory",
-  service: yt,
+  service: bt,
   requestStream: !1,
   responseStream: !1,
   requestType: {
@@ -4013,27 +4031,69 @@ const yt = { serviceName: "service.ChoreoService" }, He = {
       };
     }
   }
+}, Fe = {
+  methodName: "Generate",
+  service: bt,
+  requestStream: !1,
+  responseStream: !1,
+  requestType: {
+    serializeBinary() {
+      return yt.encode(this).finish();
+    }
+  },
+  responseType: {
+    deserializeBinary(t) {
+      const e = _t.decode(t);
+      return {
+        ...e,
+        toObject() {
+          return e;
+        }
+      };
+    }
+  }
+}, Ue = {
+  methodName: "GetDefaultTrajectory",
+  service: bt,
+  requestStream: !1,
+  responseStream: !1,
+  requestType: {
+    serializeBinary() {
+      return mt.encode(this).finish();
+    }
+  },
+  responseType: {
+    deserializeBinary(t) {
+      const e = Pt.decode(t);
+      return {
+        ...e,
+        toObject() {
+          return e;
+        }
+      };
+    }
+  }
 };
-class xr {
+class Sr {
   host;
   options;
   constructor(e, r) {
     this.host = e, this.options = r;
   }
   unary(e, r, o) {
-    const i = { ...r, ...e.requestType }, n = o && this.options.metadata ? new mr.BrowserHeaders({ ...this.options?.metadata.headersMap, ...o?.headersMap }) : o ?? this.options.metadata;
+    const i = { ...r, ...e.requestType }, n = o && this.options.metadata ? new kr.BrowserHeaders({ ...this.options?.metadata.headersMap, ...o?.headersMap }) : o ?? this.options.metadata;
     return new Promise((f, s) => {
-      ge.grpc.unary(e, {
+      Oe.grpc.unary(e, {
         request: i,
         host: this.host,
         metadata: n ?? {},
         ...this.options.transport !== void 0 ? { transport: this.options.transport } : {},
         debug: this.options.debug ?? !1,
         onEnd: function(m) {
-          if (m.status === ge.grpc.Code.OK)
+          if (m.status === Oe.grpc.Code.OK)
             f(m.message.toObject());
           else {
-            const u = new Ce(m.statusMessage, m.status, m.trailers);
+            const u = new $e(m.statusMessage, m.status, m.trailers);
             s(u);
           }
         }
@@ -4041,31 +4101,31 @@ class xr {
     });
   }
 }
-class Ce extends globalThis.Error {
+class $e extends globalThis.Error {
   constructor(e, r, o) {
     super(e), this.code = r, this.metadata = o;
   }
 }
-const Sr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Or = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ChoreoServiceClientImpl: br,
-  ChoreoServiceDesc: yt,
-  ChoreoServiceEchoSwerveSampleDesc: He,
-  ChoreoServiceGenerateDesc: Be,
-  ChoreoServiceGetDefaultTrajectoryDesc: De,
-  GrpcWebError: Ce,
-  GrpcWebImpl: xr,
-  commands: cr
-}, Symbol.toStringTag, { value: "Module" })), kr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  Empty: vt
+  ChoreoServiceClientImpl: gr,
+  ChoreoServiceDesc: bt,
+  ChoreoServiceEchoSwerveSampleDesc: Le,
+  ChoreoServiceGenerateDesc: Fe,
+  ChoreoServiceGetDefaultTrajectoryDesc: Ue,
+  GrpcWebError: $e,
+  GrpcWebImpl: Sr,
+  commands: vr
 }, Symbol.toStringTag, { value: "Module" })), Nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  protobuf: kr
+  Empty: mt
+}, Symbol.toStringTag, { value: "Module" })), Tr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  protobuf: Nr
 }, Symbol.toStringTag, { value: "Module" }));
 export {
-  gr as entity,
-  Nr as google,
-  Sr as service
+  wr as entity,
+  Tr as google,
+  Or as service
 };
 //# sourceMappingURL=index.mjs.map

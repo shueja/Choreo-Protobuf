@@ -1,0 +1,9 @@
+syntax="proto3";
+package entity;
+import "entity/parameters/robotconfig/expr.proto";
+import "entity/drive_type.proto";
+message ProjectFile{
+    string name = 1;
+    entity.parameters.robotconfig.ExprRobotConfig config = 2;
+    DriveType drive_type = 3;
+}

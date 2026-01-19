@@ -12,7 +12,7 @@ use syn::{
 use crate::utils::{ForwardAttrsFilter, filter_forward_attrs};
 
 #[derive(Debug, FromMeta)]
-struct RequiredArgs {
+struct ValidArgs {
     ident: Option<Ident>,
     prefix: Option<Ident>,
     derive: Option<PathList>,
@@ -21,8 +21,8 @@ struct RequiredArgs {
 }
 
 #[derive(Debug, FromField)]
-#[darling(attributes(required), forward_attrs)]
-struct RequiredField {
+#[darling(attributes(valid), forward_attrs)]
+struct ValidField {
     ident: Option<Ident>,
 
     vis: Visibility,
@@ -39,31 +39,31 @@ struct RequiredField {
 
 #[derive(Debug, FromDeriveInput)]
 #[darling(
-    attributes(required),
+    attributes(valid),
     forward_attrs,
     supports(struct_named, struct_tuple, enum_any)
 )]
-struct RequiredInput {
+struct ValidInput {
     ident: Ident,
 
     vis: Visibility,
 
     generics: Generics,
 
-    data: Data<Ignored, RequiredField>,
+    data: Data<Ignored, ValidField>,
 
     attrs: Vec<Attribute>,
 
     #[darling(flatten)]
-    args: RequiredArgs,
+    args: ValidArgs,
 }
 
 
-pub fn required(input: TokenStream) -> TokenStream {
+pub fn valid(input: TokenStream) -> TokenStream {
     // parse the struct or enum
     let derive_input = syn::parse_macro_input!(input as syn::DeriveInput);
 
-    let input = match RequiredInput::from_derive_input(&derive_input) {
+    let input = match ValidInput::from_derive_input(&derive_input) {
         Ok(input) => input,
         Err(err) => {
             return TokenStream::from(err.write_errors());
@@ -84,16 +84,16 @@ pub fn required(input: TokenStream) -> TokenStream {
     let _ident = input.ident;
 
     // handling for enums
-    // just type-alias as Required
+    // just type-alias as Valid
     if let syn::Data::Enum(_) = derive_input.data {
-        let req_ident = format_ident!("Required{}", _ident);
+        let req_ident = format_ident!("Valid{}", _ident);
         return quote! {
             #vis type #req_ident = #_ident;
         }
         .into();
     }
     // get the ident for the new struct: either the "ident" argument or "prefix" on the existing name.
-    let required_ident = input
+    let valid_ident = input
         .args
         .ident
         .or(input
@@ -131,16 +131,16 @@ pub fn required(input: TokenStream) -> TokenStream {
         // }
     });
 
-    // TODO: Implement From<RequiredStruct> for OriginalStruct
+    // TODO: Implement From<ValidStruct> for OriginalStruct
     quote! {
         #derive_attr
         // #(#forward_attrs)*
-        #vis struct #required_ident #generics {
+        #vis struct #valid_ident #generics {
             #(#field_declares),*
         }
 
-        impl From< #required_ident > for #_ident {
-            fn from(value: #required_ident) -> Self {
+        impl From< #valid_ident > for #_ident {
+            fn from(value: #valid_ident) -> Self {
                 #_ident {
                 #(#field_conversion),*
                 }

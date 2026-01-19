@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Expr } from "../../expression";
+import { Expr } from "../../../expression";
 
 export interface ExprMaxVelocity {
   max: Expr | undefined;

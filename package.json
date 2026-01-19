@@ -6,7 +6,7 @@
   "scripts": {
     "server": "cargo run -p server_example",
     "frontend": "vite apps/frontend",
-    "updateProto": "bash ./proto/generate.sh && pnpx @bufbuild/buf generate && vite build proto_js && cargo build -p proto_rs && cargo build -p server_example"
+    "updateProto": "bash ./proto/generate.sh && pnpx @bufbuild/buf generate && pnpx vite build packages/proto_js && cargo build -p proto_rs && cargo build -p server_example"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,6 @@
+syntax="proto3";
+package entity;
+message Expr{
+    double value = 1;
+    string expr = 2;
+}

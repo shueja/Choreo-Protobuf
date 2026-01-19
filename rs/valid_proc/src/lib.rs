@@ -16,9 +16,9 @@ use syn::{
 };
 mod utils;
 
-// #[proc_macro_derive(Required, attributes(required))]
-// pub fn required(input: TokenStream) -> TokenStream {
-//     required::required(input)
+// #[proc_macro_derive(Valid, attributes(valid))]
+// pub fn valid(input: TokenStream) -> TokenStream {
+//     valid::valid(input)
 // }
 #[derive(ParseMetaItem)]
 struct Options {
@@ -48,16 +48,16 @@ fn extract_option_inner(path: &Path) -> Option<Type> {
         })
 }
 
-fn convert_type_path_to_required(path: TypePath) -> TypePath {
+fn convert_type_path_to_valid(path: TypePath) -> TypePath {
     let mut path = path.clone();
     let ident = path.path.segments.last().unwrap().ident.clone();
-    path.path.segments.last_mut().unwrap().ident = make_required_ident(&ident);
+    path.path.segments.last_mut().unwrap().ident = make_valid_ident(&ident);
     path
 }
 
 ///
-/// Option<Innertype> -> RequiredInnerType
-/// #[optional] Option<InnerType> -> Option<RequiredInnerType>
+/// Option<Innertype> -> ValidInnerType
+/// #[optional] Option<InnerType> -> Option<ValidInnerType>
 /// Type -> Type
 /// #[optional] Type -> Type
 ///
@@ -70,8 +70,8 @@ fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type) {
         _ => None,
     };
     if let Some(Type::Path(path)) = inner_type_opt {
-        let required_path = convert_type_path_to_required(path);
-        return (true, syn::Type::Path(required_path));
+        let valid_path = convert_type_path_to_valid(path);
+        return (true, syn::Type::Path(valid_path));
     } else {
         return (false, input.clone());
     }
@@ -84,13 +84,13 @@ fn convert_field(field: &Field) -> (bool, Field) {
     new_field.ty = new_ty;
     (was_option, new_field)
 }
-fn make_required_ident(ident: &Ident) -> Ident {
-    format_ident!("Required{ident}")
+fn make_valid_ident(ident: &Ident) -> Ident {
+    format_ident!("Valid{ident}")
 }
 
 use syn::Fields;
 
-struct MakeRequiredFieldsOutput {
+struct MakeValidFieldsOutput {
     is_different: bool,
     new_fields: Fields,
     tryfrom_conversions: Vec<proc_macro2::TokenStream>,
@@ -104,7 +104,7 @@ fn named_field_option_tryfrom(ident: &Ident) -> proc_macro2::TokenStream {
     quote! {
     #ident: match optional.#ident {
                 Some(object)=> match object.try_into().map_err(|e| format!("{}", e).to_string()) {
-                    Ok(required_object)=>required_object,
+                    Ok(valid_object)=>valid_object,
                     Err(e) => return Err(e)
                 },
 
@@ -116,18 +116,18 @@ fn unnamed_field_tryfrom_conversion(index: usize) -> proc_macro2::TokenStream {
     quote! {optional.#index.try_into()?}
 }
 fn unnamed_field_from_conversion(index: usize) -> proc_macro2::TokenStream {
-    quote! {required.#index}
+    quote! {valid.#index}
 }
 
 fn named_field_from_conversion(ident: &Ident) -> proc_macro2::TokenStream {
-    quote! {#ident: required.#ident}
+    quote! {#ident: valid.#ident}
 }
 fn named_field_option_from(ident: &Ident) -> proc_macro2::TokenStream {
     quote! {
-    #ident: Some(required.#ident.into())
+    #ident: Some(valid.#ident.into())
 }}
 
-fn make_required_fields(fields: Fields) -> MakeRequiredFieldsOutput {
+fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
     let mut is_different = false;
     let mut tryfrom_conversions: Vec<proc_macro2::TokenStream> = vec![];
     let mut from_conversions: Vec<proc_macro2::TokenStream> = vec![];
@@ -182,7 +182,7 @@ fn make_required_fields(fields: Fields) -> MakeRequiredFieldsOutput {
         }),
         syn::Fields::Unit => fields.clone(),
     };
-    MakeRequiredFieldsOutput {
+    MakeValidFieldsOutput {
         is_different,
         new_fields,
         tryfrom_conversions,
@@ -235,7 +235,7 @@ fn get_filtered_derive_macro(attrs: Vec<Attribute>) -> (proc_macro2::TokenStream
     (quote! {#[derive(#(#filtered_traits,)*)]}, attrs)
 }
 
-fn make_required_struct(
+fn make_valid_struct(
     input: &DeriveInput,
 ) -> (
     proc_macro2::TokenStream,
@@ -251,10 +251,10 @@ fn make_required_struct(
     } = input.clone();
 
     let (trait_tokens, attrs) = get_filtered_derive_macro(attrs);
-    let required_ident = make_required_ident(&ident);
+    let valid_ident = make_valid_ident(&ident);
     let mut is_different = false;
-    let gen_required = |f: Fields, is_different: &mut bool| {
-        let output = make_required_fields(f);
+    let gen_valid = |f: Fields, is_different: &mut bool| {
+        let output = make_valid_fields(f);
         *is_different |= output.is_different;
         output
     };
@@ -265,37 +265,37 @@ fn make_required_struct(
             fields,
             semi_token,
         }) => {
-            let MakeRequiredFieldsOutput {
+            let MakeValidFieldsOutput {
                 is_different,
                 new_fields,
                 tryfrom_conversions,
                 from_conversions,
-            } = gen_required(fields, &mut is_different);
+            } = gen_valid(fields, &mut is_different);
             let impls = quote!(
-            impl TryFrom<#ident> for #required_ident {
+            impl TryFrom<#ident> for #valid_ident {
                 type Error = String;
-                fn try_from(optional: #ident) -> Result<#required_ident, Self::Error> {
-                    Ok(#required_ident {
+                fn try_from(optional: #ident) -> Result<#valid_ident, Self::Error> {
+                    Ok(#valid_ident {
                         #(#tryfrom_conversions,)*
                     })
                 }
             }
-            impl From<#required_ident> for #ident {
-                fn from(required: #required_ident) -> #ident {
+            impl From<#valid_ident> for #ident {
+                fn from(valid: #valid_ident) -> #ident {
                     #ident {
                         #(#from_conversions,)*
                     }
                 }
             }
-            impl crate::validate::Required for #required_ident {
+            impl crate::validate::Valid for #valid_ident {
                 type Optional = #ident;
                 fn optionize(self) -> #ident {
                     self.into()
                 }
             }
             impl crate::validate::Validate  for #ident {
-                type Valid = #required_ident;
-                fn validate(self) -> Result<#required_ident, String>{
+                type Valid = #valid_ident;
+                fn validate(self) -> Result<#valid_ident, String>{
                     self.try_into()
                 }
             }
@@ -328,12 +328,12 @@ fn make_required_struct(
                             discriminant,
                         } = v.clone();
 
-                        let MakeRequiredFieldsOutput {
+                        let MakeValidFieldsOutput {
                             is_different,
                             new_fields,
                             tryfrom_conversions,
                             from_conversions,
-                        } = gen_required(fields, &mut is_different);
+                        } = gen_valid(fields, &mut is_different);
                         Variant {
                             attrs: filter_prost_attributes(attrs),
                             ident,
@@ -349,7 +349,7 @@ fn make_required_struct(
     if !is_different {
         let original_ident = &input.ident;
         return (
-            quote! {pub type #required_ident = #original_ident;},
+            quote! {pub type #valid_ident = #original_ident;},
             None,
             proc_macro2::TokenStream::new(),
         );
@@ -359,7 +359,7 @@ fn make_required_struct(
         Some(DeriveInput {
             attrs,
             vis,
-            ident: required_ident,
+            ident: valid_ident,
             generics,
             data,
         }),
@@ -376,26 +376,26 @@ fn filter_prost_attributes(attrs: Vec<Attribute>) -> Vec<Attribute> {
 }
 
 #[proc_macro_attribute]
-pub fn make_required(attr: TokenStream, item: TokenStream) -> proc_macro::TokenStream {
+pub fn make_valid(attr: TokenStream, item: TokenStream) -> proc_macro::TokenStream {
     let Options { prefix } = match deluxe::parse::<Options>(attr) {
         Ok(desc) => desc,
         Err(e) => return e.into_compile_error().into(),
     };
     let input = parse_macro_input!(item as DeriveInput);
 
-    let (derive, required_tokens, impls) = match &input.data {
-        syn::Data::Struct(_data_struct) => make_required_struct(&input),
-        syn::Data::Enum(_data_enum) => make_required_struct(&input),
+    let (derive, valid_tokens, impls) = match &input.data {
+        syn::Data::Struct(_data_struct) => make_valid_struct(&input),
+        syn::Data::Enum(_data_enum) => make_valid_struct(&input),
         syn::Data::Union(_data_union) => unimplemented!("Only for structs and enums"),
     };
 
-    let required_tokens = required_tokens
+    let valid_tokens = valid_tokens
         .map(DeriveInput::into_token_stream)
         .unwrap_or(proc_macro2::TokenStream::new());
     quote! {
         #input
         #derive
-        #required_tokens
+        #valid_tokens
         #impls
     }
     .into()

@@ -466,6 +466,116 @@ impl<'de> serde::Deserialize<'de> for DriveType {
         deserializer.deserialize_any(GeneratedVisitor)
     }
 }
+impl serde::Serialize for Expr {
+    #[allow(deprecated)]
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeStruct;
+        let mut len = 0;
+        if self.value != 0. {
+            len += 1;
+        }
+        if !self.expr.is_empty() {
+            len += 1;
+        }
+        let mut struct_ser = serializer.serialize_struct("entity.Expr", len)?;
+        if self.value != 0. {
+            struct_ser.serialize_field("value", &self.value)?;
+        }
+        if !self.expr.is_empty() {
+            struct_ser.serialize_field("expr", &self.expr)?;
+        }
+        struct_ser.end()
+    }
+}
+impl<'de> serde::Deserialize<'de> for Expr {
+    #[allow(deprecated)]
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        const FIELDS: &[&str] = &[
+            "value",
+            "expr",
+        ];
+
+        #[allow(clippy::enum_variant_names)]
+        enum GeneratedField {
+            Value,
+            Expr,
+        }
+        impl<'de> serde::Deserialize<'de> for GeneratedField {
+            fn deserialize<D>(deserializer: D) -> std::result::Result<GeneratedField, D::Error>
+            where
+                D: serde::Deserializer<'de>,
+            {
+                struct GeneratedVisitor;
+
+                impl<'de> serde::de::Visitor<'de> for GeneratedVisitor {
+                    type Value = GeneratedField;
+
+                    fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                        write!(formatter, "expected one of: {:?}", &FIELDS)
+                    }
+
+                    #[allow(unused_variables)]
+                    fn visit_str<E>(self, value: &str) -> std::result::Result<GeneratedField, E>
+                    where
+                        E: serde::de::Error,
+                    {
+                        match value {
+                            "value" => Ok(GeneratedField::Value),
+                            "expr" => Ok(GeneratedField::Expr),
+                            _ => Err(serde::de::Error::unknown_field(value, FIELDS)),
+                        }
+                    }
+                }
+                deserializer.deserialize_identifier(GeneratedVisitor)
+            }
+        }
+        struct GeneratedVisitor;
+        impl<'de> serde::de::Visitor<'de> for GeneratedVisitor {
+            type Value = Expr;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                formatter.write_str("struct entity.Expr")
+            }
+
+            fn visit_map<V>(self, mut map_: V) -> std::result::Result<Expr, V::Error>
+                where
+                    V: serde::de::MapAccess<'de>,
+            {
+                let mut value__ = None;
+                let mut expr__ = None;
+                while let Some(k) = map_.next_key()? {
+                    match k {
+                        GeneratedField::Value => {
+                            if value__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("value"));
+                            }
+                            value__ = 
+                                Some(map_.next_value::<::pbjson::private::NumberDeserialize<_>>()?.0)
+                            ;
+                        }
+                        GeneratedField::Expr => {
+                            if expr__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("expr"));
+                            }
+                            expr__ = Some(map_.next_value()?);
+                        }
+                    }
+                }
+                Ok(Expr {
+                    value: value__.unwrap_or_default(),
+                    expr: expr__.unwrap_or_default(),
+                })
+            }
+        }
+        deserializer.deserialize_struct("entity.Expr", FIELDS, GeneratedVisitor)
+    }
+}
 impl serde::Serialize for ForceVector {
     #[allow(deprecated)]
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
@@ -742,6 +852,134 @@ impl<'de> serde::Deserialize<'de> for GenerationOutput {
             }
         }
         deserializer.deserialize_struct("entity.GenerationOutput", FIELDS, GeneratedVisitor)
+    }
+}
+impl serde::Serialize for ProjectFile {
+    #[allow(deprecated)]
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeStruct;
+        let mut len = 0;
+        if !self.name.is_empty() {
+            len += 1;
+        }
+        if self.config.is_some() {
+            len += 1;
+        }
+        if self.drive_type != 0 {
+            len += 1;
+        }
+        let mut struct_ser = serializer.serialize_struct("entity.ProjectFile", len)?;
+        if !self.name.is_empty() {
+            struct_ser.serialize_field("name", &self.name)?;
+        }
+        if let Some(v) = self.config.as_ref() {
+            struct_ser.serialize_field("config", v)?;
+        }
+        if self.drive_type != 0 {
+            let v = DriveType::try_from(self.drive_type)
+                .map_err(|_| serde::ser::Error::custom(format!("Invalid variant {}", self.drive_type)))?;
+            struct_ser.serialize_field("driveType", &v)?;
+        }
+        struct_ser.end()
+    }
+}
+impl<'de> serde::Deserialize<'de> for ProjectFile {
+    #[allow(deprecated)]
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        const FIELDS: &[&str] = &[
+            "name",
+            "config",
+            "drive_type",
+            "driveType",
+        ];
+
+        #[allow(clippy::enum_variant_names)]
+        enum GeneratedField {
+            Name,
+            Config,
+            DriveType,
+        }
+        impl<'de> serde::Deserialize<'de> for GeneratedField {
+            fn deserialize<D>(deserializer: D) -> std::result::Result<GeneratedField, D::Error>
+            where
+                D: serde::Deserializer<'de>,
+            {
+                struct GeneratedVisitor;
+
+                impl<'de> serde::de::Visitor<'de> for GeneratedVisitor {
+                    type Value = GeneratedField;
+
+                    fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                        write!(formatter, "expected one of: {:?}", &FIELDS)
+                    }
+
+                    #[allow(unused_variables)]
+                    fn visit_str<E>(self, value: &str) -> std::result::Result<GeneratedField, E>
+                    where
+                        E: serde::de::Error,
+                    {
+                        match value {
+                            "name" => Ok(GeneratedField::Name),
+                            "config" => Ok(GeneratedField::Config),
+                            "driveType" | "drive_type" => Ok(GeneratedField::DriveType),
+                            _ => Err(serde::de::Error::unknown_field(value, FIELDS)),
+                        }
+                    }
+                }
+                deserializer.deserialize_identifier(GeneratedVisitor)
+            }
+        }
+        struct GeneratedVisitor;
+        impl<'de> serde::de::Visitor<'de> for GeneratedVisitor {
+            type Value = ProjectFile;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                formatter.write_str("struct entity.ProjectFile")
+            }
+
+            fn visit_map<V>(self, mut map_: V) -> std::result::Result<ProjectFile, V::Error>
+                where
+                    V: serde::de::MapAccess<'de>,
+            {
+                let mut name__ = None;
+                let mut config__ = None;
+                let mut drive_type__ = None;
+                while let Some(k) = map_.next_key()? {
+                    match k {
+                        GeneratedField::Name => {
+                            if name__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("name"));
+                            }
+                            name__ = Some(map_.next_value()?);
+                        }
+                        GeneratedField::Config => {
+                            if config__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("config"));
+                            }
+                            config__ = map_.next_value()?;
+                        }
+                        GeneratedField::DriveType => {
+                            if drive_type__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("driveType"));
+                            }
+                            drive_type__ = Some(map_.next_value::<DriveType>()? as i32);
+                        }
+                    }
+                }
+                Ok(ProjectFile {
+                    name: name__.unwrap_or_default(),
+                    config: config__,
+                    drive_type: drive_type__.unwrap_or_default(),
+                })
+            }
+        }
+        deserializer.deserialize_struct("entity.ProjectFile", FIELDS, GeneratedVisitor)
     }
 }
 impl serde::Serialize for SwerveSample {

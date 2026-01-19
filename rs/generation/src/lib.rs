@@ -1,7 +1,7 @@
 pub mod generate;
 pub mod heading;
 pub mod intervals;
-pub mod remote;
+// pub mod remote;
 
 /// A port of `WPILib`'s MathUtil.inputModulus
 #[must_use]

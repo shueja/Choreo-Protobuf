@@ -1,16 +1,16 @@
 use proto_rs::{
     entity::{
-        ForceVector, GenerationOutput, RequiredGenerationOutput, RequiredTrajectoryFile,
-        SwerveSample, SwerveTrajectory, TrajectoryFile,
+        ForceVector, GenerationOutput, ValidGenerationOutput, ValidTrajectoryFile,
+        SwerveSample, SwerveTrajectory, TrajectoryFile, Expr,
         parameters::{
-            DoubleParameters, Expr, ExprParameters, RequiredDoubleParameters, RequiredExpr,
-            RequiredExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig, RequiredDoubleBumper, RequiredDoubleModule, RequiredDoubleRobotConfig},
+            DoubleParameters, ExprParameters, ValidDoubleParameters,
+            ValidExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig, ValidDoubleBumper, ValidDoubleModule, ValidDoubleRobotConfig},
         },
     },
     service::{
         choreo_service_server::{ChoreoService, ChoreoServiceServer},
         commands::{
-            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, RequiredGenerateRequest, RequiredGenerateResponse, RequiredGetDefaultTrajectoryResponse
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, ValidGenerateRequest, ValidGenerateResponse, ValidGetDefaultTrajectoryResponse
         },
     }, validate::{response, validate},
 };
@@ -40,11 +40,11 @@ impl ChoreoService for ChoreoServerImpl {
         &self,
         request: Request<GenerateRequest>,
     ) -> Result<Response<GenerateResponse>, Status> {
-        let RequiredGenerateRequest { mut trajectory } = validate(request)?;
+        let ValidGenerateRequest { mut trajectory } = validate(request)?;
         trajectory.name="TEST123".to_string();
         trajectory.params.target_dt = Expr { value: 1.0, expr: "1.0 s".to_string() };
         // do things with the non-optioned struct
-        response(RequiredGenerateResponse {
+        response(ValidGenerateResponse {
             trajectory
         })
     }

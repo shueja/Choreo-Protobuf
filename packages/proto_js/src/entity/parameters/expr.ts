@@ -6,8 +6,8 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Expr } from "../expression";
 import { ExprConstraint } from "./constraint/expr";
-import { Expr } from "./expression";
 import { ExprWaypoint } from "./waypoint/expr";
 
 export interface ExprParameters {

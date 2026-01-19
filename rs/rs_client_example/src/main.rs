@@ -1,6 +1,6 @@
 use tokio::time::Instant;
 
-use proto_rs::{entity::{RequiredTrajectoryFile, SwerveSample, generation_output::Trajectory}, service::{choreo_service_client::ChoreoServiceClient, commands::{EchoSwerveSampleRequest, GenerateRequest}}};
+use proto_rs::{entity::{ValidTrajectoryFile, SwerveSample, generation_output::Trajectory}, service::{choreo_service_client::ChoreoServiceClient, commands::{EchoSwerveSampleRequest, GenerateRequest}}};
 
 async fn timeit<F: AsyncFnOnce() -> T, T>(f: F) -> T {
   let start = Instant::now();

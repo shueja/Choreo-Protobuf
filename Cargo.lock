@@ -139,6 +139,7 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 name = "choreo-generation"
 version = "0.1.0"
 dependencies = [
+ "proto_rs",
  "trajoptlib",
 ]
 
@@ -1000,8 +1001,8 @@ dependencies = [
  "pbjson",
  "pbjson-types",
  "prost 0.14.3",
- "required_proc",
  "serde",
+ "todouble_derive",
  "tokio",
  "tonic",
  "tonic-buf-build",
@@ -1009,6 +1010,7 @@ dependencies = [
  "tonic-prost",
  "tonic-prost-build",
  "utility-types",
+ "valid_proc",
  "walkdir",
 ]
 
@@ -1104,18 +1106,6 @@ name = "regex-syntax"
 version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a2d987857b319362043e95f5353c0535c1f58eec5336fdfcf626430af7def58"
-
-[[package]]
-name = "required_proc"
-version = "0.1.0"
-dependencies = [
- "darling",
- "deluxe",
- "proc-macro2",
- "prost 0.14.3",
- "quote",
- "syn",
-]
 
 [[package]]
 name = "rs_client_example"
@@ -1327,6 +1317,17 @@ version = "2.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ebc4ee7f67670e9b64d05fa4253e753e016c6c95ff35b89b7941d6b856dec1d5"
 dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "todouble_derive"
+version = "0.1.0"
+dependencies = [
+ "darling",
+ "deluxe",
  "proc-macro2",
  "quote",
  "syn",
@@ -1651,6 +1652,18 @@ dependencies = [
  "js-sys",
  "rand",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "valid_proc"
+version = "0.1.0"
+dependencies = [
+ "darling",
+ "deluxe",
+ "proc-macro2",
+ "prost 0.14.3",
+ "quote",
+ "syn",
 ]
 
 [[package]]

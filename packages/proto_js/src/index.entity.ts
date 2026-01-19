@@ -7,7 +7,9 @@
 
 export * from "./entity/differential_sample";
 export * from "./entity/drive_type";
+export * from "./entity/expression";
 export * as parameters from "./index.entity.parameters";
+export * from "./entity/project_file";
 export * from "./entity/swerve_sample";
 export * from "./entity/trajectory";
 export * from "./entity/trajectory_file";

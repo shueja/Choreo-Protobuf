@@ -34,6 +34,8 @@ declare type Builtin_22 = Date | Function | Uint8Array | string | number | boole
 
 declare type Builtin_23 = Date | Function | Uint8Array | string | number | boolean | undefined;
 
+declare type Builtin_24 = Date | Function | Uint8Array | string | number | boolean | undefined;
+
 declare type Builtin_3 = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 declare type Builtin_4 = Date | Function | Uint8Array | string | number | boolean | undefined;
@@ -49,17 +51,17 @@ declare type Builtin_8 = Date | Function | Uint8Array | string | number | boolea
 declare type Builtin_9 = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 declare interface ChoreoService {
-    EchoSwerveSample(request: DeepPartial_22<EchoSwerveSampleRequest>, metadata?: grpc.Metadata): Promise<EchoSwerveSampleResponse>;
-    Generate(request: DeepPartial_22<GenerateRequest>, metadata?: grpc.Metadata): Promise<GenerateResponse>;
-    GetDefaultTrajectory(request: DeepPartial_22<Empty>, metadata?: grpc.Metadata): Promise<GetDefaultTrajectoryResponse>;
+    EchoSwerveSample(request: DeepPartial_23<EchoSwerveSampleRequest>, metadata?: grpc.Metadata): Promise<EchoSwerveSampleResponse>;
+    Generate(request: DeepPartial_23<GenerateRequest>, metadata?: grpc.Metadata): Promise<GenerateResponse>;
+    GetDefaultTrajectory(request: DeepPartial_23<Empty>, metadata?: grpc.Metadata): Promise<GetDefaultTrajectoryResponse>;
 }
 
 declare class ChoreoServiceClientImpl implements ChoreoService {
     private readonly rpc;
     constructor(rpc: Rpc);
-    EchoSwerveSample(request: DeepPartial_22<EchoSwerveSampleRequest>, metadata?: grpc.Metadata): Promise<EchoSwerveSampleResponse>;
-    Generate(request: DeepPartial_22<GenerateRequest>, metadata?: grpc.Metadata): Promise<GenerateResponse>;
-    GetDefaultTrajectory(request: DeepPartial_22<Empty>, metadata?: grpc.Metadata): Promise<GetDefaultTrajectoryResponse>;
+    EchoSwerveSample(request: DeepPartial_23<EchoSwerveSampleRequest>, metadata?: grpc.Metadata): Promise<EchoSwerveSampleResponse>;
+    Generate(request: DeepPartial_23<GenerateRequest>, metadata?: grpc.Metadata): Promise<GenerateResponse>;
+    GetDefaultTrajectory(request: DeepPartial_23<Empty>, metadata?: grpc.Metadata): Promise<GetDefaultTrajectoryResponse>;
 }
 
 declare const ChoreoServiceDesc: {
@@ -251,6 +253,16 @@ declare type DeepPartial_23<T> = T extends Builtin_23 ? T : T extends globalThis
     [K in keyof T]?: DeepPartial_23<T[K]>;
 } : Partial<T>;
 
+declare type DeepPartial_24<T> = T extends Builtin_24 ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial_24<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial_24<U>> : T extends {
+    $case: string;
+} ? {
+    [K in keyof Omit<T, "$case">]?: DeepPartial_24<T[K]>;
+} & {
+    $case: T["$case"];
+} : T extends {} ? {
+    [K in keyof T]?: DeepPartial_24<T[K]>;
+} : Partial<T>;
+
 declare type DeepPartial_3<T> = T extends Builtin_3 ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial_3<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial_3<U>> : T extends {
     $case: string;
 } ? {
@@ -342,7 +354,7 @@ declare interface DifferentialTrajectory {
     samples: DifferentialSample[];
 }
 
-declare const DifferentialTrajectory: MessageFns_17<DifferentialTrajectory>;
+declare const DifferentialTrajectory: MessageFns_18<DifferentialTrajectory>;
 
 declare interface DoubleBumper {
     front: number;
@@ -455,13 +467,13 @@ declare interface EchoSwerveSampleRequest {
     sample: SwerveSample | undefined;
 }
 
-declare const EchoSwerveSampleRequest: MessageFns_19<EchoSwerveSampleRequest>;
+declare const EchoSwerveSampleRequest: MessageFns_20<EchoSwerveSampleRequest>;
 
 declare interface EchoSwerveSampleResponse {
     sample: SwerveSample | undefined;
 }
 
-declare const EchoSwerveSampleResponse: MessageFns_19<EchoSwerveSampleResponse>;
+declare const EchoSwerveSampleResponse: MessageFns_20<EchoSwerveSampleResponse>;
 
 /**
  * A generic empty message that you can re-use to avoid defining duplicated
@@ -475,7 +487,7 @@ declare const EchoSwerveSampleResponse: MessageFns_19<EchoSwerveSampleResponse>;
 declare interface Empty {
 }
 
-declare const Empty: MessageFns_22<Empty>;
+declare const Empty: MessageFns_23<Empty>;
 
 export declare namespace entity {
     export {
@@ -484,6 +496,8 @@ export declare namespace entity {
         driveTypeFromJSON,
         driveTypeToJSON,
         DriveType,
+        Expr,
+        ProjectFile,
         ForceVector,
         SwerveSample,
         SwerveTrajectory,
@@ -577,10 +591,16 @@ declare type Exact_21<P, I extends P> = P extends Builtin_21 ? P : P & {
     [K in Exclude<keyof I, KeysOfUnion_21<P>>]: never;
 };
 
-declare type Exact_22<P, I extends P> = P extends Builtin_23 ? P : P & {
+declare type Exact_22<P, I extends P> = P extends Builtin_22 ? P : P & {
     [K in keyof P]: Exact_22<P[K], I[K]>;
 } & {
     [K in Exclude<keyof I, KeysOfUnion_22<P>>]: never;
+};
+
+declare type Exact_23<P, I extends P> = P extends Builtin_24 ? P : P & {
+    [K in keyof P]: Exact_23<P[K], I[K]>;
+} & {
+    [K in Exclude<keyof I, KeysOfUnion_23<P>>]: never;
 };
 
 declare type Exact_3<P, I extends P> = P extends Builtin_3 ? P : P & {
@@ -733,19 +753,19 @@ declare interface ForceVector {
     y: number;
 }
 
-declare const ForceVector: MessageFns_16<ForceVector>;
+declare const ForceVector: MessageFns_17<ForceVector>;
 
 declare interface GenerateRequest {
     trajectory: TrajectoryFile | undefined;
 }
 
-declare const GenerateRequest: MessageFns_20<GenerateRequest>;
+declare const GenerateRequest: MessageFns_21<GenerateRequest>;
 
 declare interface GenerateResponse {
     trajectory: TrajectoryFile | undefined;
 }
 
-declare const GenerateResponse: MessageFns_20<GenerateResponse>;
+declare const GenerateResponse: MessageFns_21<GenerateResponse>;
 
 declare interface GenerationOutput {
     trajectory?: {
@@ -760,13 +780,13 @@ declare interface GenerationOutput {
     config: DoubleRobotConfig | undefined;
 }
 
-declare const GenerationOutput: MessageFns_17<GenerationOutput>;
+declare const GenerationOutput: MessageFns_18<GenerationOutput>;
 
 declare interface GetDefaultTrajectoryResponse {
     trajectory: TrajectoryFile | undefined;
 }
 
-declare const GetDefaultTrajectoryResponse: MessageFns_21<GetDefaultTrajectoryResponse>;
+declare const GetDefaultTrajectoryResponse: MessageFns_22<GetDefaultTrajectoryResponse>;
 
 export declare namespace google {
     export {
@@ -821,6 +841,8 @@ declare type KeysOfUnion_20<T> = T extends T ? keyof T : never;
 declare type KeysOfUnion_21<T> = T extends T ? keyof T : never;
 
 declare type KeysOfUnion_22<T> = T extends T ? keyof T : never;
+
+declare type KeysOfUnion_23<T> = T extends T ? keyof T : never;
 
 declare type KeysOfUnion_3<T> = T extends T ? keyof T : never;
 
@@ -983,8 +1005,17 @@ declare interface MessageFns_22<T> {
     decode(input: BinaryReader | Uint8Array, length?: number): T;
     fromJSON(object: any): T;
     toJSON(message: T): unknown;
-    create<I extends Exact_22<DeepPartial_23<T>, I>>(base?: I): T;
-    fromPartial<I extends Exact_22<DeepPartial_23<T>, I>>(object: I): T;
+    create<I extends Exact_22<DeepPartial_22<T>, I>>(base?: I): T;
+    fromPartial<I extends Exact_22<DeepPartial_22<T>, I>>(object: I): T;
+}
+
+declare interface MessageFns_23<T> {
+    encode(message: T, writer?: BinaryWriter): BinaryWriter;
+    decode(input: BinaryReader | Uint8Array, length?: number): T;
+    fromJSON(object: any): T;
+    toJSON(message: T): unknown;
+    create<I extends Exact_23<DeepPartial_24<T>, I>>(base?: I): T;
+    fromPartial<I extends Exact_23<DeepPartial_24<T>, I>>(object: I): T;
 }
 
 declare interface MessageFns_3<T> {
@@ -1059,11 +1090,18 @@ export declare namespace parameters {
         WaypointIDLast,
         WaypointIDX,
         WaypointID,
-        Expr,
         DoubleParameters,
         ExprParameters
     }
 }
+
+declare interface ProjectFile {
+    name: string;
+    config: ExprRobotConfig | undefined;
+    driveType: DriveType;
+}
+
+declare const ProjectFile: MessageFns_16<ProjectFile>;
 
 export declare namespace protobuf {
     export {
@@ -1117,13 +1155,13 @@ declare interface SwerveSample {
     br: ForceVector | undefined;
 }
 
-declare const SwerveSample: MessageFns_16<SwerveSample>;
+declare const SwerveSample: MessageFns_17<SwerveSample>;
 
 declare interface SwerveTrajectory {
     samples: SwerveSample[];
 }
 
-declare const SwerveTrajectory: MessageFns_17<SwerveTrajectory>;
+declare const SwerveTrajectory: MessageFns_18<SwerveTrajectory>;
 
 declare interface TestDouble {
     test: string;
@@ -1144,7 +1182,7 @@ declare interface TrajectoryFile {
     trajectory?: GenerationOutput | undefined;
 }
 
-declare const TrajectoryFile: MessageFns_18<TrajectoryFile>;
+declare const TrajectoryFile: MessageFns_19<TrajectoryFile>;
 
 declare type UnaryMethodDefinitionish = UnaryMethodDefinitionishR;
 

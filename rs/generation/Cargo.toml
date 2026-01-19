@@ -5,4 +5,5 @@ edition = "2024"
 
 
 [dependencies]
+proto_rs = { version = "0.1.0", path = "../proto_rs", features=["entity"] }
 trajoptlib = { path = "../../trajoptlib" }

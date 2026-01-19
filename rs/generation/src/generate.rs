@@ -10,7 +10,7 @@ use super::transformers::{
     TrajectoryFileGenerator,
 };
 use crate::ChoreoResult;
-use crate::spec::project::ProjectFile;
+use proto_rs::entity::ValidProjectFile;
 use crate::spec::trajectory::{Sample, TrajectoryFile};
 
 /// A [`OnceLock`] is a synchronization primitive that can be written to once.

@@ -12,13 +12,15 @@ serde = "1.0.228"
 pbjson = "0.9.0"
 pbjson-types = "0.9.0"
 utility-types = "0.0.4"
-required_proc = { version = "0.1.0", path = "../required_proc" }
+valid_proc = { version = "0.1.0", path = "../valid_proc" }
+todouble_derive = { version = "0.1.0", path = "../todouble_derive" }
 [build-dependencies]
 tonic-prost-build = "*"
 walkdir = "2.5.0"
 tonic-build = "0.10"
 tonic-buf-build = "0.1.2"
-required_proc = { version = "0.1.0", path = "../required_proc" }
+valid_proc = { version = "0.1.0", path = "../valid_proc" }
+todouble_derive = { version = "0.1.0", path = "../todouble_derive" }
 [features]
 default = []
 # @@protoc_deletion_point(features)
@@ -28,10 +30,10 @@ proto_full = ["entity","entity-parameters","entity-parameters-constraint","entit
 "entity" = ["entity-parameters","entity-parameters-robotconfig"]
 "entity-parameters" = ["entity","entity-parameters-constraint","entity-parameters-waypoint"]
 "entity-parameters-constraint" = ["entity-parameters","entity-parameters-constraint-max_acceleration","entity-parameters-constraint-maxvelocity"]
-"entity-parameters-constraint-max_acceleration" = ["entity-parameters"]
-"entity-parameters-constraint-maxvelocity" = ["entity-parameters"]
-"entity-parameters-robotconfig" = ["entity-parameters"]
-"entity-parameters-waypoint" = ["entity-parameters"]
+"entity-parameters-constraint-max_acceleration" = ["entity"]
+"entity-parameters-constraint-maxvelocity" = ["entity"]
+"entity-parameters-robotconfig" = ["entity","entity-parameters"]
+"entity-parameters-waypoint" = ["entity"]
 "service" = ["service-commands"]
 "service-commands" = ["entity"]
 ## @@protoc_insertion_point(features)

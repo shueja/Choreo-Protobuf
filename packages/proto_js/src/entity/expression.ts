@@ -2,41 +2,52 @@
 // versions:
 //   protoc-gen-ts_proto  v2.11.0
 //   protoc               unknown
-// source: entity/parameters/constraint/max_acceleration/expr.proto
+// source: entity/expression.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Expr } from "../../../expression";
 
-export interface ExprMaxAcceleration {
-  max: Expr | undefined;
+export interface Expr {
+  value: number;
+  expr: string;
 }
 
-function createBaseExprMaxAcceleration(): ExprMaxAcceleration {
-  return { max: undefined };
+function createBaseExpr(): Expr {
+  return { value: 0, expr: "" };
 }
 
-export const ExprMaxAcceleration: MessageFns<ExprMaxAcceleration> = {
-  encode(message: ExprMaxAcceleration, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.max !== undefined) {
-      Expr.encode(message.max, writer.uint32(10).fork()).join();
+export const Expr: MessageFns<Expr> = {
+  encode(message: Expr, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.value !== 0) {
+      writer.uint32(9).double(message.value);
+    }
+    if (message.expr !== "") {
+      writer.uint32(18).string(message.expr);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): ExprMaxAcceleration {
+  decode(input: BinaryReader | Uint8Array, length?: number): Expr {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseExprMaxAcceleration();
+    const message = createBaseExpr();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 9) {
             break;
           }
 
-          message.max = Expr.decode(reader, reader.uint32());
+          message.value = reader.double();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.expr = reader.string();
           continue;
         }
       }
@@ -48,24 +59,31 @@ export const ExprMaxAcceleration: MessageFns<ExprMaxAcceleration> = {
     return message;
   },
 
-  fromJSON(object: any): ExprMaxAcceleration {
-    return { max: isSet(object.max) ? Expr.fromJSON(object.max) : undefined };
+  fromJSON(object: any): Expr {
+    return {
+      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
+      expr: isSet(object.expr) ? globalThis.String(object.expr) : "",
+    };
   },
 
-  toJSON(message: ExprMaxAcceleration): unknown {
+  toJSON(message: Expr): unknown {
     const obj: any = {};
-    if (message.max !== undefined) {
-      obj.max = Expr.toJSON(message.max);
+    if (message.value !== 0) {
+      obj.value = message.value;
+    }
+    if (message.expr !== "") {
+      obj.expr = message.expr;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ExprMaxAcceleration>, I>>(base?: I): ExprMaxAcceleration {
-    return ExprMaxAcceleration.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<Expr>, I>>(base?: I): Expr {
+    return Expr.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<ExprMaxAcceleration>, I>>(object: I): ExprMaxAcceleration {
-    const message = createBaseExprMaxAcceleration();
-    message.max = (object.max !== undefined && object.max !== null) ? Expr.fromPartial(object.max) : undefined;
+  fromPartial<I extends Exact<DeepPartial<Expr>, I>>(object: I): Expr {
+    const message = createBaseExpr();
+    message.value = object.value ?? 0;
+    message.expr = object.expr ?? "";
     return message;
   },
 };
