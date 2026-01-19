@@ -973,6 +973,8 @@ dependencies = [
 name = "rs_client_example"
 version = "0.1.0"
 dependencies = [
+ "pbjson",
+ "pbjson-types",
  "proto_rs",
  "tokio",
  "tonic",

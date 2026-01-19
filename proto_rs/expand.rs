@@ -1212,6 +1212,99 @@ pub mod entity {
                 && self.fr == other.fr && self.bl == other.bl && self.br == other.br
         }
     }
+    impl TryFrom<SwerveSample> for RequiredSwerveSample {
+        type Error = String;
+        fn try_from(
+            optional: SwerveSample,
+        ) -> Result<RequiredSwerveSample, Self::Error> {
+            Ok(RequiredSwerveSample {
+                t: optional.t,
+                x: optional.x,
+                y: optional.y,
+                heading: optional.heading,
+                vx: optional.vx,
+                vy: optional.vy,
+                omega: optional.omega,
+                ax: optional.ax,
+                ay: optional.ay,
+                alpha: optional.alpha,
+                fl: match optional.fl {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("fl is missing".to_string()),
+                },
+                fr: match optional.fr {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("fr is missing".to_string()),
+                },
+                bl: match optional.bl {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("bl is missing".to_string()),
+                },
+                br: match optional.br {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("br is missing".to_string()),
+                },
+            })
+        }
+    }
+    impl crate::validate::Validate for SwerveSample {
+        type Valid = RequiredSwerveSample;
+        fn validate(self) -> Result<RequiredSwerveSample, String> {
+            self.try_into()
+        }
+    }
     pub struct SwerveTrajectory {
         #[prost(message, repeated, tag = "1")]
         pub samples: ::prost::alloc::vec::Vec<SwerveSample>,
@@ -1587,6 +1680,57 @@ pub mod entity {
                 && self.config == other.config && self.trajectory == other.trajectory
         }
     }
+    impl TryFrom<GenerationOutput> for RequiredGenerationOutput {
+        type Error = String;
+        fn try_from(
+            optional: GenerationOutput,
+        ) -> Result<RequiredGenerationOutput, Self::Error> {
+            Ok(RequiredGenerationOutput {
+                splits: optional.splits,
+                waypoints: optional.waypoints,
+                config: match optional.config {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("config is missing".to_string()),
+                },
+                trajectory: match optional.trajectory {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("trajectory is missing".to_string()),
+                },
+            })
+        }
+    }
+    impl crate::validate::Validate for GenerationOutput {
+        type Valid = RequiredGenerationOutput;
+        fn validate(self) -> Result<RequiredGenerationOutput, String> {
+            self.try_into()
+        }
+    }
     /// Nested message and enum types in `GenerationOutput`.
     pub mod generation_output {
         pub enum Trajectory {
@@ -1920,6 +2064,73 @@ pub mod entity {
         fn eq(&self, other: &RequiredTrajectoryFile) -> bool {
             self.name == other.name && self.params == other.params
                 && self.snapshot == other.snapshot && self.trajectory == other.trajectory
+        }
+    }
+    impl TryFrom<TrajectoryFile> for RequiredTrajectoryFile {
+        type Error = String;
+        fn try_from(
+            optional: TrajectoryFile,
+        ) -> Result<RequiredTrajectoryFile, Self::Error> {
+            Ok(RequiredTrajectoryFile {
+                name: optional.name,
+                params: match optional.params {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("params is missing".to_string()),
+                },
+                snapshot: match optional.snapshot {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("snapshot is missing".to_string()),
+                },
+                trajectory: match optional.trajectory {
+                    Some(object) => {
+                        match object
+                            .try_into()
+                            .map_err(|e| {
+                                ::alloc::__export::must_use({
+                                        ::alloc::fmt::format(format_args!("{0}", e))
+                                    })
+                                    .to_string()
+                            })
+                        {
+                            Ok(required_object) => required_object,
+                            Err(e) => return Err(e),
+                        }
+                    }
+                    None => return Err("trajectory is missing".to_string()),
+                },
+            })
+        }
+    }
+    impl crate::validate::Validate for TrajectoryFile {
+        type Valid = RequiredTrajectoryFile;
+        fn validate(self) -> Result<RequiredTrajectoryFile, String> {
+            self.try_into()
         }
     }
     impl serde::Serialize for DifferentialSample {
@@ -3738,6 +3949,38 @@ pub mod entity {
                 ::core::hash::Hash::hash(&self.id, state)
             }
         }
+        impl TryFrom<WaypointId> for RequiredWaypointId {
+            type Error = String;
+            fn try_from(
+                optional: WaypointId,
+            ) -> Result<RequiredWaypointId, Self::Error> {
+                Ok(RequiredWaypointId {
+                    id: match optional.id {
+                        Some(object) => {
+                            match object
+                                .try_into()
+                                .map_err(|e| {
+                                    ::alloc::__export::must_use({
+                                            ::alloc::fmt::format(format_args!("{0}", e))
+                                        })
+                                        .to_string()
+                                })
+                            {
+                                Ok(required_object) => required_object,
+                                Err(e) => return Err(e),
+                            }
+                        }
+                        None => return Err("id is missing".to_string()),
+                    },
+                })
+            }
+        }
+        impl crate::validate::Validate for WaypointId {
+            type Valid = RequiredWaypointId;
+            fn validate(self) -> Result<RequiredWaypointId, String> {
+                self.try_into()
+            }
+        }
         /// Nested message and enum types in `WaypointID`.
         pub mod waypoint_id {
             pub enum Id {
@@ -4379,6 +4622,40 @@ pub mod entity {
             fn eq(&self, other: &RequiredExprParameters) -> bool {
                 self.target_dt == other.target_dt && self.waypoints == other.waypoints
                     && self.constraints == other.constraints
+            }
+        }
+        impl TryFrom<ExprParameters> for RequiredExprParameters {
+            type Error = String;
+            fn try_from(
+                optional: ExprParameters,
+            ) -> Result<RequiredExprParameters, Self::Error> {
+                Ok(RequiredExprParameters {
+                    target_dt: match optional.target_dt {
+                        Some(object) => {
+                            match object
+                                .try_into()
+                                .map_err(|e| {
+                                    ::alloc::__export::must_use({
+                                            ::alloc::fmt::format(format_args!("{0}", e))
+                                        })
+                                        .to_string()
+                                })
+                            {
+                                Ok(required_object) => required_object,
+                                Err(e) => return Err(e),
+                            }
+                        }
+                        None => return Err("target_dt is missing".to_string()),
+                    },
+                    waypoints: optional.waypoints,
+                    constraints: optional.constraints,
+                })
+            }
+        }
+        impl crate::validate::Validate for ExprParameters {
+            type Valid = RequiredExprParameters;
+            fn validate(self) -> Result<RequiredExprParameters, String> {
+                self.try_into()
             }
         }
         impl serde::Serialize for DoubleParameters {
@@ -5433,6 +5710,73 @@ pub mod entity {
                         && self.to == other.to && self.data == other.data
                 }
             }
+            impl TryFrom<DoubleConstraint> for RequiredDoubleConstraint {
+                type Error = String;
+                fn try_from(
+                    optional: DoubleConstraint,
+                ) -> Result<RequiredDoubleConstraint, Self::Error> {
+                    Ok(RequiredDoubleConstraint {
+                        enabled: optional.enabled,
+                        from: match optional.from {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("from is missing".to_string()),
+                        },
+                        to: match optional.to {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("to is missing".to_string()),
+                        },
+                        data: match optional.data {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("data is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for DoubleConstraint {
+                type Valid = RequiredDoubleConstraint;
+                fn validate(self) -> Result<RequiredDoubleConstraint, String> {
+                    self.try_into()
+                }
+            }
             /// Nested message and enum types in `DoubleConstraint`.
             pub mod double_constraint {
                 /// ExprMaxVelocity maxvelocity = 4;
@@ -5800,6 +6144,73 @@ pub mod entity {
                 fn eq(&self, other: &RequiredExprConstraint) -> bool {
                     self.enabled == other.enabled && self.from == other.from
                         && self.to == other.to && self.data == other.data
+                }
+            }
+            impl TryFrom<ExprConstraint> for RequiredExprConstraint {
+                type Error = String;
+                fn try_from(
+                    optional: ExprConstraint,
+                ) -> Result<RequiredExprConstraint, Self::Error> {
+                    Ok(RequiredExprConstraint {
+                        enabled: optional.enabled,
+                        from: match optional.from {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("from is missing".to_string()),
+                        },
+                        to: match optional.to {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("to is missing".to_string()),
+                        },
+                        data: match optional.data {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("data is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for ExprConstraint {
+                type Valid = RequiredExprConstraint;
+                fn validate(self) -> Result<RequiredExprConstraint, String> {
+                    self.try_into()
                 }
             }
             /// Nested message and enum types in `ExprConstraint`.
@@ -6557,6 +6968,38 @@ pub mod entity {
                         self.max == other.max
                     }
                 }
+                impl TryFrom<ExprMaxAcceleration> for RequiredExprMaxAcceleration {
+                    type Error = String;
+                    fn try_from(
+                        optional: ExprMaxAcceleration,
+                    ) -> Result<RequiredExprMaxAcceleration, Self::Error> {
+                        Ok(RequiredExprMaxAcceleration {
+                            max: match optional.max {
+                                Some(object) => {
+                                    match object
+                                        .try_into()
+                                        .map_err(|e| {
+                                            ::alloc::__export::must_use({
+                                                    ::alloc::fmt::format(format_args!("{0}", e))
+                                                })
+                                                .to_string()
+                                        })
+                                    {
+                                        Ok(required_object) => required_object,
+                                        Err(e) => return Err(e),
+                                    }
+                                }
+                                None => return Err("max is missing".to_string()),
+                            },
+                        })
+                    }
+                }
+                impl crate::validate::Validate for ExprMaxAcceleration {
+                    type Valid = RequiredExprMaxAcceleration;
+                    fn validate(self) -> Result<RequiredExprMaxAcceleration, String> {
+                        self.try_into()
+                    }
+                }
                 impl serde::Serialize for DoubleMaxAcceleration {
                     #[allow(deprecated)]
                     fn serialize<S>(
@@ -7097,6 +7540,38 @@ pub mod entity {
                     #[inline]
                     fn eq(&self, other: &RequiredExprMaxVelocity) -> bool {
                         self.max == other.max
+                    }
+                }
+                impl TryFrom<ExprMaxVelocity> for RequiredExprMaxVelocity {
+                    type Error = String;
+                    fn try_from(
+                        optional: ExprMaxVelocity,
+                    ) -> Result<RequiredExprMaxVelocity, Self::Error> {
+                        Ok(RequiredExprMaxVelocity {
+                            max: match optional.max {
+                                Some(object) => {
+                                    match object
+                                        .try_into()
+                                        .map_err(|e| {
+                                            ::alloc::__export::must_use({
+                                                    ::alloc::fmt::format(format_args!("{0}", e))
+                                                })
+                                                .to_string()
+                                        })
+                                    {
+                                        Ok(required_object) => required_object,
+                                        Err(e) => return Err(e),
+                                    }
+                                }
+                                None => return Err("max is missing".to_string()),
+                            },
+                        })
+                    }
+                }
+                impl crate::validate::Validate for ExprMaxVelocity {
+                    type Valid = RequiredExprMaxVelocity;
+                    fn validate(self) -> Result<RequiredExprMaxVelocity, String> {
+                        self.try_into()
                     }
                 }
                 pub struct TestExpr {
@@ -8512,6 +8987,114 @@ pub mod entity {
                         && self.back_right == other.back_right
                 }
             }
+            impl TryFrom<DoubleRobotConfig> for RequiredDoubleRobotConfig {
+                type Error = String;
+                fn try_from(
+                    optional: DoubleRobotConfig,
+                ) -> Result<RequiredDoubleRobotConfig, Self::Error> {
+                    Ok(RequiredDoubleRobotConfig {
+                        mass: optional.mass,
+                        inertia: optional.inertia,
+                        gearing: optional.gearing,
+                        radius: optional.radius,
+                        vmax: optional.vmax,
+                        tmax: optional.tmax,
+                        cof: optional.cof,
+                        differential_track_width: optional.differential_track_width,
+                        bumper: match optional.bumper {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("bumper is missing".to_string()),
+                        },
+                        front_left: match optional.front_left {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("front_left is missing".to_string()),
+                        },
+                        front_right: match optional.front_right {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("front_right is missing".to_string()),
+                        },
+                        back_left: match optional.back_left {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("back_left is missing".to_string()),
+                        },
+                        back_right: match optional.back_right {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("back_right is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for DoubleRobotConfig {
+                type Valid = RequiredDoubleRobotConfig;
+                fn validate(self) -> Result<RequiredDoubleRobotConfig, String> {
+                    self.try_into()
+                }
+            }
             pub struct ExprModule {
                 #[prost(message, optional, tag = "1")]
                 pub x: ::core::option::Option<super::Expr>,
@@ -8652,6 +9235,55 @@ pub mod entity {
                 #[inline]
                 fn eq(&self, other: &RequiredExprModule) -> bool {
                     self.x == other.x && self.y == other.y
+                }
+            }
+            impl TryFrom<ExprModule> for RequiredExprModule {
+                type Error = String;
+                fn try_from(
+                    optional: ExprModule,
+                ) -> Result<RequiredExprModule, Self::Error> {
+                    Ok(RequiredExprModule {
+                        x: match optional.x {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("x is missing".to_string()),
+                        },
+                        y: match optional.y {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("y is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for ExprModule {
+                type Valid = RequiredExprModule;
+                fn validate(self) -> Result<RequiredExprModule, String> {
+                    self.try_into()
                 }
             }
             pub struct ExprBumper {
@@ -8864,6 +9496,89 @@ pub mod entity {
                 fn eq(&self, other: &RequiredExprBumper) -> bool {
                     self.front == other.front && self.left == other.left
                         && self.right == other.right && self.back == other.back
+                }
+            }
+            impl TryFrom<ExprBumper> for RequiredExprBumper {
+                type Error = String;
+                fn try_from(
+                    optional: ExprBumper,
+                ) -> Result<RequiredExprBumper, Self::Error> {
+                    Ok(RequiredExprBumper {
+                        front: match optional.front {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("front is missing".to_string()),
+                        },
+                        left: match optional.left {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("left is missing".to_string()),
+                        },
+                        right: match optional.right {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("right is missing".to_string()),
+                        },
+                        back: match optional.back {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("back is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for ExprBumper {
+                type Valid = RequiredExprBumper;
+                fn validate(self) -> Result<RequiredExprBumper, String> {
+                    self.try_into()
                 }
             }
             pub struct ExprRobotConfig {
@@ -9420,6 +10135,247 @@ pub mod entity {
                         && self.front_right == other.front_right
                         && self.back_left == other.back_left
                         && self.back_right == other.back_right
+                }
+            }
+            impl TryFrom<ExprRobotConfig> for RequiredExprRobotConfig {
+                type Error = String;
+                fn try_from(
+                    optional: ExprRobotConfig,
+                ) -> Result<RequiredExprRobotConfig, Self::Error> {
+                    Ok(RequiredExprRobotConfig {
+                        mass: match optional.mass {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("mass is missing".to_string()),
+                        },
+                        inertia: match optional.inertia {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("inertia is missing".to_string()),
+                        },
+                        gearing: match optional.gearing {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("gearing is missing".to_string()),
+                        },
+                        radius: match optional.radius {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("radius is missing".to_string()),
+                        },
+                        vmax: match optional.vmax {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("vmax is missing".to_string()),
+                        },
+                        tmax: match optional.tmax {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("tmax is missing".to_string()),
+                        },
+                        cof: match optional.cof {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("cof is missing".to_string()),
+                        },
+                        differential_track_width: match optional.differential_track_width
+                        {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => {
+                                return Err(
+                                    "differential_track_width is missing".to_string(),
+                                );
+                            }
+                        },
+                        bumper: match optional.bumper {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("bumper is missing".to_string()),
+                        },
+                        front_left: match optional.front_left {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("front_left is missing".to_string()),
+                        },
+                        front_right: match optional.front_right {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("front_right is missing".to_string()),
+                        },
+                        back_left: match optional.back_left {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("back_left is missing".to_string()),
+                        },
+                        back_right: match optional.back_right {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("back_right is missing".to_string()),
+                        },
+                    })
+                }
+            }
+            impl crate::validate::Validate for ExprRobotConfig {
+                type Valid = RequiredExprRobotConfig;
+                fn validate(self) -> Result<RequiredExprRobotConfig, String> {
+                    self.try_into()
                 }
             }
             impl serde::Serialize for DoubleBumper {
@@ -11414,6 +12370,77 @@ pub mod entity {
                         && self.heading == other.heading
                 }
             }
+            impl TryFrom<ExprWaypoint> for RequiredExprWaypoint {
+                type Error = String;
+                fn try_from(
+                    optional: ExprWaypoint,
+                ) -> Result<RequiredExprWaypoint, Self::Error> {
+                    Ok(RequiredExprWaypoint {
+                        x: match optional.x {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("x is missing".to_string()),
+                        },
+                        y: match optional.y {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("y is missing".to_string()),
+                        },
+                        heading: match optional.heading {
+                            Some(object) => {
+                                match object
+                                    .try_into()
+                                    .map_err(|e| {
+                                        ::alloc::__export::must_use({
+                                                ::alloc::fmt::format(format_args!("{0}", e))
+                                            })
+                                            .to_string()
+                                    })
+                                {
+                                    Ok(required_object) => required_object,
+                                    Err(e) => return Err(e),
+                                }
+                            }
+                            None => return Err("heading is missing".to_string()),
+                        },
+                        intervals: optional.intervals,
+                        split: optional.split,
+                        fix_translation: optional.fix_translation,
+                        fix_heading: optional.fix_heading,
+                        override_intervals: optional.override_intervals,
+                    })
+                }
+            }
+            impl crate::validate::Validate for ExprWaypoint {
+                type Valid = RequiredExprWaypoint;
+                fn validate(self) -> Result<RequiredExprWaypoint, String> {
+                    self.try_into()
+                }
+            }
             impl serde::Serialize for DoubleWaypoint {
                 #[allow(deprecated)]
                 fn serialize<S>(
@@ -11949,5 +12976,11 @@ pub mod entity {
                 }
             }
         }
+    }
+}
+pub mod validate {
+    pub trait Validate {
+        type Valid;
+        fn validate(self) -> Result<Self::Valid, String>;
     }
 }

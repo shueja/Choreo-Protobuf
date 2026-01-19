@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-proto_rs = { version = "0.1.0", path = "../proto_rs" }
+pbjson = "0.9.0"
+pbjson-types = "0.9.0"
+proto_rs = { version = "0.1.0", path = "../proto_rs", features = ["entity", "service"]}
 tokio = "1.49.0"
 tonic = "0.14.2"

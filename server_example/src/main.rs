@@ -4,16 +4,15 @@ use proto_rs::{
         SwerveSample, SwerveTrajectory, TrajectoryFile,
         parameters::{
             DoubleParameters, Expr, ExprParameters, RequiredDoubleParameters, RequiredExpr,
-            RequiredExprParameters, robotconfig::{RequiredDoubleBumper, RequiredDoubleModule, RequiredDoubleRobotConfig},
+            RequiredExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig, RequiredDoubleBumper, RequiredDoubleModule, RequiredDoubleRobotConfig},
         },
     },
     service::{
         choreo_service_server::{ChoreoService, ChoreoServiceServer},
         commands::{
-            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse,
-            GetDefaultTrajectoryResponse, RequiredGetDefaultTrajectoryResponse,
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, RequiredGenerateRequest, RequiredGetDefaultTrajectoryResponse
         },
-    },
+    }, validate::{validate},
 };
 use std::{str::FromStr, time::Duration, vec};
 use tonic::{Request, Response, Status, transport::Server};
@@ -41,29 +40,35 @@ impl ChoreoService for ChoreoServerImpl {
         &self,
         request: Request<GenerateRequest>,
     ) -> Result<Response<GenerateResponse>, Status> {
+        let request = validate(request)?;
+
         Ok(Response::new(GenerateResponse {
-            trajectory: request.into_inner().trajectory,
+            trajectory: Some(request.trajectory),
         }))
     }
     async fn get_default_trajectory(
         &self,
         _: Request<pbjson_types::Empty>,
     ) -> Result<Response<GetDefaultTrajectoryResponse>, Status> {
-        let params: RequiredTrajectoryFile = RequiredTrajectoryFile {
+        let params: TrajectoryFile = TrajectoryFile {
             name: "NewPath".to_string(),
-            params: RequiredExprParameters {
-                target_dt: RequiredExpr {
+            params: Some(ExprParameters {
+                target_dt: Some(Expr {
                     expr: "".to_string(),
                     value: 0.05,
-                },
+                }),
                 waypoints: vec![],
                 constraints: vec![],
-            },
-            snapshot: None,
-            trajectory: RequiredGenerationOutput {
+            }),
+            snapshot: Some(DoubleParameters {
+                target_dt: 0.05,
+                waypoints: vec![],
+                constraints: vec![],
+            }),
+            trajectory: Some(GenerationOutput {
                 splits: vec![],
                 waypoints: vec![],
-                config: RequiredDoubleRobotConfig {
+                config: Some(DoubleRobotConfig {
                     mass: 0.0,
                     inertia: 0.0,
                     gearing: 0.0,
@@ -72,20 +77,20 @@ impl ChoreoService for ChoreoServerImpl {
                     tmax: 0.0,
                     cof: 0.0,
                     differential_track_width: 0.0,
-                    bumper: RequiredDoubleBumper {front: 0.0, left:0.0, right:0.0, back:0.0},
-                    front_left: RequiredDoubleModule { x: 0.0, y: 0.0 },
-                    front_right: RequiredDoubleModule { x: 0.0, y: 0.0 },
-                    back_left: RequiredDoubleModule { x: 0.0, y: 0.0 },
-                    back_right: RequiredDoubleModule { x: 0.0, y: 0.0 },
-                },
-                trajectory: proto_rs::entity::generation_output::Trajectory::Swerve(
+                    bumper: Some(DoubleBumper {front: 0.0, left:0.0, right:0.0, back:0.0}),
+                    front_left: Some(DoubleModule { x: 0.0, y: 0.0 }),
+                    front_right: Some(DoubleModule { x: 0.0, y: 0.0 }),
+                    back_left: Some(DoubleModule { x: 0.0, y: 0.0 }),
+                    back_right: Some(DoubleModule { x: 0.0, y: 0.0 }),
+                }),
+                trajectory: Some(proto_rs::entity::generation_output::Trajectory::Swerve(
                     SwerveTrajectory { samples: vec![] },
-                ),
-            },
+                )),
+            }),
         };
-        Ok(Response::new(GetDefaultTrajectoryResponse::from(RequiredGetDefaultTrajectoryResponse{
-            trajectory: params
-        })))
+        Ok(Response::new(GetDefaultTrajectoryResponse{
+            trajectory: Some(params) 
+        }))
     }
 }
 const DEFAULT_MAX_AGE: Duration = Duration::from_secs(24 * 60 * 60);
