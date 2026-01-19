@@ -1,8 +1,8 @@
 use std::ops::{Add, Deref};
 
+use darling::FromMeta;
 use darling::ast::NestedMeta;
 use darling::util::PathList;
-use darling::FromMeta;
 use syn::{Attribute, Ident, Meta};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
@@ -50,7 +50,6 @@ impl FromMeta for IdentList {
         Ok(Self::new(values))
     }
 }
-
 
 // Source - https://stackoverflow.com/a/56264023
 // Posted by David Bernard, modified by community. See post 'Timeline' for change history
@@ -169,3 +168,5 @@ pub fn filter_forward_attrs<'a>(
         ForwardAttrsFilter::Not(not_allowed) => !not_allowed.contains(attr.path()),
     })
 }
+
+

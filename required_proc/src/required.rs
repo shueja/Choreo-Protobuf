@@ -3,12 +3,13 @@ use darling::util::{Ignored, PathList};
 use darling::{FromDeriveInput, FromField, FromMeta};
 use proc_macro::TokenStream;
 use quote::{ToTokens, format_ident, quote};
+use syn::punctuated::Punctuated;
+use syn::token::PathSep;
 use syn::{
-    AngleBracketedGenericArguments, Attribute, GenericArgument, Generics, Ident, PathArguments,
-    Type, TypePath, Visibility,
+    AngleBracketedGenericArguments, Attribute, GenericArgument, Generics, Ident, Path, PathArguments, PathSegment, QSelf, Token, Type, TypePath, Visibility
 };
 
-use crate::utils::{filter_forward_attrs, ForwardAttrsFilter};
+use crate::utils::{ForwardAttrsFilter, filter_forward_attrs};
 
 #[derive(Debug, FromMeta)]
 struct RequiredArgs {
@@ -33,7 +34,7 @@ struct RequiredField {
     #[darling(default)]
     forward_attrs: ForwardAttrsFilter,
     #[darling(default)]
-    optional: bool
+    optional: bool,
 }
 
 #[derive(Debug, FromDeriveInput)]
@@ -57,7 +58,9 @@ struct RequiredInput {
     args: RequiredArgs,
 }
 
+
 pub fn required(input: TokenStream) -> TokenStream {
+    // parse the struct or enum
     let derive_input = syn::parse_macro_input!(input as syn::DeriveInput);
 
     let input = match RequiredInput::from_derive_input(&derive_input) {
@@ -67,6 +70,7 @@ pub fn required(input: TokenStream) -> TokenStream {
         }
     };
 
+    // transfer the other derives besides this one
     let derive_attr = input.args.derive.as_ref().map(|derives| {
         let derives = derives.iter();
         quote! {
@@ -74,19 +78,29 @@ pub fn required(input: TokenStream) -> TokenStream {
         }
     });
 
-    let forward_attrs = filter_forward_attrs(input.attrs.iter(), &input.args.forward_attrs);
+    //let forward_attrs = filter_forward_attrs(input.attrs.iter(), &input.args.forward_attrs);
 
     let vis = input.vis;
     let _ident = input.ident;
 
+    // handling for enums
+    // just type-alias as Required
     if let syn::Data::Enum(_) = derive_input.data {
         let req_ident = format_ident!("Required{}", _ident);
         return quote! {
             #vis type #req_ident = #_ident;
-        }.into();
+        }
+        .into();
     }
-    let required_ident = input.args.ident.or(
-        input.args.prefix.map(|prefix|format_ident!("{prefix}{_ident}"))).expect("Must provide ident or prefix");
+    // get the ident for the new struct: either the "ident" argument or "prefix" on the existing name.
+    let required_ident = input
+        .args
+        .ident
+        .or(input
+            .args
+            .prefix
+            .map(|prefix| format_ident!("{prefix}{_ident}")))
+        .expect("Must provide ident or prefix");
     let generics = input.generics;
     let fields = input.data.take_struct().unwrap();
 
@@ -104,61 +118,17 @@ pub fn required(input: TokenStream) -> TokenStream {
         let ty: &Type = &field.ty;
 
         // Check if the field is optional
-        let (ty, was_optional) = match ty {
-            Type::Path(TypePath { path, .. }) => {
-                
-                let segments_str = &path
-                    .segments
-                    .iter()
-                    .map(|segment| segment.ident.to_string())
-                    .collect::<Vec<_>>()
-                    .join("::");
-                let option_segment = ["Option", "std::option::Option", "core::option::Option"]
-                    .iter()
-                    .find(|s| segments_str == *s)
-                    .and_then(|_| path.segments.last());
-                let was_optional = option_segment.is_some();
-                let inner_type = option_segment
-                    .and_then(|path_seg| match &path_seg.arguments {
-                        PathArguments::AngleBracketed(AngleBracketedGenericArguments {
-                            args,
-                            ..
-                        }) => 
-                        args.first(),
-                         _ => None,
-                    })
-                    .and_then(|generic_arg| match generic_arg {
-                        GenericArgument::Type(typ) => if field.optional {Some(ty.clone())} else {
-                            Some(match typ {
-                            syn::Type::Path(path)=>{
-                                let mut path = path.clone();
-                                let ident = path.path.segments.last().unwrap().ident.clone();
-                                path.path.segments.last_mut().unwrap().ident = format_ident!("Required{}", ident);
-                                syn::Type::Path(path).into()},
-                            _=>typ.clone()
-                                })},
-                        _ => None,
-                    });
-
-                (inner_type.unwrap_or(ty.clone()), was_optional)
-            }
-            // TODO case for 
-            _ => (ty.clone(), false),
-        };
-
-
 
         field_idents.push(ident.clone());
         field_declares.push(quote! {
             // #(#forward_attrs)*
             #vis #ident: #ty
         });
-        if was_optional && !field.optional {
-        field_conversion.push(quote!{#ident: Some(value.#ident.into())});
-        } else {
-            field_conversion.push(quote!{#ident: value.#ident.into()});
-        }
-
+        // if was_optional && !field.optional {
+        //     field_conversion.push(quote! {#ident: Some(value.#ident.into())});
+        // } else {
+        //     field_conversion.push(quote! {#ident: value.#ident.into()});
+        // }
     });
 
     // TODO: Implement From<RequiredStruct> for OriginalStruct
