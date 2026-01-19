@@ -10,9 +10,9 @@ use proto_rs::{
     service::{
         choreo_service_server::{ChoreoService, ChoreoServiceServer},
         commands::{
-            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, RequiredGenerateRequest, RequiredGetDefaultTrajectoryResponse
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, RequiredGenerateRequest, RequiredGenerateResponse, RequiredGetDefaultTrajectoryResponse
         },
-    }, validate::{validate},
+    }, validate::{response, validate},
 };
 use std::{str::FromStr, time::Duration, vec};
 use tonic::{Request, Response, Status, transport::Server};
@@ -40,11 +40,13 @@ impl ChoreoService for ChoreoServerImpl {
         &self,
         request: Request<GenerateRequest>,
     ) -> Result<Response<GenerateResponse>, Status> {
-        let request = validate(request)?;
-
-        Ok(Response::new(GenerateResponse {
-            trajectory: Some(request.trajectory),
-        }))
+        let RequiredGenerateRequest { mut trajectory } = validate(request)?;
+        trajectory.name="TEST123".to_string();
+        trajectory.params.target_dt = Expr { value: 1.0, expr: "1.0 s".to_string() };
+        // do things with the non-optioned struct
+        response(RequiredGenerateResponse {
+            trajectory
+        })
     }
     async fn get_default_trajectory(
         &self,

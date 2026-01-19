@@ -111,9 +111,22 @@ fn named_field_option_tryfrom(ident: &Ident) -> proc_macro2::TokenStream {
                 None=> return Err(#missing_message.to_string())
             }}
 }
+
 fn unnamed_field_tryfrom_conversion(index: usize) -> proc_macro2::TokenStream {
     quote! {optional.#index.try_into()?}
 }
+fn unnamed_field_from_conversion(index: usize) -> proc_macro2::TokenStream {
+    quote! {required.#index}
+}
+
+fn named_field_from_conversion(ident: &Ident) -> proc_macro2::TokenStream {
+    quote! {#ident: required.#ident}
+}
+fn named_field_option_from(ident: &Ident) -> proc_macro2::TokenStream {
+    quote! {
+    #ident: Some(required.#ident.into())
+}}
+
 fn make_required_fields(fields: Fields) -> MakeRequiredFieldsOutput {
     let mut is_different = false;
     let mut tryfrom_conversions: Vec<proc_macro2::TokenStream> = vec![];
@@ -131,7 +144,17 @@ fn make_required_fields(fields: Fields) -> MakeRequiredFieldsOutput {
                     named_field_tryfrom_conversion(ident)
                 }
             }
-            None => unnamed_field_tryfrom_conversion(tup.0),
+            None => unnamed_field_tryfrom_conversion(index),
+        });
+        from_conversions.push(match &field.ident {
+            Some(ident) => {
+                if was_option {
+                    named_field_option_from(ident)
+                } else {
+                    named_field_from_conversion(ident)
+                }
+            }
+            None => unnamed_field_from_conversion(index),
         });
         new_field
     };
@@ -255,6 +278,19 @@ fn make_required_struct(
                     Ok(#required_ident {
                         #(#tryfrom_conversions,)*
                     })
+                }
+            }
+            impl From<#required_ident> for #ident {
+                fn from(required: #required_ident) -> #ident {
+                    #ident {
+                        #(#from_conversions,)*
+                    }
+                }
+            }
+            impl crate::validate::Required for #required_ident {
+                type Optional = #ident;
+                fn optionize(self) -> #ident {
+                    self.into()
                 }
             }
             impl crate::validate::Validate  for #ident {

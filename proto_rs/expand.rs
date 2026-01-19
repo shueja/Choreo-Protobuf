@@ -1299,6 +1299,32 @@ pub mod entity {
             })
         }
     }
+    impl From<RequiredSwerveSample> for SwerveSample {
+        fn from(required: RequiredSwerveSample) -> SwerveSample {
+            SwerveSample {
+                t: required.t,
+                x: required.x,
+                y: required.y,
+                heading: required.heading,
+                vx: required.vx,
+                vy: required.vy,
+                omega: required.omega,
+                ax: required.ax,
+                ay: required.ay,
+                alpha: required.alpha,
+                fl: Some(required.fl.into()),
+                fr: Some(required.fr.into()),
+                bl: Some(required.bl.into()),
+                br: Some(required.br.into()),
+            }
+        }
+    }
+    impl crate::validate::Required for RequiredSwerveSample {
+        type Optional = SwerveSample;
+        fn optionize(self) -> SwerveSample {
+            self.into()
+        }
+    }
     impl crate::validate::Validate for SwerveSample {
         type Valid = RequiredSwerveSample;
         fn validate(self) -> Result<RequiredSwerveSample, String> {
@@ -1725,6 +1751,22 @@ pub mod entity {
             })
         }
     }
+    impl From<RequiredGenerationOutput> for GenerationOutput {
+        fn from(required: RequiredGenerationOutput) -> GenerationOutput {
+            GenerationOutput {
+                splits: required.splits,
+                waypoints: required.waypoints,
+                config: Some(required.config.into()),
+                trajectory: Some(required.trajectory.into()),
+            }
+        }
+    }
+    impl crate::validate::Required for RequiredGenerationOutput {
+        type Optional = GenerationOutput;
+        fn optionize(self) -> GenerationOutput {
+            self.into()
+        }
+    }
     impl crate::validate::Validate for GenerationOutput {
         type Valid = RequiredGenerationOutput;
         fn validate(self) -> Result<RequiredGenerationOutput, String> {
@@ -2125,6 +2167,22 @@ pub mod entity {
                     None => return Err("trajectory is missing".to_string()),
                 },
             })
+        }
+    }
+    impl From<RequiredTrajectoryFile> for TrajectoryFile {
+        fn from(required: RequiredTrajectoryFile) -> TrajectoryFile {
+            TrajectoryFile {
+                name: required.name,
+                params: Some(required.params.into()),
+                snapshot: Some(required.snapshot.into()),
+                trajectory: Some(required.trajectory.into()),
+            }
+        }
+    }
+    impl crate::validate::Required for RequiredTrajectoryFile {
+        type Optional = TrajectoryFile;
+        fn optionize(self) -> TrajectoryFile {
+            self.into()
         }
     }
     impl crate::validate::Validate for TrajectoryFile {
@@ -3975,6 +4033,19 @@ pub mod entity {
                 })
             }
         }
+        impl From<RequiredWaypointId> for WaypointId {
+            fn from(required: RequiredWaypointId) -> WaypointId {
+                WaypointId {
+                    id: Some(required.id.into()),
+                }
+            }
+        }
+        impl crate::validate::Required for RequiredWaypointId {
+            type Optional = WaypointId;
+            fn optionize(self) -> WaypointId {
+                self.into()
+            }
+        }
         impl crate::validate::Validate for WaypointId {
             type Valid = RequiredWaypointId;
             fn validate(self) -> Result<RequiredWaypointId, String> {
@@ -4650,6 +4721,21 @@ pub mod entity {
                     waypoints: optional.waypoints,
                     constraints: optional.constraints,
                 })
+            }
+        }
+        impl From<RequiredExprParameters> for ExprParameters {
+            fn from(required: RequiredExprParameters) -> ExprParameters {
+                ExprParameters {
+                    target_dt: Some(required.target_dt.into()),
+                    waypoints: required.waypoints,
+                    constraints: required.constraints,
+                }
+            }
+        }
+        impl crate::validate::Required for RequiredExprParameters {
+            type Optional = ExprParameters;
+            fn optionize(self) -> ExprParameters {
+                self.into()
             }
         }
         impl crate::validate::Validate for ExprParameters {
@@ -5771,6 +5857,22 @@ pub mod entity {
                     })
                 }
             }
+            impl From<RequiredDoubleConstraint> for DoubleConstraint {
+                fn from(required: RequiredDoubleConstraint) -> DoubleConstraint {
+                    DoubleConstraint {
+                        enabled: required.enabled,
+                        from: Some(required.from.into()),
+                        to: Some(required.to.into()),
+                        data: Some(required.data.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredDoubleConstraint {
+                type Optional = DoubleConstraint;
+                fn optionize(self) -> DoubleConstraint {
+                    self.into()
+                }
+            }
             impl crate::validate::Validate for DoubleConstraint {
                 type Valid = RequiredDoubleConstraint;
                 fn validate(self) -> Result<RequiredDoubleConstraint, String> {
@@ -6205,6 +6307,22 @@ pub mod entity {
                             None => return Err("data is missing".to_string()),
                         },
                     })
+                }
+            }
+            impl From<RequiredExprConstraint> for ExprConstraint {
+                fn from(required: RequiredExprConstraint) -> ExprConstraint {
+                    ExprConstraint {
+                        enabled: required.enabled,
+                        from: Some(required.from.into()),
+                        to: Some(required.to.into()),
+                        data: Some(required.data.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredExprConstraint {
+                type Optional = ExprConstraint;
+                fn optionize(self) -> ExprConstraint {
+                    self.into()
                 }
             }
             impl crate::validate::Validate for ExprConstraint {
@@ -6994,6 +7112,21 @@ pub mod entity {
                         })
                     }
                 }
+                impl From<RequiredExprMaxAcceleration> for ExprMaxAcceleration {
+                    fn from(
+                        required: RequiredExprMaxAcceleration,
+                    ) -> ExprMaxAcceleration {
+                        ExprMaxAcceleration {
+                            max: Some(required.max.into()),
+                        }
+                    }
+                }
+                impl crate::validate::Required for RequiredExprMaxAcceleration {
+                    type Optional = ExprMaxAcceleration;
+                    fn optionize(self) -> ExprMaxAcceleration {
+                        self.into()
+                    }
+                }
                 impl crate::validate::Validate for ExprMaxAcceleration {
                     type Valid = RequiredExprMaxAcceleration;
                     fn validate(self) -> Result<RequiredExprMaxAcceleration, String> {
@@ -7566,6 +7699,19 @@ pub mod entity {
                                 None => return Err("max is missing".to_string()),
                             },
                         })
+                    }
+                }
+                impl From<RequiredExprMaxVelocity> for ExprMaxVelocity {
+                    fn from(required: RequiredExprMaxVelocity) -> ExprMaxVelocity {
+                        ExprMaxVelocity {
+                            max: Some(required.max.into()),
+                        }
+                    }
+                }
+                impl crate::validate::Required for RequiredExprMaxVelocity {
+                    type Optional = ExprMaxVelocity;
+                    fn optionize(self) -> ExprMaxVelocity {
+                        self.into()
                     }
                 }
                 impl crate::validate::Validate for ExprMaxVelocity {
@@ -9089,6 +9235,31 @@ pub mod entity {
                     })
                 }
             }
+            impl From<RequiredDoubleRobotConfig> for DoubleRobotConfig {
+                fn from(required: RequiredDoubleRobotConfig) -> DoubleRobotConfig {
+                    DoubleRobotConfig {
+                        mass: required.mass,
+                        inertia: required.inertia,
+                        gearing: required.gearing,
+                        radius: required.radius,
+                        vmax: required.vmax,
+                        tmax: required.tmax,
+                        cof: required.cof,
+                        differential_track_width: required.differential_track_width,
+                        bumper: Some(required.bumper.into()),
+                        front_left: Some(required.front_left.into()),
+                        front_right: Some(required.front_right.into()),
+                        back_left: Some(required.back_left.into()),
+                        back_right: Some(required.back_right.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredDoubleRobotConfig {
+                type Optional = DoubleRobotConfig;
+                fn optionize(self) -> DoubleRobotConfig {
+                    self.into()
+                }
+            }
             impl crate::validate::Validate for DoubleRobotConfig {
                 type Valid = RequiredDoubleRobotConfig;
                 fn validate(self) -> Result<RequiredDoubleRobotConfig, String> {
@@ -9278,6 +9449,20 @@ pub mod entity {
                             None => return Err("y is missing".to_string()),
                         },
                     })
+                }
+            }
+            impl From<RequiredExprModule> for ExprModule {
+                fn from(required: RequiredExprModule) -> ExprModule {
+                    ExprModule {
+                        x: Some(required.x.into()),
+                        y: Some(required.y.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredExprModule {
+                type Optional = ExprModule;
+                fn optionize(self) -> ExprModule {
+                    self.into()
                 }
             }
             impl crate::validate::Validate for ExprModule {
@@ -9573,6 +9758,22 @@ pub mod entity {
                             None => return Err("back is missing".to_string()),
                         },
                     })
+                }
+            }
+            impl From<RequiredExprBumper> for ExprBumper {
+                fn from(required: RequiredExprBumper) -> ExprBumper {
+                    ExprBumper {
+                        front: Some(required.front.into()),
+                        left: Some(required.left.into()),
+                        right: Some(required.right.into()),
+                        back: Some(required.back.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredExprBumper {
+                type Optional = ExprBumper;
+                fn optionize(self) -> ExprBumper {
+                    self.into()
                 }
             }
             impl crate::validate::Validate for ExprBumper {
@@ -10370,6 +10571,33 @@ pub mod entity {
                             None => return Err("back_right is missing".to_string()),
                         },
                     })
+                }
+            }
+            impl From<RequiredExprRobotConfig> for ExprRobotConfig {
+                fn from(required: RequiredExprRobotConfig) -> ExprRobotConfig {
+                    ExprRobotConfig {
+                        mass: Some(required.mass.into()),
+                        inertia: Some(required.inertia.into()),
+                        gearing: Some(required.gearing.into()),
+                        radius: Some(required.radius.into()),
+                        vmax: Some(required.vmax.into()),
+                        tmax: Some(required.tmax.into()),
+                        cof: Some(required.cof.into()),
+                        differential_track_width: Some(
+                            required.differential_track_width.into(),
+                        ),
+                        bumper: Some(required.bumper.into()),
+                        front_left: Some(required.front_left.into()),
+                        front_right: Some(required.front_right.into()),
+                        back_left: Some(required.back_left.into()),
+                        back_right: Some(required.back_right.into()),
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredExprRobotConfig {
+                type Optional = ExprRobotConfig;
+                fn optionize(self) -> ExprRobotConfig {
+                    self.into()
                 }
             }
             impl crate::validate::Validate for ExprRobotConfig {
@@ -12435,6 +12663,26 @@ pub mod entity {
                     })
                 }
             }
+            impl From<RequiredExprWaypoint> for ExprWaypoint {
+                fn from(required: RequiredExprWaypoint) -> ExprWaypoint {
+                    ExprWaypoint {
+                        x: Some(required.x.into()),
+                        y: Some(required.y.into()),
+                        heading: Some(required.heading.into()),
+                        intervals: required.intervals,
+                        split: required.split,
+                        fix_translation: required.fix_translation,
+                        fix_heading: required.fix_heading,
+                        override_intervals: required.override_intervals,
+                    }
+                }
+            }
+            impl crate::validate::Required for RequiredExprWaypoint {
+                type Optional = ExprWaypoint;
+                fn optionize(self) -> ExprWaypoint {
+                    self.into()
+                }
+            }
             impl crate::validate::Validate for ExprWaypoint {
                 type Valid = RequiredExprWaypoint;
                 fn validate(self) -> Result<RequiredExprWaypoint, String> {
@@ -12979,8 +13227,32 @@ pub mod entity {
     }
 }
 pub mod validate {
+    use std::convert::Infallible;
+    use tonic::{Request, Response, Status};
     pub trait Validate {
-        type Valid;
+        type Valid: Required;
         fn validate(self) -> Result<Self::Valid, String>;
+    }
+    pub trait Required {
+        type Optional: Validate;
+        fn optionize(self) -> Self::Optional;
+    }
+    pub fn validate<R: Validate>(
+        request: Request<R>,
+    ) -> Result<<R as Validate>::Valid, Status> {
+        request
+            .into_inner()
+            .validate()
+            .map_err(|e| {
+                {
+                    ::std::io::_eprint(format_args!("{0:?}\n", e));
+                };
+                Status::invalid_argument(e)
+            })
+    }
+    pub fn response<R: Required>(
+        body: R,
+    ) -> Result<Response<<R as Required>::Optional>, Infallible> {
+        Ok(Response::new(body.into()))
     }
 }

@@ -25,8 +25,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("GENERATE_RESPONSE={:?}", generate_response);
 
     let mut broken_trajectory = response.trajectory.clone().unwrap();
-    broken_trajectory.params = None;
-    broken_trajectory.snapshot = None;
+    // broken_trajectory.params = None;
+    // broken_trajectory.snapshot = None;
     let generate_request = tonic::Request::new(GenerateRequest{
         trajectory: Some(broken_trajectory)
     });
