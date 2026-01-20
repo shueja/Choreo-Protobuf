@@ -1,4 +1,4 @@
-use crate::{entity::Expr, to_double::ToDouble};
+use crate::entity::Expr;
 
 include!("./gen.rs");
 pub mod validate {
@@ -37,9 +37,9 @@ pub mod to_double {
         type DoubleType;
     }
 }
-impl Into<f64> for Expr {
-    fn into(self) -> f64 {
-        self.value
+impl From<Expr> for f64 {
+    fn from(val: Expr) -> Self {
+        val.value
     }
 }
 impl Expr {

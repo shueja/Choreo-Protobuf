@@ -69,7 +69,7 @@ fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type, bool
     };
     if let Some(Type::Path(path)) = inner_type_opt {
         let valid_path = convert_type_path_to_valid(&path);
-        if (should_remain_optional) {
+        if should_remain_optional {
             // Build a path that wraps the Valid* in Option<>
             let segment = PathSegment{
                 ident:syn::Ident::new("Option", Span::call_site().into()),
@@ -91,7 +91,7 @@ fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type, bool
 }
 fn convert_field(field: &Field) -> (bool, Field, bool) {
     let mut new_field = field.clone();
-    let has_optional_attribute = new_field.attrs.iter().find(|a|a.path().is_ident("optional")).is_some();
+    let has_optional_attribute = new_field.attrs.iter().any(|a|a.path().is_ident("optional"));
     new_field.attrs = filter_field_attributes(new_field.attrs);
     let (was_option, new_ty, remains_option) = convert_type(&new_field.ty, has_optional_attribute);
     new_field.ty = new_ty;
@@ -179,7 +179,7 @@ fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
         from_conversions.push(match &field.ident {
             Some(ident) => {
                 if was_option {
-                    if (remains_option) {
+                    if remains_option {
                         named_field_option_from_to_option(ident)
                     } else {
                         named_field_option_from(ident)
