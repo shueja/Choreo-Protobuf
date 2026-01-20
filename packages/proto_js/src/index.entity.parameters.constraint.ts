@@ -7,5 +7,4 @@
 
 export * as maxvelocity from "./index.entity.parameters.constraint.maxvelocity";
 export * as max_acceleration from "./index.entity.parameters.constraint.max_acceleration";
-export * from "./entity/parameters/constraint/double";
 export * from "./entity/parameters/constraint/expr";

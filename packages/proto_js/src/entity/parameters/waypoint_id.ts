@@ -18,10 +18,10 @@ export interface WaypointIDX {
 }
 
 export interface WaypointID {
-  id?: { $case: "first"; first: WaypointIDFirst } | { $case: "last"; last: WaypointIDLast } | {
+  id?: { $case: "first"; value: WaypointIDFirst } | { $case: "last"; value: WaypointIDLast } | {
     $case: "idx";
-    idx: WaypointIDX;
-  } | undefined;
+    value: WaypointIDX;
+  } | null;
 }
 
 function createBaseWaypointIDFirst(): WaypointIDFirst {
@@ -169,20 +169,20 @@ export const WaypointIDX: MessageFns<WaypointIDX> = {
 };
 
 function createBaseWaypointID(): WaypointID {
-  return { id: undefined };
+  return { id: null };
 }
 
 export const WaypointID: MessageFns<WaypointID> = {
   encode(message: WaypointID, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     switch (message.id?.$case) {
       case "first":
-        WaypointIDFirst.encode(message.id.first, writer.uint32(10).fork()).join();
+        WaypointIDFirst.encode(message.id.value, writer.uint32(10).fork()).join();
         break;
       case "last":
-        WaypointIDLast.encode(message.id.last, writer.uint32(18).fork()).join();
+        WaypointIDLast.encode(message.id.value, writer.uint32(18).fork()).join();
         break;
       case "idx":
-        WaypointIDX.encode(message.id.idx, writer.uint32(26).fork()).join();
+        WaypointIDX.encode(message.id.value, writer.uint32(26).fork()).join();
         break;
     }
     return writer;
@@ -200,7 +200,7 @@ export const WaypointID: MessageFns<WaypointID> = {
             break;
           }
 
-          message.id = { $case: "first", first: WaypointIDFirst.decode(reader, reader.uint32()) };
+          message.id = { $case: "first", value: WaypointIDFirst.decode(reader, reader.uint32()) };
           continue;
         }
         case 2: {
@@ -208,7 +208,7 @@ export const WaypointID: MessageFns<WaypointID> = {
             break;
           }
 
-          message.id = { $case: "last", last: WaypointIDLast.decode(reader, reader.uint32()) };
+          message.id = { $case: "last", value: WaypointIDLast.decode(reader, reader.uint32()) };
           continue;
         }
         case 3: {
@@ -216,7 +216,7 @@ export const WaypointID: MessageFns<WaypointID> = {
             break;
           }
 
-          message.id = { $case: "idx", idx: WaypointIDX.decode(reader, reader.uint32()) };
+          message.id = { $case: "idx", value: WaypointIDX.decode(reader, reader.uint32()) };
           continue;
         }
       }
@@ -231,23 +231,23 @@ export const WaypointID: MessageFns<WaypointID> = {
   fromJSON(object: any): WaypointID {
     return {
       id: isSet(object.first)
-        ? { $case: "first", first: WaypointIDFirst.fromJSON(object.first) }
+        ? { $case: "first", value: WaypointIDFirst.fromJSON(object.first) }
         : isSet(object.last)
-        ? { $case: "last", last: WaypointIDLast.fromJSON(object.last) }
+        ? { $case: "last", value: WaypointIDLast.fromJSON(object.last) }
         : isSet(object.idx)
-        ? { $case: "idx", idx: WaypointIDX.fromJSON(object.idx) }
-        : undefined,
+        ? { $case: "idx", value: WaypointIDX.fromJSON(object.idx) }
+        : null,
     };
   },
 
   toJSON(message: WaypointID): unknown {
     const obj: any = {};
     if (message.id?.$case === "first") {
-      obj.first = WaypointIDFirst.toJSON(message.id.first);
+      obj.first = WaypointIDFirst.toJSON(message.id.value);
     } else if (message.id?.$case === "last") {
-      obj.last = WaypointIDLast.toJSON(message.id.last);
+      obj.last = WaypointIDLast.toJSON(message.id.value);
     } else if (message.id?.$case === "idx") {
-      obj.idx = WaypointIDX.toJSON(message.id.idx);
+      obj.idx = WaypointIDX.toJSON(message.id.value);
     }
     return obj;
   },
@@ -259,20 +259,20 @@ export const WaypointID: MessageFns<WaypointID> = {
     const message = createBaseWaypointID();
     switch (object.id?.$case) {
       case "first": {
-        if (object.id?.first !== undefined && object.id?.first !== null) {
-          message.id = { $case: "first", first: WaypointIDFirst.fromPartial(object.id.first) };
+        if (object.id?.value !== undefined && object.id?.value !== null) {
+          message.id = { $case: "first", value: WaypointIDFirst.fromPartial(object.id.value) };
         }
         break;
       }
       case "last": {
-        if (object.id?.last !== undefined && object.id?.last !== null) {
-          message.id = { $case: "last", last: WaypointIDLast.fromPartial(object.id.last) };
+        if (object.id?.value !== undefined && object.id?.value !== null) {
+          message.id = { $case: "last", value: WaypointIDLast.fromPartial(object.id.value) };
         }
         break;
       }
       case "idx": {
-        if (object.id?.idx !== undefined && object.id?.idx !== null) {
-          message.id = { $case: "idx", idx: WaypointIDX.fromPartial(object.id.idx) };
+        if (object.id?.value !== undefined && object.id?.value !== null) {
+          message.id = { $case: "idx", value: WaypointIDX.fromPartial(object.id.value) };
         }
         break;
       }
@@ -286,7 +286,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

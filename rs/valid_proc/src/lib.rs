@@ -1,13 +1,13 @@
 use std::vec;
 
 use deluxe::ParseMetaItem;
-use proc_macro::TokenStream;
+use proc_macro::{Span, TokenStream};
 use quote::{ToTokens, format_ident, quote};
 use syn::punctuated::Punctuated;
+use syn::spanned::Spanned;
 use syn::token::Comma;
 use syn::{
-    AngleBracketedGenericArguments, Attribute, GenericArgument, Ident, Path,
-    PathArguments, Variant,
+    AngleBracketedGenericArguments, Attribute, GenericArgument, Ident, Path, PathArguments, PathSegment, Token, Variant
 };
 use syn::{
     DataEnum, DataStruct, DeriveInput, Field, Type, TypePath, parse_macro_input,
@@ -20,7 +20,7 @@ mod utils;
 // }
 #[derive(ParseMetaItem)]
 struct Options {
-    prefix: Option<String>,
+    prefix: Option<String>
 }
 fn extract_option_inner(path: &Path) -> Option<Type> {
     let segments_str = &path
@@ -46,7 +46,7 @@ fn extract_option_inner(path: &Path) -> Option<Type> {
         })
 }
 
-fn convert_type_path_to_valid(path: TypePath) -> TypePath {
+fn convert_type_path_to_valid(path: &TypePath) -> TypePath {
     let mut path = path.clone();
     let ident = path.path.segments.last().unwrap().ident.clone();
     path.path.segments.last_mut().unwrap().ident = make_valid_ident(&ident);
@@ -62,25 +62,40 @@ fn convert_type_path_to_valid(path: TypePath) -> TypePath {
 ///
 ///
 /// boolean: was originally option
-fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type) {
+fn convert_type(input: &Type, should_remain_optional: bool) -> (bool, Type, bool) {
     let inner_type_opt = match input {
         Type::Path(TypePath { path, .. }) => extract_option_inner(path),
         _ => None,
     };
     if let Some(Type::Path(path)) = inner_type_opt {
-        let valid_path = convert_type_path_to_valid(path);
-        (true, syn::Type::Path(valid_path))
+        let valid_path = convert_type_path_to_valid(&path);
+        if (should_remain_optional) {
+            // Build a path that wraps the Valid* in Option<>
+            let segment = PathSegment{
+                ident:syn::Ident::new("Option", Span::call_site().into()),
+                arguments: PathArguments::AngleBracketed(AngleBracketedGenericArguments{
+                    colon2_token: None,
+                    lt_token: Token![<](input.span()),
+                    args: [GenericArgument::Type(syn::Type::Path(valid_path))].into_iter().collect(),
+                    gt_token: Token![>](input.span()),
+                })
+            };
+            let new_path = TypePath{qself: None, path: Path::from(segment)};
+            (true, syn::Type::Path(new_path), true)
+        } else {
+            (true, syn::Type::Path(valid_path), false)
+        }
     } else {
-        (false, input.clone())
+        (false, input.clone(), false)
     }
 }
-fn convert_field(field: &Field) -> (bool, Field) {
+fn convert_field(field: &Field) -> (bool, Field, bool) {
     let mut new_field = field.clone();
-    new_field.attrs = filter_prost_attributes(new_field.attrs);
-    // new_field.ident = new_field.ident.map(|i| format_ident!("req{i}"));
-    let (was_option, new_ty) = convert_type(&new_field.ty, false);
+    let has_optional_attribute = new_field.attrs.iter().find(|a|a.path().is_ident("optional")).is_some();
+    new_field.attrs = filter_field_attributes(new_field.attrs);
+    let (was_option, new_ty, remains_option) = convert_type(&new_field.ty, has_optional_attribute);
     new_field.ty = new_ty;
-    (was_option, new_field)
+    (was_option, new_field, remains_option)
 }
 fn make_valid_ident(ident: &Ident) -> Ident {
     format_ident!("Valid{ident}")
@@ -110,6 +125,15 @@ fn named_field_option_tryfrom(ident: &Ident) -> proc_macro2::TokenStream {
             }}
 }
 
+fn named_field_option_tryfrom_to_option(ident: &Ident) -> proc_macro2::TokenStream {
+    let missing_message = format!("{} is missing", ident);
+    quote! {
+    #ident: match optional.#ident {
+        Some(original) => Some(original.try_into()?),
+        None => None
+    }}
+}
+
 fn unnamed_field_tryfrom_conversion(index: usize) -> proc_macro2::TokenStream {
     quote! {optional.#index.try_into()?}
 }
@@ -124,6 +148,10 @@ fn named_field_option_from(ident: &Ident) -> proc_macro2::TokenStream {
     quote! {
     #ident: Some(valid.#ident.into())
 }}
+fn named_field_option_from_to_option(ident: &Ident) -> proc_macro2::TokenStream {
+    quote! {
+    #ident: valid.#ident.map(Into::into)
+}}
 
 fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
     let mut is_different = false;
@@ -131,13 +159,17 @@ fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
     let mut from_conversions: Vec<proc_macro2::TokenStream> = vec![];
     let convert = |tup: (usize, &Field)| {
         let (index, field) = tup;
-        let (was_option, new_field) = convert_field(field);
+        let (was_option, new_field, remains_option) = convert_field(field);
         is_different |= new_field.ty != field.ty;
 
         tryfrom_conversions.push(match &field.ident {
             Some(ident) => {
                 if was_option {
-                    named_field_option_tryfrom(ident)
+                    if remains_option {
+                        named_field_option_tryfrom_to_option(ident)
+                    } else {
+                        named_field_option_tryfrom(ident)
+                    }
                 } else {
                     named_field_tryfrom_conversion(ident)
                 }
@@ -147,7 +179,11 @@ fn make_valid_fields(fields: Fields) -> MakeValidFieldsOutput {
         from_conversions.push(match &field.ident {
             Some(ident) => {
                 if was_option {
-                    named_field_option_from(ident)
+                    if (remains_option) {
+                        named_field_option_from_to_option(ident)
+                    } else {
+                        named_field_option_from(ident)
+                    }
                 } else {
                     named_field_from_conversion(ident)
                 }
@@ -325,13 +361,11 @@ fn make_valid_struct(
                         } = v.clone();
 
                         let MakeValidFieldsOutput {
-                            is_different,
-                            new_fields,
-                            tryfrom_conversions,
-                            from_conversions,
+
+                            new_fields,..
                         } = gen_valid(fields, &mut is_different);
                         Variant {
-                            attrs: filter_prost_attributes(attrs),
+                            attrs: filter_field_attributes(attrs),
                             ident,
                             fields: new_fields,
                             discriminant,
@@ -363,22 +397,18 @@ fn make_valid_struct(
     )
 }
 
-fn filter_prost_attributes(attrs: Vec<Attribute>) -> Vec<Attribute> {
+fn filter_field_attributes(attrs: Vec<Attribute>) -> Vec<Attribute> {
     attrs
         .iter()
-        .filter(|a| !a.path().is_ident("prost"))
+        .filter(|a| !a.path().is_ident("prost") && !a.path().is_ident("optional"))
         .map(Attribute::clone)
         .collect::<Vec<Attribute>>()
 }
 
-#[proc_macro_attribute]
-pub fn make_valid(attr: TokenStream, item: TokenStream) -> proc_macro::TokenStream {
-    let Options { prefix } = match deluxe::parse::<Options>(attr) {
-        Ok(desc) => desc,
-        Err(e) => return e.into_compile_error().into(),
-    };
+#[proc_macro_derive(Valid, attributes(optional))]
+pub fn make_valid(item: TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(item as DeriveInput);
-
+    
     let (derive, valid_tokens, impls) = match &input.data {
         syn::Data::Struct(_data_struct) => make_valid_struct(&input),
         syn::Data::Enum(_data_enum) => make_valid_struct(&input),
@@ -389,7 +419,6 @@ pub fn make_valid(attr: TokenStream, item: TokenStream) -> proc_macro::TokenStre
         .map(DeriveInput::into_token_stream)
         .unwrap_or(proc_macro2::TokenStream::new());
     quote! {
-        #input
         #derive
         #valid_tokens
         #impls

@@ -7,23 +7,23 @@
 /* eslint-disable */
 
 export enum DriveType {
-  DRIVETYPE_SWERVE = 0,
-  DRIVETYPE_DIFFERENTIAL = 1,
-  DRIVETYPE_MECANUM = 2,
+  DRIVE_TYPE_SWERVE = 0,
+  DRIVE_TYPE_DIFFERENTIAL = 1,
+  DRIVE_TYPE_MECANUM = 2,
   UNRECOGNIZED = -1,
 }
 
 export function driveTypeFromJSON(object: any): DriveType {
   switch (object) {
     case 0:
-    case "DRIVETYPE_SWERVE":
-      return DriveType.DRIVETYPE_SWERVE;
+    case "DRIVE_TYPE_SWERVE":
+      return DriveType.DRIVE_TYPE_SWERVE;
     case 1:
-    case "DRIVETYPE_DIFFERENTIAL":
-      return DriveType.DRIVETYPE_DIFFERENTIAL;
+    case "DRIVE_TYPE_DIFFERENTIAL":
+      return DriveType.DRIVE_TYPE_DIFFERENTIAL;
     case 2:
-    case "DRIVETYPE_MECANUM":
-      return DriveType.DRIVETYPE_MECANUM;
+    case "DRIVE_TYPE_MECANUM":
+      return DriveType.DRIVE_TYPE_MECANUM;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -33,12 +33,12 @@ export function driveTypeFromJSON(object: any): DriveType {
 
 export function driveTypeToJSON(object: DriveType): string {
   switch (object) {
-    case DriveType.DRIVETYPE_SWERVE:
-      return "DRIVETYPE_SWERVE";
-    case DriveType.DRIVETYPE_DIFFERENTIAL:
-      return "DRIVETYPE_DIFFERENTIAL";
-    case DriveType.DRIVETYPE_MECANUM:
-      return "DRIVETYPE_MECANUM";
+    case DriveType.DRIVE_TYPE_SWERVE:
+      return "DRIVE_TYPE_SWERVE";
+    case DriveType.DRIVE_TYPE_DIFFERENTIAL:
+      return "DRIVE_TYPE_DIFFERENTIAL";
+    case DriveType.DRIVE_TYPE_MECANUM:
+      return "DRIVE_TYPE_MECANUM";
     case DriveType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

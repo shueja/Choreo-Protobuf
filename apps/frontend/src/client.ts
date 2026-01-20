@@ -1,25 +1,26 @@
 import {service} from "@choreo/proto"
 import './App.css'
 import { grpc } from '@improbable-eng/grpc-web';
-type Valid<T, R = Required<T>> = T extends object ? {
-  [K in keyof R]: Valid<NonNullable<R[K]>>
+import { client } from "@improbable-eng/grpc-web/dist/typings/client";
+type Valid<T> = T extends object ? {
+  [K in keyof T]:Valid<NonNullable<Required<T>[K]>> |  (undefined extends T[K] ? undefined : never)
 } : T;
-function validate<T>(obj: T) : Valid<T> | undefined {
+
+function validate<T>(obj: T) : Valid<T> {
   if (! (obj instanceof Object)) {
     return obj as Valid<T>;
   }
-  for (const key in (obj as object)) {
-    if (key === undefined) {
-      return undefined;
-    }
-  }
+  // TODO: we don't actually have a way to tell which props should be optional
+  // for (const key in (obj as object)) {
+  //   if (key === null) {
+  //     return undefined;
+  //   }
+  // }
   return obj as Valid<T>;
 }
 function validateThrow<T>(obj: T) : Valid<T> {
     const valid = validate<T>(obj);
-    if (valid === undefined) {
-        throw new TypeError();
-    }
+
     return valid;
 }
 function makeCommands(rpc: ConstructorParameters<typeof service.ChoreoServiceClientImpl>[0]) {
@@ -31,7 +32,7 @@ return {
     GetDefaultTrajectory: () => client.GetDefaultTrajectory({}).then(validateThrow)
 } as const satisfies {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [N in keyof Client] : (request: Parameters<Client[N]>[0])=>any;
+  [N in keyof Client] : (request: Parameters<Client[N]>[0])=>Valid<ReturnType<Client[N]>>;
 };
 }
 const rpc = new service.GrpcWebImpl('http://localhost:50051', {
@@ -40,7 +41,6 @@ const rpc = new service.GrpcWebImpl('http://localhost:50051', {
 });
 type Client = service.ChoreoService;
 export const Commands = makeCommands(rpc);
-
 
 
 

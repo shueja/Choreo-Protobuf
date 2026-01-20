@@ -1,11 +1,11 @@
 syntax="proto3";
 package entity;
 import "entity/parameters/expr.proto";
-import "entity/parameters/double.proto";
+
 import "entity/trajectory.proto";
 message TrajectoryFile{
     string name = 1;
     entity.parameters.ExprParameters params = 2;
-    optional entity.parameters.DoubleParameters snapshot = 3;
+    optional entity.parameters.ExprParameters snapshot = 3;
     optional GenerationOutput trajectory = 4;
 }

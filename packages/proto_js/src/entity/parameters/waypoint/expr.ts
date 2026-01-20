@@ -9,9 +9,9 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Expr } from "../../expression";
 
 export interface ExprWaypoint {
-  x: Expr | undefined;
-  y: Expr | undefined;
-  heading: Expr | undefined;
+  x: Expr | null;
+  y: Expr | null;
+  heading: Expr | null;
   intervals: number;
   split: boolean;
   fixTranslation: boolean;
@@ -21,9 +21,9 @@ export interface ExprWaypoint {
 
 function createBaseExprWaypoint(): ExprWaypoint {
   return {
-    x: undefined,
-    y: undefined,
-    heading: undefined,
+    x: null,
+    y: null,
+    heading: null,
     intervals: 0,
     split: false,
     fixTranslation: false,
@@ -34,13 +34,13 @@ function createBaseExprWaypoint(): ExprWaypoint {
 
 export const ExprWaypoint: MessageFns<ExprWaypoint> = {
   encode(message: ExprWaypoint, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.x !== undefined) {
+    if (message.x !== undefined && message.x !== null) {
       Expr.encode(message.x, writer.uint32(10).fork()).join();
     }
-    if (message.y !== undefined) {
+    if (message.y !== undefined && message.y !== null) {
       Expr.encode(message.y, writer.uint32(18).fork()).join();
     }
-    if (message.heading !== undefined) {
+    if (message.heading !== undefined && message.heading !== null) {
       Expr.encode(message.heading, writer.uint32(26).fork()).join();
     }
     if (message.intervals !== 0) {
@@ -143,9 +143,9 @@ export const ExprWaypoint: MessageFns<ExprWaypoint> = {
 
   fromJSON(object: any): ExprWaypoint {
     return {
-      x: isSet(object.x) ? Expr.fromJSON(object.x) : undefined,
-      y: isSet(object.y) ? Expr.fromJSON(object.y) : undefined,
-      heading: isSet(object.heading) ? Expr.fromJSON(object.heading) : undefined,
+      x: isSet(object.x) ? Expr.fromJSON(object.x) : null,
+      y: isSet(object.y) ? Expr.fromJSON(object.y) : null,
+      heading: isSet(object.heading) ? Expr.fromJSON(object.heading) : null,
       intervals: isSet(object.intervals) ? globalThis.Number(object.intervals) : 0,
       split: isSet(object.split) ? globalThis.Boolean(object.split) : false,
       fixTranslation: isSet(object.fixTranslation)
@@ -168,13 +168,13 @@ export const ExprWaypoint: MessageFns<ExprWaypoint> = {
 
   toJSON(message: ExprWaypoint): unknown {
     const obj: any = {};
-    if (message.x !== undefined) {
+    if (message.x !== undefined && message.x !== null) {
       obj.x = Expr.toJSON(message.x);
     }
-    if (message.y !== undefined) {
+    if (message.y !== undefined && message.y !== null) {
       obj.y = Expr.toJSON(message.y);
     }
-    if (message.heading !== undefined) {
+    if (message.heading !== undefined && message.heading !== null) {
       obj.heading = Expr.toJSON(message.heading);
     }
     if (message.intervals !== 0) {
@@ -200,11 +200,11 @@ export const ExprWaypoint: MessageFns<ExprWaypoint> = {
   },
   fromPartial<I extends Exact<DeepPartial<ExprWaypoint>, I>>(object: I): ExprWaypoint {
     const message = createBaseExprWaypoint();
-    message.x = (object.x !== undefined && object.x !== null) ? Expr.fromPartial(object.x) : undefined;
-    message.y = (object.y !== undefined && object.y !== null) ? Expr.fromPartial(object.y) : undefined;
+    message.x = (object.x !== undefined && object.x !== null) ? Expr.fromPartial(object.x) : null;
+    message.y = (object.y !== undefined && object.y !== null) ? Expr.fromPartial(object.y) : null;
     message.heading = (object.heading !== undefined && object.heading !== null)
       ? Expr.fromPartial(object.heading)
-      : undefined;
+      : null;
     message.intervals = object.intervals ?? 0;
     message.split = object.split ?? false;
     message.fixTranslation = object.fixTranslation ?? false;
@@ -219,7 +219,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

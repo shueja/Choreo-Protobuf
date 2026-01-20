@@ -1,14 +1,13 @@
 use proto_rs::{
     entity::{
-        GenerationOutput, SwerveTrajectory, TrajectoryFile, Expr,
-        parameters::{
-            DoubleParameters, ExprParameters, robotconfig::{DoubleBumper, DoubleModule, DoubleRobotConfig},
-        },
+        DriveType, Expr, GenerationOutput, SwerveTrajectory, TrajectoryFile, ValidGenerationOutput, ValidProjectFile, ValidTrajectoryFile, parameters::{
+           ExprParameters, ValidExprParameters, robotconfig::{ValidExprBumper, ValidExprModule, ValidExprRobotConfig},
+        }
     },
     service::{
         choreo_service_server::{ChoreoService, ChoreoServiceServer},
         commands::{
-            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, ValidGenerateRequest, ValidGenerateResponse
+            EchoSwerveSampleRequest, EchoSwerveSampleResponse, GenerateRequest, GenerateResponse, GetDefaultTrajectoryResponse, ValidGenerateRequest, ValidGenerateResponse, ValidGetDefaultTrajectoryResponse
         },
     }, validate::{response, validate},
 };
@@ -16,6 +15,53 @@ use std::{time::Duration, vec};
 use tonic::{Request, Response, Status, transport::Server};
 use tonic_web::GrpcWebLayer;
 use tower_http::cors::{AllowHeaders, AllowOrigin, CorsLayer, ExposeHeaders};
+fn get_default_project_file() -> ValidProjectFile { ValidProjectFile {
+            name: "New Project".to_string(),
+            drive_type: DriveType::Swerve.into(),
+            // variables: Variables {
+            //     expressions: BTreeMap::new(),
+            //     poses: BTreeMap::new(),
+            // },
+            config: ValidExprRobotConfig {
+                gearing: Expr::new("6.5", 6.5),
+                radius: Expr::new("2 in", 0.0508),
+                vmax: Expr::new("6000.0 RPM", (6000.0 / 60.0) * std::f64::consts::TAU),
+                tmax: Expr::new("1.2 N*m", 1.2),
+                front_left: ValidExprModule {
+                    x: Expr::new("11 in", 0.2794),
+                    y: Expr::new("11 in", 0.2794),
+                },
+                front_right: ValidExprModule {
+                    x: Expr::new("11 in", 0.2794),
+                    y: Expr::new("-11 in", -0.2794),
+                },
+                back_left: ValidExprModule {
+                    x: Expr::new("-11 in", -0.2794),
+                    y: Expr::new("11 in", 0.2794),
+                },
+                back_right: ValidExprModule {
+                    x: Expr::new("-11 in", -0.2794),
+                    y: Expr::new("-11 in", -0.2794),                    
+                },
+                mass: Expr::new("150 lbs", 68.038_855_5),
+                inertia: Expr::new("6 kg m^2", 6.0),
+                cof: Expr::new("1.5", 1.5),
+                bumper: ValidExprBumper {
+                    front: Expr::new("16 in", 0.4064),
+                    left: Expr::new("16 in", 0.4064),
+                    back: Expr::new("16 in", 0.4064),
+                    right: Expr::new("16 in", 0.4064),
+                },
+                differential_track_width: Expr::new("22 in", 0.2794 * 2.0),
+            },
+            // generation_features: Vec::new(),
+            // codegen: CodeGenConfig {
+            //     root: None,
+            //     gen_vars: true,
+            //     gen_traj_data: true,
+            //     use_choreo_lib: true,
+            // },
+        }}
 struct ChoreoServerImpl {}
 #[tonic::async_trait]
 impl ChoreoService for ChoreoServerImpl {
@@ -50,47 +96,30 @@ impl ChoreoService for ChoreoServerImpl {
         &self,
         _: Request<pbjson_types::Empty>,
     ) -> Result<Response<GetDefaultTrajectoryResponse>, Status> {
-        let params: TrajectoryFile = TrajectoryFile {
-            name: "NewPath".to_string(),
-            params: Some(ExprParameters {
-                target_dt: Some(Expr {
+        let params = ValidExprParameters {
+                target_dt: Expr {
                     expr: "".to_string(),
                     value: 0.05,
-                }),
+                },
                 waypoints: vec![],
                 constraints: vec![],
-            }),
-            snapshot: Some(DoubleParameters {
-                target_dt: 0.05,
-                waypoints: vec![],
-                constraints: vec![],
-            }),
-            trajectory: Some(GenerationOutput {
+            };
+        let trajectory_file = ValidTrajectoryFile {
+            name: "NewPath".to_string(),
+            params,
+            snapshot: None,
+            trajectory: ValidGenerationOutput {
                 splits: vec![],
                 waypoints: vec![],
-                config: Some(DoubleRobotConfig {
-                    mass: 0.0,
-                    inertia: 0.0,
-                    gearing: 0.0,
-                    radius: 0.0,
-                    vmax: 0.0,
-                    tmax: 0.0,
-                    cof: 0.0,
-                    differential_track_width: 0.0,
-                    bumper: Some(DoubleBumper {front: 0.0, left:0.0, right:0.0, back:0.0}),
-                    front_left: Some(DoubleModule { x: 0.0, y: 0.0 }),
-                    front_right: Some(DoubleModule { x: 0.0, y: 0.0 }),
-                    back_left: Some(DoubleModule { x: 0.0, y: 0.0 }),
-                    back_right: Some(DoubleModule { x: 0.0, y: 0.0 }),
-                }),
-                trajectory: Some(proto_rs::entity::generation_output::Trajectory::Swerve(
+                config: None,
+                trajectory: proto_rs::entity::generation_output::Trajectory::Swerve(
                     SwerveTrajectory { samples: vec![] },
-                )),
-            }),
+                ),
+            },
         };
-        Ok(Response::new(GetDefaultTrajectoryResponse{
-            trajectory: Some(params) 
-        }))
+        response(ValidGetDefaultTrajectoryResponse{
+            trajectory: trajectory_file
+        })
     }
 }
 const DEFAULT_MAX_AGE: Duration = Duration::from_secs(24 * 60 * 60);

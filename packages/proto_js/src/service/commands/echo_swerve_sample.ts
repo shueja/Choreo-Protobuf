@@ -9,20 +9,20 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { SwerveSample } from "../../entity/swerve_sample";
 
 export interface EchoSwerveSampleRequest {
-  sample: SwerveSample | undefined;
+  sample: SwerveSample | null;
 }
 
 export interface EchoSwerveSampleResponse {
-  sample: SwerveSample | undefined;
+  sample: SwerveSample | null;
 }
 
 function createBaseEchoSwerveSampleRequest(): EchoSwerveSampleRequest {
-  return { sample: undefined };
+  return { sample: null };
 }
 
 export const EchoSwerveSampleRequest: MessageFns<EchoSwerveSampleRequest> = {
   encode(message: EchoSwerveSampleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.sample !== undefined) {
+    if (message.sample !== undefined && message.sample !== null) {
       SwerveSample.encode(message.sample, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -53,12 +53,12 @@ export const EchoSwerveSampleRequest: MessageFns<EchoSwerveSampleRequest> = {
   },
 
   fromJSON(object: any): EchoSwerveSampleRequest {
-    return { sample: isSet(object.sample) ? SwerveSample.fromJSON(object.sample) : undefined };
+    return { sample: isSet(object.sample) ? SwerveSample.fromJSON(object.sample) : null };
   },
 
   toJSON(message: EchoSwerveSampleRequest): unknown {
     const obj: any = {};
-    if (message.sample !== undefined) {
+    if (message.sample !== undefined && message.sample !== null) {
       obj.sample = SwerveSample.toJSON(message.sample);
     }
     return obj;
@@ -71,18 +71,18 @@ export const EchoSwerveSampleRequest: MessageFns<EchoSwerveSampleRequest> = {
     const message = createBaseEchoSwerveSampleRequest();
     message.sample = (object.sample !== undefined && object.sample !== null)
       ? SwerveSample.fromPartial(object.sample)
-      : undefined;
+      : null;
     return message;
   },
 };
 
 function createBaseEchoSwerveSampleResponse(): EchoSwerveSampleResponse {
-  return { sample: undefined };
+  return { sample: null };
 }
 
 export const EchoSwerveSampleResponse: MessageFns<EchoSwerveSampleResponse> = {
   encode(message: EchoSwerveSampleResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.sample !== undefined) {
+    if (message.sample !== undefined && message.sample !== null) {
       SwerveSample.encode(message.sample, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -113,12 +113,12 @@ export const EchoSwerveSampleResponse: MessageFns<EchoSwerveSampleResponse> = {
   },
 
   fromJSON(object: any): EchoSwerveSampleResponse {
-    return { sample: isSet(object.sample) ? SwerveSample.fromJSON(object.sample) : undefined };
+    return { sample: isSet(object.sample) ? SwerveSample.fromJSON(object.sample) : null };
   },
 
   toJSON(message: EchoSwerveSampleResponse): unknown {
     const obj: any = {};
-    if (message.sample !== undefined) {
+    if (message.sample !== undefined && message.sample !== null) {
       obj.sample = SwerveSample.toJSON(message.sample);
     }
     return obj;
@@ -131,7 +131,7 @@ export const EchoSwerveSampleResponse: MessageFns<EchoSwerveSampleResponse> = {
     const message = createBaseEchoSwerveSampleResponse();
     message.sample = (object.sample !== undefined && object.sample !== null)
       ? SwerveSample.fromPartial(object.sample)
-      : undefined;
+      : null;
     return message;
   },
 };
@@ -141,7 +141,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

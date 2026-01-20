@@ -8,6 +8,5 @@
 export * as constraint from "./index.entity.parameters.constraint";
 export * from "./entity/parameters/waypoint_id";
 export * as waypoint from "./index.entity.parameters.waypoint";
-export * from "./entity/parameters/double";
 export * from "./entity/parameters/expr";
 export * as robotconfig from "./index.entity.parameters.robotconfig";

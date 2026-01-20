@@ -7,7 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { DifferentialSample } from "./differential_sample";
-import { DoubleRobotConfig } from "./parameters/robotconfig/double";
+import { ExprRobotConfig } from "./parameters/robotconfig/expr";
 import { SwerveSample } from "./swerve_sample";
 
 export interface SwerveTrajectory {
@@ -19,13 +19,13 @@ export interface DifferentialTrajectory {
 }
 
 export interface GenerationOutput {
-  trajectory?: { $case: "swerve"; swerve: SwerveTrajectory } | {
-    $case: "differential";
-    differential: DifferentialTrajectory;
-  } | undefined;
+  trajectory?:
+    | { $case: "swerve"; value: SwerveTrajectory }
+    | { $case: "differential"; value: DifferentialTrajectory }
+    | null;
   splits: number[];
   waypoints: number[];
-  config: DoubleRobotConfig | undefined;
+  config?: ExprRobotConfig | null | undefined;
 }
 
 function createBaseSwerveTrajectory(): SwerveTrajectory {
@@ -153,17 +153,17 @@ export const DifferentialTrajectory: MessageFns<DifferentialTrajectory> = {
 };
 
 function createBaseGenerationOutput(): GenerationOutput {
-  return { trajectory: undefined, splits: [], waypoints: [], config: undefined };
+  return { trajectory: null, splits: [], waypoints: [], config: null };
 }
 
 export const GenerationOutput: MessageFns<GenerationOutput> = {
   encode(message: GenerationOutput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     switch (message.trajectory?.$case) {
       case "swerve":
-        SwerveTrajectory.encode(message.trajectory.swerve, writer.uint32(10).fork()).join();
+        SwerveTrajectory.encode(message.trajectory.value, writer.uint32(10).fork()).join();
         break;
       case "differential":
-        DifferentialTrajectory.encode(message.trajectory.differential, writer.uint32(18).fork()).join();
+        DifferentialTrajectory.encode(message.trajectory.value, writer.uint32(18).fork()).join();
         break;
     }
     writer.uint32(26).fork();
@@ -176,8 +176,8 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
       writer.double(v);
     }
     writer.join();
-    if (message.config !== undefined) {
-      DoubleRobotConfig.encode(message.config, writer.uint32(42).fork()).join();
+    if (message.config !== undefined && message.config !== null) {
+      ExprRobotConfig.encode(message.config, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -194,7 +194,7 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
             break;
           }
 
-          message.trajectory = { $case: "swerve", swerve: SwerveTrajectory.decode(reader, reader.uint32()) };
+          message.trajectory = { $case: "swerve", value: SwerveTrajectory.decode(reader, reader.uint32()) };
           continue;
         }
         case 2: {
@@ -202,10 +202,7 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
             break;
           }
 
-          message.trajectory = {
-            $case: "differential",
-            differential: DifferentialTrajectory.decode(reader, reader.uint32()),
-          };
+          message.trajectory = { $case: "differential", value: DifferentialTrajectory.decode(reader, reader.uint32()) };
           continue;
         }
         case 3: {
@@ -249,7 +246,7 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
             break;
           }
 
-          message.config = DoubleRobotConfig.decode(reader, reader.uint32());
+          message.config = ExprRobotConfig.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -264,24 +261,24 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
   fromJSON(object: any): GenerationOutput {
     return {
       trajectory: isSet(object.swerve)
-        ? { $case: "swerve", swerve: SwerveTrajectory.fromJSON(object.swerve) }
+        ? { $case: "swerve", value: SwerveTrajectory.fromJSON(object.swerve) }
         : isSet(object.differential)
-        ? { $case: "differential", differential: DifferentialTrajectory.fromJSON(object.differential) }
-        : undefined,
+        ? { $case: "differential", value: DifferentialTrajectory.fromJSON(object.differential) }
+        : null,
       splits: globalThis.Array.isArray(object?.splits) ? object.splits.map((e: any) => globalThis.Number(e)) : [],
       waypoints: globalThis.Array.isArray(object?.waypoints)
         ? object.waypoints.map((e: any) => globalThis.Number(e))
         : [],
-      config: isSet(object.config) ? DoubleRobotConfig.fromJSON(object.config) : undefined,
+      config: isSet(object.config) ? ExprRobotConfig.fromJSON(object.config) : null,
     };
   },
 
   toJSON(message: GenerationOutput): unknown {
     const obj: any = {};
     if (message.trajectory?.$case === "swerve") {
-      obj.swerve = SwerveTrajectory.toJSON(message.trajectory.swerve);
+      obj.swerve = SwerveTrajectory.toJSON(message.trajectory.value);
     } else if (message.trajectory?.$case === "differential") {
-      obj.differential = DifferentialTrajectory.toJSON(message.trajectory.differential);
+      obj.differential = DifferentialTrajectory.toJSON(message.trajectory.value);
     }
     if (message.splits?.length) {
       obj.splits = message.splits.map((e) => Math.round(e));
@@ -289,8 +286,8 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
     if (message.waypoints?.length) {
       obj.waypoints = message.waypoints;
     }
-    if (message.config !== undefined) {
-      obj.config = DoubleRobotConfig.toJSON(message.config);
+    if (message.config !== undefined && message.config !== null) {
+      obj.config = ExprRobotConfig.toJSON(message.config);
     }
     return obj;
   },
@@ -302,16 +299,16 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
     const message = createBaseGenerationOutput();
     switch (object.trajectory?.$case) {
       case "swerve": {
-        if (object.trajectory?.swerve !== undefined && object.trajectory?.swerve !== null) {
-          message.trajectory = { $case: "swerve", swerve: SwerveTrajectory.fromPartial(object.trajectory.swerve) };
+        if (object.trajectory?.value !== undefined && object.trajectory?.value !== null) {
+          message.trajectory = { $case: "swerve", value: SwerveTrajectory.fromPartial(object.trajectory.value) };
         }
         break;
       }
       case "differential": {
-        if (object.trajectory?.differential !== undefined && object.trajectory?.differential !== null) {
+        if (object.trajectory?.value !== undefined && object.trajectory?.value !== null) {
           message.trajectory = {
             $case: "differential",
-            differential: DifferentialTrajectory.fromPartial(object.trajectory.differential),
+            value: DifferentialTrajectory.fromPartial(object.trajectory.value),
           };
         }
         break;
@@ -320,7 +317,7 @@ export const GenerationOutput: MessageFns<GenerationOutput> = {
     message.splits = object.splits?.map((e) => e) || [];
     message.waypoints = object.waypoints?.map((e) => e) || [];
     message.config = (object.config !== undefined && object.config !== null)
-      ? DoubleRobotConfig.fromPartial(object.config)
+      ? ExprRobotConfig.fromPartial(object.config)
       : undefined;
     return message;
   },
@@ -331,7 +328,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

@@ -37,6 +37,6 @@ move() {
 # import "entity/parameters/expr.proto";
 find . -name *.protmpl | \
     while IFS= read -r line ; do
-        generate $line double double Double "";
+        #generate $line double double Double "";
         generate $line expr Expr Expr "import \"entity\/expression.proto\";";
     done

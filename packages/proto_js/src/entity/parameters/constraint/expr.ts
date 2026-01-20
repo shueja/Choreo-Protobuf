@@ -12,22 +12,22 @@ import { ExprMaxVelocity } from "./maxvelocity/expr";
 
 export interface ExprConstraint {
   enabled: boolean;
-  from: WaypointID | undefined;
+  from: WaypointID | null;
   to:
     | WaypointID
-    | undefined;
+    | null;
   /**
    * ExprMaxVelocity maxvelocity = 4;
    * ExprMaxAcceleration max_acceleration = 5;
    */
-  data?: { $case: "maxVelocity"; maxVelocity: ExprMaxVelocity } | {
-    $case: "maxAcceleration";
-    maxAcceleration: ExprMaxAcceleration;
-  } | undefined;
+  data?:
+    | { $case: "maxVelocity"; value: ExprMaxVelocity }
+    | { $case: "maxAcceleration"; value: ExprMaxAcceleration }
+    | null;
 }
 
 function createBaseExprConstraint(): ExprConstraint {
-  return { enabled: false, from: undefined, to: undefined, data: undefined };
+  return { enabled: false, from: null, to: null, data: null };
 }
 
 export const ExprConstraint: MessageFns<ExprConstraint> = {
@@ -35,18 +35,18 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
     if (message.enabled !== false) {
       writer.uint32(8).bool(message.enabled);
     }
-    if (message.from !== undefined) {
+    if (message.from !== undefined && message.from !== null) {
       WaypointID.encode(message.from, writer.uint32(18).fork()).join();
     }
-    if (message.to !== undefined) {
+    if (message.to !== undefined && message.to !== null) {
       WaypointID.encode(message.to, writer.uint32(26).fork()).join();
     }
     switch (message.data?.$case) {
       case "maxVelocity":
-        ExprMaxVelocity.encode(message.data.maxVelocity, writer.uint32(34).fork()).join();
+        ExprMaxVelocity.encode(message.data.value, writer.uint32(34).fork()).join();
         break;
       case "maxAcceleration":
-        ExprMaxAcceleration.encode(message.data.maxAcceleration, writer.uint32(42).fork()).join();
+        ExprMaxAcceleration.encode(message.data.value, writer.uint32(42).fork()).join();
         break;
     }
     return writer;
@@ -88,7 +88,7 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
             break;
           }
 
-          message.data = { $case: "maxVelocity", maxVelocity: ExprMaxVelocity.decode(reader, reader.uint32()) };
+          message.data = { $case: "maxVelocity", value: ExprMaxVelocity.decode(reader, reader.uint32()) };
           continue;
         }
         case 5: {
@@ -96,10 +96,7 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
             break;
           }
 
-          message.data = {
-            $case: "maxAcceleration",
-            maxAcceleration: ExprMaxAcceleration.decode(reader, reader.uint32()),
-          };
+          message.data = { $case: "maxAcceleration", value: ExprMaxAcceleration.decode(reader, reader.uint32()) };
           continue;
         }
       }
@@ -114,17 +111,17 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
   fromJSON(object: any): ExprConstraint {
     return {
       enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : false,
-      from: isSet(object.from) ? WaypointID.fromJSON(object.from) : undefined,
-      to: isSet(object.to) ? WaypointID.fromJSON(object.to) : undefined,
+      from: isSet(object.from) ? WaypointID.fromJSON(object.from) : null,
+      to: isSet(object.to) ? WaypointID.fromJSON(object.to) : null,
       data: isSet(object.maxVelocity)
-        ? { $case: "maxVelocity", maxVelocity: ExprMaxVelocity.fromJSON(object.maxVelocity) }
+        ? { $case: "maxVelocity", value: ExprMaxVelocity.fromJSON(object.maxVelocity) }
         : isSet(object.max_velocity)
-        ? { $case: "maxVelocity", maxVelocity: ExprMaxVelocity.fromJSON(object.max_velocity) }
+        ? { $case: "maxVelocity", value: ExprMaxVelocity.fromJSON(object.max_velocity) }
         : isSet(object.maxAcceleration)
-        ? { $case: "maxAcceleration", maxAcceleration: ExprMaxAcceleration.fromJSON(object.maxAcceleration) }
+        ? { $case: "maxAcceleration", value: ExprMaxAcceleration.fromJSON(object.maxAcceleration) }
         : isSet(object.max_acceleration)
-        ? { $case: "maxAcceleration", maxAcceleration: ExprMaxAcceleration.fromJSON(object.max_acceleration) }
-        : undefined,
+        ? { $case: "maxAcceleration", value: ExprMaxAcceleration.fromJSON(object.max_acceleration) }
+        : null,
     };
   },
 
@@ -133,16 +130,16 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
     if (message.enabled !== false) {
       obj.enabled = message.enabled;
     }
-    if (message.from !== undefined) {
+    if (message.from !== undefined && message.from !== null) {
       obj.from = WaypointID.toJSON(message.from);
     }
-    if (message.to !== undefined) {
+    if (message.to !== undefined && message.to !== null) {
       obj.to = WaypointID.toJSON(message.to);
     }
     if (message.data?.$case === "maxVelocity") {
-      obj.maxVelocity = ExprMaxVelocity.toJSON(message.data.maxVelocity);
+      obj.maxVelocity = ExprMaxVelocity.toJSON(message.data.value);
     } else if (message.data?.$case === "maxAcceleration") {
-      obj.maxAcceleration = ExprMaxAcceleration.toJSON(message.data.maxAcceleration);
+      obj.maxAcceleration = ExprMaxAcceleration.toJSON(message.data.value);
     }
     return obj;
   },
@@ -153,23 +150,18 @@ export const ExprConstraint: MessageFns<ExprConstraint> = {
   fromPartial<I extends Exact<DeepPartial<ExprConstraint>, I>>(object: I): ExprConstraint {
     const message = createBaseExprConstraint();
     message.enabled = object.enabled ?? false;
-    message.from = (object.from !== undefined && object.from !== null)
-      ? WaypointID.fromPartial(object.from)
-      : undefined;
-    message.to = (object.to !== undefined && object.to !== null) ? WaypointID.fromPartial(object.to) : undefined;
+    message.from = (object.from !== undefined && object.from !== null) ? WaypointID.fromPartial(object.from) : null;
+    message.to = (object.to !== undefined && object.to !== null) ? WaypointID.fromPartial(object.to) : null;
     switch (object.data?.$case) {
       case "maxVelocity": {
-        if (object.data?.maxVelocity !== undefined && object.data?.maxVelocity !== null) {
-          message.data = { $case: "maxVelocity", maxVelocity: ExprMaxVelocity.fromPartial(object.data.maxVelocity) };
+        if (object.data?.value !== undefined && object.data?.value !== null) {
+          message.data = { $case: "maxVelocity", value: ExprMaxVelocity.fromPartial(object.data.value) };
         }
         break;
       }
       case "maxAcceleration": {
-        if (object.data?.maxAcceleration !== undefined && object.data?.maxAcceleration !== null) {
-          message.data = {
-            $case: "maxAcceleration",
-            maxAcceleration: ExprMaxAcceleration.fromPartial(object.data.maxAcceleration),
-          };
+        if (object.data?.value !== undefined && object.data?.value !== null) {
+          message.data = { $case: "maxAcceleration", value: ExprMaxAcceleration.fromPartial(object.data.value) };
         }
         break;
       }
@@ -183,7 +175,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

@@ -6,19 +6,18 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DoubleParameters } from "./parameters/double";
 import { ExprParameters } from "./parameters/expr";
 import { GenerationOutput } from "./trajectory";
 
 export interface TrajectoryFile {
   name: string;
-  params: ExprParameters | undefined;
-  snapshot?: DoubleParameters | undefined;
-  trajectory?: GenerationOutput | undefined;
+  params: ExprParameters | null;
+  snapshot?: ExprParameters | null | undefined;
+  trajectory?: GenerationOutput | null | undefined;
 }
 
 function createBaseTrajectoryFile(): TrajectoryFile {
-  return { name: "", params: undefined, snapshot: undefined, trajectory: undefined };
+  return { name: "", params: null, snapshot: null, trajectory: null };
 }
 
 export const TrajectoryFile: MessageFns<TrajectoryFile> = {
@@ -26,13 +25,13 @@ export const TrajectoryFile: MessageFns<TrajectoryFile> = {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
-    if (message.params !== undefined) {
+    if (message.params !== undefined && message.params !== null) {
       ExprParameters.encode(message.params, writer.uint32(18).fork()).join();
     }
-    if (message.snapshot !== undefined) {
-      DoubleParameters.encode(message.snapshot, writer.uint32(26).fork()).join();
+    if (message.snapshot !== undefined && message.snapshot !== null) {
+      ExprParameters.encode(message.snapshot, writer.uint32(26).fork()).join();
     }
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       GenerationOutput.encode(message.trajectory, writer.uint32(34).fork()).join();
     }
     return writer;
@@ -66,7 +65,7 @@ export const TrajectoryFile: MessageFns<TrajectoryFile> = {
             break;
           }
 
-          message.snapshot = DoubleParameters.decode(reader, reader.uint32());
+          message.snapshot = ExprParameters.decode(reader, reader.uint32());
           continue;
         }
         case 4: {
@@ -89,9 +88,9 @@ export const TrajectoryFile: MessageFns<TrajectoryFile> = {
   fromJSON(object: any): TrajectoryFile {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      params: isSet(object.params) ? ExprParameters.fromJSON(object.params) : undefined,
-      snapshot: isSet(object.snapshot) ? DoubleParameters.fromJSON(object.snapshot) : undefined,
-      trajectory: isSet(object.trajectory) ? GenerationOutput.fromJSON(object.trajectory) : undefined,
+      params: isSet(object.params) ? ExprParameters.fromJSON(object.params) : null,
+      snapshot: isSet(object.snapshot) ? ExprParameters.fromJSON(object.snapshot) : null,
+      trajectory: isSet(object.trajectory) ? GenerationOutput.fromJSON(object.trajectory) : null,
     };
   },
 
@@ -100,13 +99,13 @@ export const TrajectoryFile: MessageFns<TrajectoryFile> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.params !== undefined) {
+    if (message.params !== undefined && message.params !== null) {
       obj.params = ExprParameters.toJSON(message.params);
     }
-    if (message.snapshot !== undefined) {
-      obj.snapshot = DoubleParameters.toJSON(message.snapshot);
+    if (message.snapshot !== undefined && message.snapshot !== null) {
+      obj.snapshot = ExprParameters.toJSON(message.snapshot);
     }
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       obj.trajectory = GenerationOutput.toJSON(message.trajectory);
     }
     return obj;
@@ -120,9 +119,9 @@ export const TrajectoryFile: MessageFns<TrajectoryFile> = {
     message.name = object.name ?? "";
     message.params = (object.params !== undefined && object.params !== null)
       ? ExprParameters.fromPartial(object.params)
-      : undefined;
+      : null;
     message.snapshot = (object.snapshot !== undefined && object.snapshot !== null)
-      ? DoubleParameters.fromPartial(object.snapshot)
+      ? ExprParameters.fromPartial(object.snapshot)
       : undefined;
     message.trajectory = (object.trajectory !== undefined && object.trajectory !== null)
       ? GenerationOutput.fromPartial(object.trajectory)
@@ -136,7 +135,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

@@ -5,5 +5,4 @@
 
 /* eslint-disable */
 
-export * from "./entity/parameters/waypoint/double";
 export * from "./entity/parameters/waypoint/expr";

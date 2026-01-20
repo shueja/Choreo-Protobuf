@@ -11,18 +11,18 @@ import { ExprConstraint } from "./constraint/expr";
 import { ExprWaypoint } from "./waypoint/expr";
 
 export interface ExprParameters {
-  targetDt: Expr | undefined;
+  targetDt: Expr | null;
   waypoints: ExprWaypoint[];
   constraints: ExprConstraint[];
 }
 
 function createBaseExprParameters(): ExprParameters {
-  return { targetDt: undefined, waypoints: [], constraints: [] };
+  return { targetDt: null, waypoints: [], constraints: [] };
 }
 
 export const ExprParameters: MessageFns<ExprParameters> = {
   encode(message: ExprParameters, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.targetDt !== undefined) {
+    if (message.targetDt !== undefined && message.targetDt !== null) {
       Expr.encode(message.targetDt, writer.uint32(10).fork()).join();
     }
     for (const v of message.waypoints) {
@@ -80,7 +80,7 @@ export const ExprParameters: MessageFns<ExprParameters> = {
         ? Expr.fromJSON(object.targetDt)
         : isSet(object.target_dt)
         ? Expr.fromJSON(object.target_dt)
-        : undefined,
+        : null,
       waypoints: globalThis.Array.isArray(object?.waypoints)
         ? object.waypoints.map((e: any) => ExprWaypoint.fromJSON(e))
         : [],
@@ -92,7 +92,7 @@ export const ExprParameters: MessageFns<ExprParameters> = {
 
   toJSON(message: ExprParameters): unknown {
     const obj: any = {};
-    if (message.targetDt !== undefined) {
+    if (message.targetDt !== undefined && message.targetDt !== null) {
       obj.targetDt = Expr.toJSON(message.targetDt);
     }
     if (message.waypoints?.length) {
@@ -111,7 +111,7 @@ export const ExprParameters: MessageFns<ExprParameters> = {
     const message = createBaseExprParameters();
     message.targetDt = (object.targetDt !== undefined && object.targetDt !== null)
       ? Expr.fromPartial(object.targetDt)
-      : undefined;
+      : null;
     message.waypoints = object.waypoints?.map((e) => ExprWaypoint.fromPartial(e)) || [];
     message.constraints = object.constraints?.map((e) => ExprConstraint.fromPartial(e)) || [];
     return message;
@@ -123,7 +123,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

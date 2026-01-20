@@ -23,10 +23,10 @@ export interface SwerveSample {
   ax: number;
   ay: number;
   alpha: number;
-  fl: ForceVector | undefined;
-  fr: ForceVector | undefined;
-  bl: ForceVector | undefined;
-  br: ForceVector | undefined;
+  fl: ForceVector | null;
+  fr: ForceVector | null;
+  bl: ForceVector | null;
+  br: ForceVector | null;
 }
 
 function createBaseForceVector(): ForceVector {
@@ -117,10 +117,10 @@ function createBaseSwerveSample(): SwerveSample {
     ax: 0,
     ay: 0,
     alpha: 0,
-    fl: undefined,
-    fr: undefined,
-    bl: undefined,
-    br: undefined,
+    fl: null,
+    fr: null,
+    bl: null,
+    br: null,
   };
 }
 
@@ -156,16 +156,16 @@ export const SwerveSample: MessageFns<SwerveSample> = {
     if (message.alpha !== 0) {
       writer.uint32(81).double(message.alpha);
     }
-    if (message.fl !== undefined) {
+    if (message.fl !== undefined && message.fl !== null) {
       ForceVector.encode(message.fl, writer.uint32(90).fork()).join();
     }
-    if (message.fr !== undefined) {
+    if (message.fr !== undefined && message.fr !== null) {
       ForceVector.encode(message.fr, writer.uint32(98).fork()).join();
     }
-    if (message.bl !== undefined) {
+    if (message.bl !== undefined && message.bl !== null) {
       ForceVector.encode(message.bl, writer.uint32(106).fork()).join();
     }
-    if (message.br !== undefined) {
+    if (message.br !== undefined && message.br !== null) {
       ForceVector.encode(message.br, writer.uint32(114).fork()).join();
     }
     return writer;
@@ -311,10 +311,10 @@ export const SwerveSample: MessageFns<SwerveSample> = {
       ax: isSet(object.ax) ? globalThis.Number(object.ax) : 0,
       ay: isSet(object.ay) ? globalThis.Number(object.ay) : 0,
       alpha: isSet(object.alpha) ? globalThis.Number(object.alpha) : 0,
-      fl: isSet(object.fl) ? ForceVector.fromJSON(object.fl) : undefined,
-      fr: isSet(object.fr) ? ForceVector.fromJSON(object.fr) : undefined,
-      bl: isSet(object.bl) ? ForceVector.fromJSON(object.bl) : undefined,
-      br: isSet(object.br) ? ForceVector.fromJSON(object.br) : undefined,
+      fl: isSet(object.fl) ? ForceVector.fromJSON(object.fl) : null,
+      fr: isSet(object.fr) ? ForceVector.fromJSON(object.fr) : null,
+      bl: isSet(object.bl) ? ForceVector.fromJSON(object.bl) : null,
+      br: isSet(object.br) ? ForceVector.fromJSON(object.br) : null,
     };
   },
 
@@ -350,16 +350,16 @@ export const SwerveSample: MessageFns<SwerveSample> = {
     if (message.alpha !== 0) {
       obj.alpha = message.alpha;
     }
-    if (message.fl !== undefined) {
+    if (message.fl !== undefined && message.fl !== null) {
       obj.fl = ForceVector.toJSON(message.fl);
     }
-    if (message.fr !== undefined) {
+    if (message.fr !== undefined && message.fr !== null) {
       obj.fr = ForceVector.toJSON(message.fr);
     }
-    if (message.bl !== undefined) {
+    if (message.bl !== undefined && message.bl !== null) {
       obj.bl = ForceVector.toJSON(message.bl);
     }
-    if (message.br !== undefined) {
+    if (message.br !== undefined && message.br !== null) {
       obj.br = ForceVector.toJSON(message.br);
     }
     return obj;
@@ -380,10 +380,10 @@ export const SwerveSample: MessageFns<SwerveSample> = {
     message.ax = object.ax ?? 0;
     message.ay = object.ay ?? 0;
     message.alpha = object.alpha ?? 0;
-    message.fl = (object.fl !== undefined && object.fl !== null) ? ForceVector.fromPartial(object.fl) : undefined;
-    message.fr = (object.fr !== undefined && object.fr !== null) ? ForceVector.fromPartial(object.fr) : undefined;
-    message.bl = (object.bl !== undefined && object.bl !== null) ? ForceVector.fromPartial(object.bl) : undefined;
-    message.br = (object.br !== undefined && object.br !== null) ? ForceVector.fromPartial(object.br) : undefined;
+    message.fl = (object.fl !== undefined && object.fl !== null) ? ForceVector.fromPartial(object.fl) : null;
+    message.fr = (object.fr !== undefined && object.fr !== null) ? ForceVector.fromPartial(object.fr) : null;
+    message.bl = (object.bl !== undefined && object.bl !== null) ? ForceVector.fromPartial(object.bl) : null;
+    message.br = (object.br !== undefined && object.br !== null) ? ForceVector.fromPartial(object.br) : null;
     return message;
   },
 };
@@ -393,7 +393,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

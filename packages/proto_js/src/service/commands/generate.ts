@@ -9,20 +9,20 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { TrajectoryFile } from "../../entity/trajectory_file";
 
 export interface GenerateRequest {
-  trajectory: TrajectoryFile | undefined;
+  trajectory: TrajectoryFile | null;
 }
 
 export interface GenerateResponse {
-  trajectory: TrajectoryFile | undefined;
+  trajectory: TrajectoryFile | null;
 }
 
 function createBaseGenerateRequest(): GenerateRequest {
-  return { trajectory: undefined };
+  return { trajectory: null };
 }
 
 export const GenerateRequest: MessageFns<GenerateRequest> = {
   encode(message: GenerateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       TrajectoryFile.encode(message.trajectory, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -53,12 +53,12 @@ export const GenerateRequest: MessageFns<GenerateRequest> = {
   },
 
   fromJSON(object: any): GenerateRequest {
-    return { trajectory: isSet(object.trajectory) ? TrajectoryFile.fromJSON(object.trajectory) : undefined };
+    return { trajectory: isSet(object.trajectory) ? TrajectoryFile.fromJSON(object.trajectory) : null };
   },
 
   toJSON(message: GenerateRequest): unknown {
     const obj: any = {};
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       obj.trajectory = TrajectoryFile.toJSON(message.trajectory);
     }
     return obj;
@@ -71,18 +71,18 @@ export const GenerateRequest: MessageFns<GenerateRequest> = {
     const message = createBaseGenerateRequest();
     message.trajectory = (object.trajectory !== undefined && object.trajectory !== null)
       ? TrajectoryFile.fromPartial(object.trajectory)
-      : undefined;
+      : null;
     return message;
   },
 };
 
 function createBaseGenerateResponse(): GenerateResponse {
-  return { trajectory: undefined };
+  return { trajectory: null };
 }
 
 export const GenerateResponse: MessageFns<GenerateResponse> = {
   encode(message: GenerateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       TrajectoryFile.encode(message.trajectory, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -113,12 +113,12 @@ export const GenerateResponse: MessageFns<GenerateResponse> = {
   },
 
   fromJSON(object: any): GenerateResponse {
-    return { trajectory: isSet(object.trajectory) ? TrajectoryFile.fromJSON(object.trajectory) : undefined };
+    return { trajectory: isSet(object.trajectory) ? TrajectoryFile.fromJSON(object.trajectory) : null };
   },
 
   toJSON(message: GenerateResponse): unknown {
     const obj: any = {};
-    if (message.trajectory !== undefined) {
+    if (message.trajectory !== undefined && message.trajectory !== null) {
       obj.trajectory = TrajectoryFile.toJSON(message.trajectory);
     }
     return obj;
@@ -131,7 +131,7 @@ export const GenerateResponse: MessageFns<GenerateResponse> = {
     const message = createBaseGenerateResponse();
     message.trajectory = (object.trajectory !== undefined && object.trajectory !== null)
       ? TrajectoryFile.fromPartial(object.trajectory)
-      : undefined;
+      : null;
     return message;
   },
 };
@@ -141,7 +141,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

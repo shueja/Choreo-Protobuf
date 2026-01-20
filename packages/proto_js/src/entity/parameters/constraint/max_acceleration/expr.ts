@@ -9,16 +9,16 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Expr } from "../../../expression";
 
 export interface ExprMaxAcceleration {
-  max: Expr | undefined;
+  max: Expr | null;
 }
 
 function createBaseExprMaxAcceleration(): ExprMaxAcceleration {
-  return { max: undefined };
+  return { max: null };
 }
 
 export const ExprMaxAcceleration: MessageFns<ExprMaxAcceleration> = {
   encode(message: ExprMaxAcceleration, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.max !== undefined) {
+    if (message.max !== undefined && message.max !== null) {
       Expr.encode(message.max, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -49,12 +49,12 @@ export const ExprMaxAcceleration: MessageFns<ExprMaxAcceleration> = {
   },
 
   fromJSON(object: any): ExprMaxAcceleration {
-    return { max: isSet(object.max) ? Expr.fromJSON(object.max) : undefined };
+    return { max: isSet(object.max) ? Expr.fromJSON(object.max) : null };
   },
 
   toJSON(message: ExprMaxAcceleration): unknown {
     const obj: any = {};
-    if (message.max !== undefined) {
+    if (message.max !== undefined && message.max !== null) {
       obj.max = Expr.toJSON(message.max);
     }
     return obj;
@@ -65,7 +65,7 @@ export const ExprMaxAcceleration: MessageFns<ExprMaxAcceleration> = {
   },
   fromPartial<I extends Exact<DeepPartial<ExprMaxAcceleration>, I>>(object: I): ExprMaxAcceleration {
     const message = createBaseExprMaxAcceleration();
-    message.max = (object.max !== undefined && object.max !== null) ? Expr.fromPartial(object.max) : undefined;
+    message.max = (object.max !== undefined && object.max !== null) ? Expr.fromPartial(object.max) : null;
     return message;
   },
 };
@@ -75,7 +75,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

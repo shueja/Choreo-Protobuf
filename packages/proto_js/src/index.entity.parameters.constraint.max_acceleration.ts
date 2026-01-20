@@ -5,5 +5,4 @@
 
 /* eslint-disable */
 
-export * from "./entity/parameters/constraint/max_acceleration/double";
 export * from "./entity/parameters/constraint/max_acceleration/expr";

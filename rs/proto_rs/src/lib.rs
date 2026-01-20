@@ -1,3 +1,5 @@
+use crate::{entity::Expr, to_double::ToDouble};
+
 include!("./gen.rs");
 pub mod validate {
     
@@ -33,5 +35,15 @@ pub mod validate {
 pub mod to_double {
     pub trait ToDouble {
         type DoubleType;
+    }
+}
+impl Into<f64> for Expr {
+    fn into(self) -> f64 {
+        self.value
+    }
+}
+impl Expr {
+    pub fn new(expr: &str, value: f64) -> Self {
+        Expr {expr: expr.to_string(), value}
     }
 }

@@ -7,21 +7,24 @@ plugins:
       - outputClientImpl=grpc-web
       - outputIndex=true
       - esModuleInterop=true
-      - oneof=unions
+      - oneof=unions-value
       - rpcAfterResponse=true
       - rpcBeforeRequest=true
+      - useNullAsOptional=true
   - local: protoc-gen-prost
     out: ./rs/proto_rs/src
     opt:
       - compile_well_known_types
       - extern_path=.google.protobuf=::pbjson_types
-      - type_attribute=.=#[valid_proc::make_valid]
-      - type_attribute=.entity.parameters=#[derive(todouble_derive::ToDouble)]
+      - retain_enum_prefix=false
+      - type_attribute=.=#[derive(valid_proc::Valid)]
+      # - type_attribute=.entity.parameters=#[derive(todouble_derive::ToDouble)]
       # Mark all the fields that should remain optional in the Rust gen
-      # - field_attribute=TrajectoryFile.snapshot=#[required(optional)]
-      # - field_attribute=TrajectoryFile.output=#[required(optional)]
-  - local: protoc-gen-prost-serde
-    out: ./rs/proto_rs/src
+      - field_attribute=TrajectoryFile.snapshot=#[optional]
+      - field_attribute=GenerationOutput.config=#[optional]
+      
+  # - local: protoc-gen-prost-serde
+  #   out: ./rs/proto_rs/src
   - local: protoc-gen-tonic
     out: ./rs/proto_rs/src
     opt:
@@ -33,3 +36,4 @@ plugins:
     opt:
       - gen_crate=Cargo.toml.rs.tpl
       - include_file=src/gen.rs
+      - no_features

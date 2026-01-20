@@ -18,74 +18,204 @@
 use proc_macro::{self, TokenStream};
 use proc_macro2::Span;
 use quote::quote;
-use syn::{Data::{Enum, Struct, Union}, DataEnum, DataStruct, DeriveInput, Fields::{Named, Unit, Unnamed}, FieldsNamed, FieldsUnnamed, Ident, parse_macro_input};
+use syn::{Data::{Enum, Struct, Union}, DataEnum, DataStruct, DeriveInput, Field, Fields::{self, Named, Unit, Unnamed}, FieldsNamed, FieldsUnnamed, Ident, Path, Type, TypePath, Variant, ext, parse_macro_input, punctuated::Punctuated, token::Comma};
 
 pub fn to_double_ident(ident: &Ident) -> Ident {
     syn::Ident::new(ident.to_string().replace("Expr", "Double").as_str(), Span::call_site())
 }
 pub fn derive_proc_macro_impl(input: TokenStream) -> TokenStream {
-  let DeriveInput {
+  let input = parse_macro_input!(input as DeriveInput); // Same as: syn::parse(input).unwrap();
+let DeriveInput {
     ident: struct_name_ident,
     data,
     generics,
     ..
-  } = parse_macro_input!(input as DeriveInput); // Same as: syn::parse(input).unwrap();
-
+  } = input.clone();
   let where_clause = &generics.where_clause;
 
-  let description_str = match data {
-    Struct(my_struct) => gen_to_double_for_struct(my_struct),
-    Enum(my_enum) => gen_to_double_for_enum(my_enum),
-    Union(my_union) => unimplemented!("Don't support Rust unions"),
-  };
   let double_ident = to_double_ident(&struct_name_ident);
+  let is_nullop = double_ident == struct_name_ident;
+  if is_nullop {
+    return   quote! {
+    impl #generics crate::to_double::ToDouble for #struct_name_ident #generics #where_clause {
+        type DoubleType = #double_ident;
+    }
+  }
+  .into()
+  }
+
+  let into_f64 = make_f64_struct(&input);
   quote! {
     impl #generics crate::to_double::ToDouble for #struct_name_ident #generics #where_clause {
         type DoubleType = #double_ident;
-    //   fn describe(&self) -> String {
-    //     let mut string = String::from(stringify!(#struct_name_ident));
-    //     string.push_str(" is ");
-    //     string.push_str(#description_str);
-    //     string
-    //   }
+    }
+    impl #generics Into<#double_ident> for #struct_name_ident #generics #where_clause {
+        fn into(self) -> #double_ident {
+            #double_ident { // todo this should handle unnamed fields differently ()
+            #(#into_f64,)*
+            }
+        }
     }
   }
   .into()
 }
-
-fn gen_to_double_for_struct(my_struct: DataStruct) -> String {
-  match my_struct.fields {
-    Named(fields) => handle_named_fields(fields),
-    Unnamed(fields) => handle_unnamed_fields(fields),
-    Unit => handle_unit(),
-  }
+fn path_contains<T: IntoIterator<Item = &'static str>>(path: &Path, search: T) ->bool {
+    let segments_str = &path
+        .segments
+        .iter()
+        .map(|segment| segment.ident.to_string())
+        .collect::<Vec<_>>()
+        .join("::");
+    let option_segment = search
+        .into_iter()
+        .find(|s| segments_str == *s);
+    option_segment.is_some()
 }
 
-fn handle_named_fields(fields: FieldsNamed) -> String {
-  let my_named_field_idents = fields
-    .named
-    .iter()
-    .map(|it| &it.ident);
-  format!(
-    "a struct with these named fields: {}",
-    quote! {#(#my_named_field_idents), *}
-  )
+fn convert_named_field(ident: &Ident) ->proc_macro2::TokenStream {
+    quote! {#ident: self.#ident.into()}
+}
+fn convert_unnamed_field(index: usize) ->proc_macro2::TokenStream {
+    quote! {self.#index.into()}
+}
+fn convert_option_field(ident: &Ident) ->proc_macro2::TokenStream {
+    quote! {#ident: self.#ident.map(Into::into).into()}
+}
+fn convert_option_expr_field(ident: &Ident) ->proc_macro2::TokenStream {
+    quote! {#ident: self.#ident.expect("Converted optional Expr into double!!!").into()}
+}
+fn convert_vector_field(ident: &Ident) ->proc_macro2::TokenStream {
+    quote! {#ident: self.#ident.into_iter().map(Into::into).collect()}
 }
 
-fn handle_unnamed_fields(fields: FieldsUnnamed) -> String {
-  let my_unnamed_fields_count = fields.unnamed.iter().count();
-  format!("a struct with {} unnamed fields", my_unnamed_fields_count)
+fn extract_option_inner(path: &Path) -> Option<Type> {
+    let segments_str = &path
+        .segments
+        .iter()
+        .map(|segment| segment.ident.to_string())
+        .collect::<Vec<_>>()
+        .join("::");
+    let option_segment = ["Option", "std::option::Option", "core::option::Option"]
+        .iter()
+        .find(|s| segments_str == *s)
+        .and_then(|_| path.segments.last());
+    option_segment
+        .and_then(|path_seg| match &path_seg.arguments {
+            PathArguments::AngleBracketed(AngleBracketedGenericArguments { args, .. }) => {
+                args.first()
+            }
+            _ => None,
+        })
+        .and_then(|generic_arg| match generic_arg {
+            GenericArgument::Type(typ) => Some(typ.clone()),
+            _ => None,
+        })
 }
 
-fn handle_unit() -> String { "a unit struct".to_string() }
+enum ConversionType {
+    ExprOpt,
+    Opt,
+    Vec,
+    Into
+}
+fn get_conversion_type(ty: &Type) -> ConversionType {
+    match &field.ty {
+            Type::Path(TypePath { path, .. }) => {
+                if path_contains(path,["Vec", "prost::alloc::vec::Vec"]) {
+                    return ConversionType::Vec;
+                }
+                match extract_option_inner(path) {
 
-fn gen_to_double_for_enum(my_enum: DataEnum) -> String {
-  let my_variant_idents = my_enum
-    .variants
-    .iter()
-    .map(|it| &it.ident);
-  format!(
-    "an enum with these variants: {}",
-    quote! {#(#my_variant_idents),*}
-  )
+                    Type::Path(TypePath { path, .. }) => {
+                        if path_contains(path, search)
+                    },
+                    _=
+                }
+            },
+            _ => false
+}
+fn make_into_f64(fields: &Fields) -> Vec<proc_macro2::TokenStream> {
+    let mut conversions: Vec<proc_macro2::TokenStream> = vec![];
+    let convert = |(index, field): (usize, &Field)| {
+       ConversionType =  
+        };
+        let inner_type_vec = match &field.ty {
+            Type::Path(TypePath { path, .. }) => path_contains(path,["Vec", "prost::alloc::vec::Vec"]),
+            _ => false
+        };
+        conversions.push(match &field.ident {
+            Some(ident) => {
+                if (inner_type_opt) {
+                    convert_option_field(ident)
+                } else if (inner_type_vec) {
+                    convert_vector_field(ident)
+                }else {
+                    convert_named_field(ident)
+                }
+            }
+            None => convert_unnamed_field(index),
+        });
+    };
+    match fields {
+        syn::Fields::Named(syn::FieldsNamed { brace_token, named }) => {
+            named
+                    .iter()
+                    .enumerate()
+                    .for_each(convert);}
+        syn::Fields::Unnamed(syn::FieldsUnnamed {
+            paren_token,
+            unnamed,
+        }) => {unnamed
+                .iter()
+                .enumerate()
+                .for_each(convert)
+        },
+        syn::Fields::Unit => {},
+    };
+    conversions
+}
+
+fn make_f64_struct(
+    input: &DeriveInput,
+) -> Vec<proc_macro2::TokenStream> {
+    let DeriveInput {
+        attrs,
+        vis,
+        ident,
+        generics,
+        data,
+    } = input.clone();
+
+    match data {
+        syn::Data::Struct(DataStruct {
+            struct_token,
+            fields,
+            semi_token,
+        }) => make_into_f64(&fields),
+        syn::Data::Enum(DataEnum {
+            enum_token,
+            brace_token,
+            variants,
+        }) => 
+            variants
+                    .iter()
+                    .map(|v| {
+                        let Variant { attrs, ident, fields, discriminant } = v;
+                        let conversions = make_into_f64(fields);
+                        let field_tokens = match fields {
+                            Named(fields_named) => quote!{{#(#conversions,)*}}
+                            ,
+                            Unnamed(fields_unnamed) =>  quote!{(#(#conversions,)*)},
+                            Unit => quote!{},
+                        };
+                        let discriminant_tokens = discriminant.as_ref().map(|(eq, expr)|quote!{= #expr});
+                        quote! {
+                            #(#attrs)*
+                            #ident #field_tokens #discriminant_tokens
+                        }
+                        
+                    }).collect(),
+        _ => unimplemented!("unimplemented syn::Data"),
+    }
+
 }

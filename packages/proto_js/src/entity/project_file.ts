@@ -11,12 +11,12 @@ import { ExprRobotConfig } from "./parameters/robotconfig/expr";
 
 export interface ProjectFile {
   name: string;
-  config: ExprRobotConfig | undefined;
+  config: ExprRobotConfig | null;
   driveType: DriveType;
 }
 
 function createBaseProjectFile(): ProjectFile {
-  return { name: "", config: undefined, driveType: 0 };
+  return { name: "", config: null, driveType: 0 };
 }
 
 export const ProjectFile: MessageFns<ProjectFile> = {
@@ -24,7 +24,7 @@ export const ProjectFile: MessageFns<ProjectFile> = {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
-    if (message.config !== undefined) {
+    if (message.config !== undefined && message.config !== null) {
       ExprRobotConfig.encode(message.config, writer.uint32(18).fork()).join();
     }
     if (message.driveType !== 0) {
@@ -76,7 +76,7 @@ export const ProjectFile: MessageFns<ProjectFile> = {
   fromJSON(object: any): ProjectFile {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      config: isSet(object.config) ? ExprRobotConfig.fromJSON(object.config) : undefined,
+      config: isSet(object.config) ? ExprRobotConfig.fromJSON(object.config) : null,
       driveType: isSet(object.driveType)
         ? driveTypeFromJSON(object.driveType)
         : isSet(object.drive_type)
@@ -90,7 +90,7 @@ export const ProjectFile: MessageFns<ProjectFile> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.config !== undefined) {
+    if (message.config !== undefined && message.config !== null) {
       obj.config = ExprRobotConfig.toJSON(message.config);
     }
     if (message.driveType !== 0) {
@@ -107,7 +107,7 @@ export const ProjectFile: MessageFns<ProjectFile> = {
     message.name = object.name ?? "";
     message.config = (object.config !== undefined && object.config !== null)
       ? ExprRobotConfig.fromPartial(object.config)
-      : undefined;
+      : null;
     message.driveType = object.driveType ?? 0;
     return message;
   },
@@ -118,7 +118,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

@@ -9,28 +9,28 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Expr } from "../../expression";
 
 export interface ExprModule {
-  x: Expr | undefined;
-  y: Expr | undefined;
+  x: Expr | null;
+  y: Expr | null;
 }
 
 export interface ExprBumper {
-  front: Expr | undefined;
-  left: Expr | undefined;
-  right: Expr | undefined;
-  back: Expr | undefined;
+  front: Expr | null;
+  left: Expr | null;
+  right: Expr | null;
+  back: Expr | null;
 }
 
 export interface ExprRobotConfig {
-  mass: Expr | undefined;
-  inertia: Expr | undefined;
-  gearing: Expr | undefined;
-  radius: Expr | undefined;
-  vmax: Expr | undefined;
-  tmax: Expr | undefined;
-  cof: Expr | undefined;
+  mass: Expr | null;
+  inertia: Expr | null;
+  gearing: Expr | null;
+  radius: Expr | null;
+  vmax: Expr | null;
+  tmax: Expr | null;
+  cof: Expr | null;
   differentialTrackWidth:
     | Expr
-    | undefined;
+    | null;
   /**
    * Expr bumper_front = 9;
    * Expr bumper_left = 10;
@@ -41,23 +41,23 @@ export interface ExprRobotConfig {
    * Expr fr_x = 15;
    * Expr fl_
    */
-  bumper: ExprBumper | undefined;
-  frontLeft: ExprModule | undefined;
-  frontRight: ExprModule | undefined;
-  backLeft: ExprModule | undefined;
-  backRight: ExprModule | undefined;
+  bumper: ExprBumper | null;
+  frontLeft: ExprModule | null;
+  frontRight: ExprModule | null;
+  backLeft: ExprModule | null;
+  backRight: ExprModule | null;
 }
 
 function createBaseExprModule(): ExprModule {
-  return { x: undefined, y: undefined };
+  return { x: null, y: null };
 }
 
 export const ExprModule: MessageFns<ExprModule> = {
   encode(message: ExprModule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.x !== undefined) {
+    if (message.x !== undefined && message.x !== null) {
       Expr.encode(message.x, writer.uint32(10).fork()).join();
     }
-    if (message.y !== undefined) {
+    if (message.y !== undefined && message.y !== null) {
       Expr.encode(message.y, writer.uint32(18).fork()).join();
     }
     return writer;
@@ -96,18 +96,15 @@ export const ExprModule: MessageFns<ExprModule> = {
   },
 
   fromJSON(object: any): ExprModule {
-    return {
-      x: isSet(object.x) ? Expr.fromJSON(object.x) : undefined,
-      y: isSet(object.y) ? Expr.fromJSON(object.y) : undefined,
-    };
+    return { x: isSet(object.x) ? Expr.fromJSON(object.x) : null, y: isSet(object.y) ? Expr.fromJSON(object.y) : null };
   },
 
   toJSON(message: ExprModule): unknown {
     const obj: any = {};
-    if (message.x !== undefined) {
+    if (message.x !== undefined && message.x !== null) {
       obj.x = Expr.toJSON(message.x);
     }
-    if (message.y !== undefined) {
+    if (message.y !== undefined && message.y !== null) {
       obj.y = Expr.toJSON(message.y);
     }
     return obj;
@@ -118,28 +115,28 @@ export const ExprModule: MessageFns<ExprModule> = {
   },
   fromPartial<I extends Exact<DeepPartial<ExprModule>, I>>(object: I): ExprModule {
     const message = createBaseExprModule();
-    message.x = (object.x !== undefined && object.x !== null) ? Expr.fromPartial(object.x) : undefined;
-    message.y = (object.y !== undefined && object.y !== null) ? Expr.fromPartial(object.y) : undefined;
+    message.x = (object.x !== undefined && object.x !== null) ? Expr.fromPartial(object.x) : null;
+    message.y = (object.y !== undefined && object.y !== null) ? Expr.fromPartial(object.y) : null;
     return message;
   },
 };
 
 function createBaseExprBumper(): ExprBumper {
-  return { front: undefined, left: undefined, right: undefined, back: undefined };
+  return { front: null, left: null, right: null, back: null };
 }
 
 export const ExprBumper: MessageFns<ExprBumper> = {
   encode(message: ExprBumper, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.front !== undefined) {
+    if (message.front !== undefined && message.front !== null) {
       Expr.encode(message.front, writer.uint32(10).fork()).join();
     }
-    if (message.left !== undefined) {
+    if (message.left !== undefined && message.left !== null) {
       Expr.encode(message.left, writer.uint32(18).fork()).join();
     }
-    if (message.right !== undefined) {
+    if (message.right !== undefined && message.right !== null) {
       Expr.encode(message.right, writer.uint32(26).fork()).join();
     }
-    if (message.back !== undefined) {
+    if (message.back !== undefined && message.back !== null) {
       Expr.encode(message.back, writer.uint32(34).fork()).join();
     }
     return writer;
@@ -195,25 +192,25 @@ export const ExprBumper: MessageFns<ExprBumper> = {
 
   fromJSON(object: any): ExprBumper {
     return {
-      front: isSet(object.front) ? Expr.fromJSON(object.front) : undefined,
-      left: isSet(object.left) ? Expr.fromJSON(object.left) : undefined,
-      right: isSet(object.right) ? Expr.fromJSON(object.right) : undefined,
-      back: isSet(object.back) ? Expr.fromJSON(object.back) : undefined,
+      front: isSet(object.front) ? Expr.fromJSON(object.front) : null,
+      left: isSet(object.left) ? Expr.fromJSON(object.left) : null,
+      right: isSet(object.right) ? Expr.fromJSON(object.right) : null,
+      back: isSet(object.back) ? Expr.fromJSON(object.back) : null,
     };
   },
 
   toJSON(message: ExprBumper): unknown {
     const obj: any = {};
-    if (message.front !== undefined) {
+    if (message.front !== undefined && message.front !== null) {
       obj.front = Expr.toJSON(message.front);
     }
-    if (message.left !== undefined) {
+    if (message.left !== undefined && message.left !== null) {
       obj.left = Expr.toJSON(message.left);
     }
-    if (message.right !== undefined) {
+    if (message.right !== undefined && message.right !== null) {
       obj.right = Expr.toJSON(message.right);
     }
-    if (message.back !== undefined) {
+    if (message.back !== undefined && message.back !== null) {
       obj.back = Expr.toJSON(message.back);
     }
     return obj;
@@ -224,71 +221,71 @@ export const ExprBumper: MessageFns<ExprBumper> = {
   },
   fromPartial<I extends Exact<DeepPartial<ExprBumper>, I>>(object: I): ExprBumper {
     const message = createBaseExprBumper();
-    message.front = (object.front !== undefined && object.front !== null) ? Expr.fromPartial(object.front) : undefined;
-    message.left = (object.left !== undefined && object.left !== null) ? Expr.fromPartial(object.left) : undefined;
-    message.right = (object.right !== undefined && object.right !== null) ? Expr.fromPartial(object.right) : undefined;
-    message.back = (object.back !== undefined && object.back !== null) ? Expr.fromPartial(object.back) : undefined;
+    message.front = (object.front !== undefined && object.front !== null) ? Expr.fromPartial(object.front) : null;
+    message.left = (object.left !== undefined && object.left !== null) ? Expr.fromPartial(object.left) : null;
+    message.right = (object.right !== undefined && object.right !== null) ? Expr.fromPartial(object.right) : null;
+    message.back = (object.back !== undefined && object.back !== null) ? Expr.fromPartial(object.back) : null;
     return message;
   },
 };
 
 function createBaseExprRobotConfig(): ExprRobotConfig {
   return {
-    mass: undefined,
-    inertia: undefined,
-    gearing: undefined,
-    radius: undefined,
-    vmax: undefined,
-    tmax: undefined,
-    cof: undefined,
-    differentialTrackWidth: undefined,
-    bumper: undefined,
-    frontLeft: undefined,
-    frontRight: undefined,
-    backLeft: undefined,
-    backRight: undefined,
+    mass: null,
+    inertia: null,
+    gearing: null,
+    radius: null,
+    vmax: null,
+    tmax: null,
+    cof: null,
+    differentialTrackWidth: null,
+    bumper: null,
+    frontLeft: null,
+    frontRight: null,
+    backLeft: null,
+    backRight: null,
   };
 }
 
 export const ExprRobotConfig: MessageFns<ExprRobotConfig> = {
   encode(message: ExprRobotConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.mass !== undefined) {
+    if (message.mass !== undefined && message.mass !== null) {
       Expr.encode(message.mass, writer.uint32(10).fork()).join();
     }
-    if (message.inertia !== undefined) {
+    if (message.inertia !== undefined && message.inertia !== null) {
       Expr.encode(message.inertia, writer.uint32(18).fork()).join();
     }
-    if (message.gearing !== undefined) {
+    if (message.gearing !== undefined && message.gearing !== null) {
       Expr.encode(message.gearing, writer.uint32(26).fork()).join();
     }
-    if (message.radius !== undefined) {
+    if (message.radius !== undefined && message.radius !== null) {
       Expr.encode(message.radius, writer.uint32(34).fork()).join();
     }
-    if (message.vmax !== undefined) {
+    if (message.vmax !== undefined && message.vmax !== null) {
       Expr.encode(message.vmax, writer.uint32(42).fork()).join();
     }
-    if (message.tmax !== undefined) {
+    if (message.tmax !== undefined && message.tmax !== null) {
       Expr.encode(message.tmax, writer.uint32(50).fork()).join();
     }
-    if (message.cof !== undefined) {
+    if (message.cof !== undefined && message.cof !== null) {
       Expr.encode(message.cof, writer.uint32(58).fork()).join();
     }
-    if (message.differentialTrackWidth !== undefined) {
+    if (message.differentialTrackWidth !== undefined && message.differentialTrackWidth !== null) {
       Expr.encode(message.differentialTrackWidth, writer.uint32(66).fork()).join();
     }
-    if (message.bumper !== undefined) {
+    if (message.bumper !== undefined && message.bumper !== null) {
       ExprBumper.encode(message.bumper, writer.uint32(74).fork()).join();
     }
-    if (message.frontLeft !== undefined) {
+    if (message.frontLeft !== undefined && message.frontLeft !== null) {
       ExprModule.encode(message.frontLeft, writer.uint32(82).fork()).join();
     }
-    if (message.frontRight !== undefined) {
+    if (message.frontRight !== undefined && message.frontRight !== null) {
       ExprModule.encode(message.frontRight, writer.uint32(90).fork()).join();
     }
-    if (message.backLeft !== undefined) {
+    if (message.backLeft !== undefined && message.backLeft !== null) {
       ExprModule.encode(message.backLeft, writer.uint32(98).fork()).join();
     }
-    if (message.backRight !== undefined) {
+    if (message.backRight !== undefined && message.backRight !== null) {
       ExprModule.encode(message.backRight, writer.uint32(106).fork()).join();
     }
     return writer;
@@ -416,81 +413,81 @@ export const ExprRobotConfig: MessageFns<ExprRobotConfig> = {
 
   fromJSON(object: any): ExprRobotConfig {
     return {
-      mass: isSet(object.mass) ? Expr.fromJSON(object.mass) : undefined,
-      inertia: isSet(object.inertia) ? Expr.fromJSON(object.inertia) : undefined,
-      gearing: isSet(object.gearing) ? Expr.fromJSON(object.gearing) : undefined,
-      radius: isSet(object.radius) ? Expr.fromJSON(object.radius) : undefined,
-      vmax: isSet(object.vmax) ? Expr.fromJSON(object.vmax) : undefined,
-      tmax: isSet(object.tmax) ? Expr.fromJSON(object.tmax) : undefined,
-      cof: isSet(object.cof) ? Expr.fromJSON(object.cof) : undefined,
+      mass: isSet(object.mass) ? Expr.fromJSON(object.mass) : null,
+      inertia: isSet(object.inertia) ? Expr.fromJSON(object.inertia) : null,
+      gearing: isSet(object.gearing) ? Expr.fromJSON(object.gearing) : null,
+      radius: isSet(object.radius) ? Expr.fromJSON(object.radius) : null,
+      vmax: isSet(object.vmax) ? Expr.fromJSON(object.vmax) : null,
+      tmax: isSet(object.tmax) ? Expr.fromJSON(object.tmax) : null,
+      cof: isSet(object.cof) ? Expr.fromJSON(object.cof) : null,
       differentialTrackWidth: isSet(object.differentialTrackWidth)
         ? Expr.fromJSON(object.differentialTrackWidth)
         : isSet(object.differential_track_width)
         ? Expr.fromJSON(object.differential_track_width)
-        : undefined,
-      bumper: isSet(object.bumper) ? ExprBumper.fromJSON(object.bumper) : undefined,
+        : null,
+      bumper: isSet(object.bumper) ? ExprBumper.fromJSON(object.bumper) : null,
       frontLeft: isSet(object.frontLeft)
         ? ExprModule.fromJSON(object.frontLeft)
         : isSet(object.front_left)
         ? ExprModule.fromJSON(object.front_left)
-        : undefined,
+        : null,
       frontRight: isSet(object.frontRight)
         ? ExprModule.fromJSON(object.frontRight)
         : isSet(object.front_right)
         ? ExprModule.fromJSON(object.front_right)
-        : undefined,
+        : null,
       backLeft: isSet(object.backLeft)
         ? ExprModule.fromJSON(object.backLeft)
         : isSet(object.back_left)
         ? ExprModule.fromJSON(object.back_left)
-        : undefined,
+        : null,
       backRight: isSet(object.backRight)
         ? ExprModule.fromJSON(object.backRight)
         : isSet(object.back_right)
         ? ExprModule.fromJSON(object.back_right)
-        : undefined,
+        : null,
     };
   },
 
   toJSON(message: ExprRobotConfig): unknown {
     const obj: any = {};
-    if (message.mass !== undefined) {
+    if (message.mass !== undefined && message.mass !== null) {
       obj.mass = Expr.toJSON(message.mass);
     }
-    if (message.inertia !== undefined) {
+    if (message.inertia !== undefined && message.inertia !== null) {
       obj.inertia = Expr.toJSON(message.inertia);
     }
-    if (message.gearing !== undefined) {
+    if (message.gearing !== undefined && message.gearing !== null) {
       obj.gearing = Expr.toJSON(message.gearing);
     }
-    if (message.radius !== undefined) {
+    if (message.radius !== undefined && message.radius !== null) {
       obj.radius = Expr.toJSON(message.radius);
     }
-    if (message.vmax !== undefined) {
+    if (message.vmax !== undefined && message.vmax !== null) {
       obj.vmax = Expr.toJSON(message.vmax);
     }
-    if (message.tmax !== undefined) {
+    if (message.tmax !== undefined && message.tmax !== null) {
       obj.tmax = Expr.toJSON(message.tmax);
     }
-    if (message.cof !== undefined) {
+    if (message.cof !== undefined && message.cof !== null) {
       obj.cof = Expr.toJSON(message.cof);
     }
-    if (message.differentialTrackWidth !== undefined) {
+    if (message.differentialTrackWidth !== undefined && message.differentialTrackWidth !== null) {
       obj.differentialTrackWidth = Expr.toJSON(message.differentialTrackWidth);
     }
-    if (message.bumper !== undefined) {
+    if (message.bumper !== undefined && message.bumper !== null) {
       obj.bumper = ExprBumper.toJSON(message.bumper);
     }
-    if (message.frontLeft !== undefined) {
+    if (message.frontLeft !== undefined && message.frontLeft !== null) {
       obj.frontLeft = ExprModule.toJSON(message.frontLeft);
     }
-    if (message.frontRight !== undefined) {
+    if (message.frontRight !== undefined && message.frontRight !== null) {
       obj.frontRight = ExprModule.toJSON(message.frontRight);
     }
-    if (message.backLeft !== undefined) {
+    if (message.backLeft !== undefined && message.backLeft !== null) {
       obj.backLeft = ExprModule.toJSON(message.backLeft);
     }
-    if (message.backRight !== undefined) {
+    if (message.backRight !== undefined && message.backRight !== null) {
       obj.backRight = ExprModule.toJSON(message.backRight);
     }
     return obj;
@@ -501,38 +498,36 @@ export const ExprRobotConfig: MessageFns<ExprRobotConfig> = {
   },
   fromPartial<I extends Exact<DeepPartial<ExprRobotConfig>, I>>(object: I): ExprRobotConfig {
     const message = createBaseExprRobotConfig();
-    message.mass = (object.mass !== undefined && object.mass !== null) ? Expr.fromPartial(object.mass) : undefined;
+    message.mass = (object.mass !== undefined && object.mass !== null) ? Expr.fromPartial(object.mass) : null;
     message.inertia = (object.inertia !== undefined && object.inertia !== null)
       ? Expr.fromPartial(object.inertia)
-      : undefined;
+      : null;
     message.gearing = (object.gearing !== undefined && object.gearing !== null)
       ? Expr.fromPartial(object.gearing)
-      : undefined;
-    message.radius = (object.radius !== undefined && object.radius !== null)
-      ? Expr.fromPartial(object.radius)
-      : undefined;
-    message.vmax = (object.vmax !== undefined && object.vmax !== null) ? Expr.fromPartial(object.vmax) : undefined;
-    message.tmax = (object.tmax !== undefined && object.tmax !== null) ? Expr.fromPartial(object.tmax) : undefined;
-    message.cof = (object.cof !== undefined && object.cof !== null) ? Expr.fromPartial(object.cof) : undefined;
+      : null;
+    message.radius = (object.radius !== undefined && object.radius !== null) ? Expr.fromPartial(object.radius) : null;
+    message.vmax = (object.vmax !== undefined && object.vmax !== null) ? Expr.fromPartial(object.vmax) : null;
+    message.tmax = (object.tmax !== undefined && object.tmax !== null) ? Expr.fromPartial(object.tmax) : null;
+    message.cof = (object.cof !== undefined && object.cof !== null) ? Expr.fromPartial(object.cof) : null;
     message.differentialTrackWidth =
       (object.differentialTrackWidth !== undefined && object.differentialTrackWidth !== null)
         ? Expr.fromPartial(object.differentialTrackWidth)
-        : undefined;
+        : null;
     message.bumper = (object.bumper !== undefined && object.bumper !== null)
       ? ExprBumper.fromPartial(object.bumper)
-      : undefined;
+      : null;
     message.frontLeft = (object.frontLeft !== undefined && object.frontLeft !== null)
       ? ExprModule.fromPartial(object.frontLeft)
-      : undefined;
+      : null;
     message.frontRight = (object.frontRight !== undefined && object.frontRight !== null)
       ? ExprModule.fromPartial(object.frontRight)
-      : undefined;
+      : null;
     message.backLeft = (object.backLeft !== undefined && object.backLeft !== null)
       ? ExprModule.fromPartial(object.backLeft)
-      : undefined;
+      : null;
     message.backRight = (object.backRight !== undefined && object.backRight !== null)
       ? ExprModule.fromPartial(object.backRight)
-      : undefined;
+      : null;
     return message;
   },
 };
@@ -542,7 +537,7 @@ type Builtin = Date | Function | Uint8Array | string | number | boolean | undefi
 type DeepPartial<T> = T extends Builtin ? T
   : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends { $case: string } ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & { $case: T["$case"] }
+  : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 

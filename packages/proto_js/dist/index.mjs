@@ -1,77 +1,77 @@
-function We() {
+function we() {
   let t = 0, e = 0;
-  for (let o = 0; o < 28; o += 7) {
+  for (let u = 0; u < 28; u += 7) {
     let i = this.buf[this.pos++];
-    if (t |= (i & 127) << o, (i & 128) == 0)
+    if (t |= (i & 127) << u, (i & 128) == 0)
       return this.assertBounds(), [t, e];
   }
   let r = this.buf[this.pos++];
   if (t |= (r & 15) << 28, e = (r & 112) >> 4, (r & 128) == 0)
     return this.assertBounds(), [t, e];
-  for (let o = 3; o <= 31; o += 7) {
+  for (let u = 3; u <= 31; u += 7) {
     let i = this.buf[this.pos++];
-    if (e |= (i & 127) << o, (i & 128) == 0)
+    if (e |= (i & 127) << u, (i & 128) == 0)
       return this.assertBounds(), [t, e];
   }
   throw new Error("invalid varint");
 }
-function gt(t, e, r) {
+function ft(t, e, r) {
   for (let n = 0; n < 28; n = n + 7) {
-    const f = t >>> n, s = !(!(f >>> 7) && e == 0), m = (s ? f | 128 : f) & 255;
-    if (r.push(m), !s)
+    const s = t >>> n, a = !(!(s >>> 7) && e == 0), b = (a ? s | 128 : s) & 255;
+    if (r.push(b), !a)
       return;
   }
-  const o = t >>> 28 & 15 | (e & 7) << 4, i = e >> 3 != 0;
-  if (r.push((i ? o | 128 : o) & 255), !!i) {
+  const u = t >>> 28 & 15 | (e & 7) << 4, i = e >> 3 != 0;
+  if (r.push((i ? u | 128 : u) & 255), !!i) {
     for (let n = 3; n < 31; n = n + 7) {
-      const f = e >>> n, s = !!(f >>> 7), m = (s ? f | 128 : f) & 255;
-      if (r.push(m), !s)
+      const s = e >>> n, a = !!(s >>> 7), b = (a ? s | 128 : s) & 255;
+      if (r.push(b), !a)
         return;
     }
     r.push(e >>> 31 & 1);
   }
 }
-const lt = 4294967296;
-function At(t) {
+const tt = 4294967296;
+function St(t) {
   const e = t[0] === "-";
   e && (t = t.slice(1));
   const r = 1e6;
-  let o = 0, i = 0;
-  function n(f, s) {
-    const m = Number(t.slice(f, s));
-    i *= r, o = o * r + m, o >= lt && (i = i + (o / lt | 0), o = o % lt);
+  let u = 0, i = 0;
+  function n(s, a) {
+    const b = Number(t.slice(s, a));
+    i *= r, u = u * r + b, u >= tt && (i = i + (u / tt | 0), u = u % tt);
   }
-  return n(-24, -18), n(-18, -12), n(-12, -6), n(-6), e ? Pe(o, i) : Tt(o, i);
+  return n(-24, -18), n(-18, -12), n(-12, -6), n(-6), e ? ue(u, i) : vt(u, i);
 }
-function Xe(t, e) {
-  let r = Tt(t, e);
-  const o = r.hi & 2147483648;
-  o && (r = Pe(r.lo, r.hi));
-  const i = _e(r.lo, r.hi);
-  return o ? "-" + i : i;
+function Ne(t, e) {
+  let r = vt(t, e);
+  const u = r.hi & 2147483648;
+  u && (r = ue(r.lo, r.hi));
+  const i = se(r.lo, r.hi);
+  return u ? "-" + i : i;
 }
-function _e(t, e) {
-  if ({ lo: t, hi: e } = qe(t, e), e <= 2097151)
-    return String(lt * e + t);
-  const r = t & 16777215, o = (t >>> 24 | e << 8) & 16777215, i = e >> 16 & 65535;
-  let n = r + o * 6777216 + i * 6710656, f = o + i * 8147497, s = i * 2;
-  const m = 1e7;
-  return n >= m && (f += Math.floor(n / m), n %= m), f >= m && (s += Math.floor(f / m), f %= m), s.toString() + Rt(f) + Rt(n);
+function se(t, e) {
+  if ({ lo: t, hi: e } = Ee(t, e), e <= 2097151)
+    return String(tt * e + t);
+  const r = t & 16777215, u = (t >>> 24 | e << 8) & 16777215, i = e >> 16 & 65535;
+  let n = r + u * 6777216 + i * 6710656, s = u + i * 8147497, a = i * 2;
+  const b = 1e7;
+  return n >= b && (s += Math.floor(n / b), n %= b), s >= b && (a += Math.floor(s / b), s %= b), a.toString() + gt(s) + gt(n);
 }
-function qe(t, e) {
+function Ee(t, e) {
   return { lo: t >>> 0, hi: e >>> 0 };
 }
-function Tt(t, e) {
+function vt(t, e) {
   return { lo: t | 0, hi: e | 0 };
 }
-function Pe(t, e) {
-  return e = ~e, t ? t = ~t + 1 : e += 1, Tt(t, e);
+function ue(t, e) {
+  return e = ~e, t ? t = ~t + 1 : e += 1, vt(t, e);
 }
-const Rt = (t) => {
+const gt = (t) => {
   const e = String(t);
   return "0000000".slice(e.length) + e;
 };
-function It(t, e) {
+function wt(t, e) {
   if (t >= 0) {
     for (; t > 127; )
       e.push(t & 127 | 128), t = t >>> 7;
@@ -82,7 +82,7 @@ function It(t, e) {
     e.push(1);
   }
 }
-function Ke() {
+function Oe() {
   let t = this.buf[this.pos++], e = t & 127;
   if ((t & 128) == 0)
     return this.assertBounds(), e;
@@ -99,43 +99,43 @@ function Ke() {
     throw new Error("invalid varint");
   return this.assertBounds(), e >>> 0;
 }
-const D = /* @__PURE__ */ Ye();
-function Ye() {
+const C = /* @__PURE__ */ _e();
+function _e() {
   const t = new DataView(new ArrayBuffer(8));
   if (typeof BigInt == "function" && typeof t.getBigInt64 == "function" && typeof t.getBigUint64 == "function" && typeof t.setBigInt64 == "function" && typeof t.setBigUint64 == "function" && (!!globalThis.Deno || typeof process != "object" || typeof process.env != "object" || process.env.BUF_BIGINT_DISABLE !== "1")) {
-    const r = BigInt("-9223372036854775808"), o = BigInt("9223372036854775807"), i = BigInt("0"), n = BigInt("18446744073709551615");
+    const r = BigInt("-9223372036854775808"), u = BigInt("9223372036854775807"), i = BigInt("0"), n = BigInt("18446744073709551615");
     return {
       zero: BigInt(0),
       supported: !0,
-      parse(f) {
-        const s = typeof f == "bigint" ? f : BigInt(f);
-        if (s > o || s < r)
-          throw new Error(`invalid int64: ${f}`);
-        return s;
+      parse(s) {
+        const a = typeof s == "bigint" ? s : BigInt(s);
+        if (a > u || a < r)
+          throw new Error(`invalid int64: ${s}`);
+        return a;
       },
-      uParse(f) {
-        const s = typeof f == "bigint" ? f : BigInt(f);
-        if (s > n || s < i)
-          throw new Error(`invalid uint64: ${f}`);
-        return s;
+      uParse(s) {
+        const a = typeof s == "bigint" ? s : BigInt(s);
+        if (a > n || a < i)
+          throw new Error(`invalid uint64: ${s}`);
+        return a;
       },
-      enc(f) {
-        return t.setBigInt64(0, this.parse(f), !0), {
+      enc(s) {
+        return t.setBigInt64(0, this.parse(s), !0), {
           lo: t.getInt32(0, !0),
           hi: t.getInt32(4, !0)
         };
       },
-      uEnc(f) {
-        return t.setBigInt64(0, this.uParse(f), !0), {
+      uEnc(s) {
+        return t.setBigInt64(0, this.uParse(s), !0), {
           lo: t.getInt32(0, !0),
           hi: t.getInt32(4, !0)
         };
       },
-      dec(f, s) {
-        return t.setInt32(0, f, !0), t.setInt32(4, s, !0), t.getBigInt64(0, !0);
+      dec(s, a) {
+        return t.setInt32(0, s, !0), t.setInt32(4, a, !0), t.getBigInt64(0, !0);
       },
-      uDec(f, s) {
-        return t.setInt32(0, f, !0), t.setInt32(4, s, !0), t.getBigUint64(0, !0);
+      uDec(s, a) {
+        return t.setInt32(0, s, !0), t.setInt32(4, a, !0), t.getBigUint64(0, !0);
       }
     };
   }
@@ -143,38 +143,38 @@ function Ye() {
     zero: "0",
     supported: !1,
     parse(r) {
-      return typeof r != "string" && (r = r.toString()), Ht(r), r;
+      return typeof r != "string" && (r = r.toString()), Nt(r), r;
     },
     uParse(r) {
-      return typeof r != "string" && (r = r.toString()), Bt(r), r;
+      return typeof r != "string" && (r = r.toString()), Et(r), r;
     },
     enc(r) {
-      return typeof r != "string" && (r = r.toString()), Ht(r), At(r);
+      return typeof r != "string" && (r = r.toString()), Nt(r), St(r);
     },
     uEnc(r) {
-      return typeof r != "string" && (r = r.toString()), Bt(r), At(r);
+      return typeof r != "string" && (r = r.toString()), Et(r), St(r);
     },
-    dec(r, o) {
-      return Xe(r, o);
+    dec(r, u) {
+      return Ne(r, u);
     },
-    uDec(r, o) {
-      return _e(r, o);
+    uDec(r, u) {
+      return se(r, u);
     }
   };
 }
-function Ht(t) {
+function Nt(t) {
   if (!/^-?[0-9]+$/.test(t))
     throw new Error("invalid int64: " + t);
 }
-function Bt(t) {
+function Et(t) {
   if (!/^[0-9]+$/.test(t))
     throw new Error("invalid uint64: " + t);
 }
-const St = /* @__PURE__ */ Symbol.for("@bufbuild/protobuf/text-encoding");
-function Je() {
-  if (globalThis[St] == null) {
+const ct = /* @__PURE__ */ Symbol.for("@bufbuild/protobuf/text-encoding");
+function le() {
+  if (globalThis[ct] == null) {
     const t = new globalThis.TextEncoder(), e = new globalThis.TextDecoder();
-    globalThis[St] = {
+    globalThis[ct] = {
       encodeUtf8(r) {
         return t.encode(r);
       },
@@ -190,15 +190,15 @@ function Je() {
       }
     };
   }
-  return globalThis[St];
+  return globalThis[ct];
 }
-var C;
+var B;
 (function(t) {
   t[t.Varint = 0] = "Varint", t[t.Bit64 = 1] = "Bit64", t[t.LengthDelimited = 2] = "LengthDelimited", t[t.StartGroup = 3] = "StartGroup", t[t.EndGroup = 4] = "EndGroup", t[t.Bit32 = 5] = "Bit32";
-})(C || (C = {}));
-const Ze = 34028234663852886e22, Qe = -34028234663852886e22, je = 4294967295, tr = 2147483647, er = -2147483648;
-class S {
-  constructor(e = Je().encodeUtf8) {
+})(B || (B = {}));
+const Te = 34028234663852886e22, Pe = -34028234663852886e22, Me = 4294967295, Je = 2147483647, Re = -2147483648;
+class w {
+  constructor(e = le().encodeUtf8) {
     this.encodeUtf8 = e, this.stack = [], this.chunks = [], this.buf = [];
   }
   /**
@@ -209,9 +209,9 @@ class S {
     let e = 0;
     for (let i = 0; i < this.chunks.length; i++)
       e += this.chunks[i].length;
-    let r = new Uint8Array(e), o = 0;
+    let r = new Uint8Array(e), u = 0;
     for (let i = 0; i < this.chunks.length; i++)
-      r.set(this.chunks[i], o), o += this.chunks[i].length;
+      r.set(this.chunks[i], u), u += this.chunks[i].length;
     return this.chunks = [], r;
   }
   /**
@@ -253,7 +253,7 @@ class S {
    * Write a `uint32` value, an unsigned 32 bit varint.
    */
   uint32(e) {
-    for (Dt(e); e > 127; )
+    for (Ot(e); e > 127; )
       this.buf.push(e & 127 | 128), e = e >>> 7;
     return this.buf.push(e), this;
   }
@@ -261,7 +261,7 @@ class S {
    * Write a `int32` value, a signed 32 bit varint.
    */
   int32(e) {
-    return Nt(e), It(e, this.buf), this;
+    return dt(e), wt(e, this.buf), this;
   }
   /**
    * Write a `bool` value, a variant.
@@ -286,7 +286,7 @@ class S {
    * Write a `float` value, 32-bit floating point number.
    */
   float(e) {
-    rr(e);
+    Ie(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setFloat32(0, e, !0), this.raw(r);
   }
@@ -301,7 +301,7 @@ class S {
    * Write a `fixed32` value, an unsigned, fixed-length 32-bit integer.
    */
   fixed32(e) {
-    Dt(e);
+    Ot(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setUint32(0, e, !0), this.raw(r);
   }
@@ -309,7 +309,7 @@ class S {
    * Write a `sfixed32` value, a signed, fixed-length 32-bit integer.
    */
   sfixed32(e) {
-    Nt(e);
+    dt(e);
     let r = new Uint8Array(4);
     return new DataView(r.buffer).setInt32(0, e, !0), this.raw(r);
   }
@@ -317,56 +317,56 @@ class S {
    * Write a `sint32` value, a signed, zigzag-encoded 32-bit varint.
    */
   sint32(e) {
-    return Nt(e), e = (e << 1 ^ e >> 31) >>> 0, It(e, this.buf), this;
+    return dt(e), e = (e << 1 ^ e >> 31) >>> 0, wt(e, this.buf), this;
   }
   /**
    * Write a `fixed64` value, a signed, fixed-length 64-bit integer.
    */
   sfixed64(e) {
-    let r = new Uint8Array(8), o = new DataView(r.buffer), i = D.enc(e);
-    return o.setInt32(0, i.lo, !0), o.setInt32(4, i.hi, !0), this.raw(r);
+    let r = new Uint8Array(8), u = new DataView(r.buffer), i = C.enc(e);
+    return u.setInt32(0, i.lo, !0), u.setInt32(4, i.hi, !0), this.raw(r);
   }
   /**
    * Write a `fixed64` value, an unsigned, fixed-length 64 bit integer.
    */
   fixed64(e) {
-    let r = new Uint8Array(8), o = new DataView(r.buffer), i = D.uEnc(e);
-    return o.setInt32(0, i.lo, !0), o.setInt32(4, i.hi, !0), this.raw(r);
+    let r = new Uint8Array(8), u = new DataView(r.buffer), i = C.uEnc(e);
+    return u.setInt32(0, i.lo, !0), u.setInt32(4, i.hi, !0), this.raw(r);
   }
   /**
    * Write a `int64` value, a signed 64-bit varint.
    */
   int64(e) {
-    let r = D.enc(e);
-    return gt(r.lo, r.hi, this.buf), this;
+    let r = C.enc(e);
+    return ft(r.lo, r.hi, this.buf), this;
   }
   /**
    * Write a `sint64` value, a signed, zig-zag-encoded 64-bit varint.
    */
   sint64(e) {
-    const r = D.enc(e), o = r.hi >> 31, i = r.lo << 1 ^ o, n = (r.hi << 1 | r.lo >>> 31) ^ o;
-    return gt(i, n, this.buf), this;
+    const r = C.enc(e), u = r.hi >> 31, i = r.lo << 1 ^ u, n = (r.hi << 1 | r.lo >>> 31) ^ u;
+    return ft(i, n, this.buf), this;
   }
   /**
    * Write a `uint64` value, an unsigned 64-bit varint.
    */
   uint64(e) {
-    const r = D.uEnc(e);
-    return gt(r.lo, r.hi, this.buf), this;
+    const r = C.uEnc(e);
+    return ft(r.lo, r.hi, this.buf), this;
   }
 }
-class k {
-  constructor(e, r = Je().decodeUtf8) {
-    this.decodeUtf8 = r, this.varint64 = We, this.uint32 = Ke, this.buf = e, this.len = e.length, this.pos = 0, this.view = new DataView(e.buffer, e.byteOffset, e.byteLength);
+class S {
+  constructor(e, r = le().decodeUtf8) {
+    this.decodeUtf8 = r, this.varint64 = we, this.uint32 = Oe, this.buf = e, this.len = e.length, this.pos = 0, this.view = new DataView(e.buffer, e.byteOffset, e.byteLength);
   }
   /**
    * Reads a tag - field number and wire type.
    */
   tag() {
-    let e = this.uint32(), r = e >>> 3, o = e & 7;
-    if (r <= 0 || o < 0 || o > 5)
-      throw new Error("illegal tag: field no " + r + " wire type " + o);
-    return [r, o];
+    let e = this.uint32(), r = e >>> 3, u = e & 7;
+    if (r <= 0 || u < 0 || u > 5)
+      throw new Error("illegal tag: field no " + r + " wire type " + u);
+    return [r, u];
   }
   /**
    * Skip one element and return the skipped data.
@@ -375,37 +375,37 @@ class k {
    * matching field number in the EndGroup tag.
    */
   skip(e, r) {
-    let o = this.pos;
+    let u = this.pos;
     switch (e) {
-      case C.Varint:
+      case B.Varint:
         for (; this.buf[this.pos++] & 128; )
           ;
         break;
       // @ts-ignore TS7029: Fallthrough case in switch -- ignore instead of expect-error for compiler settings without noFallthroughCasesInSwitch: true
-      case C.Bit64:
+      case B.Bit64:
         this.pos += 4;
-      case C.Bit32:
+      case B.Bit32:
         this.pos += 4;
         break;
-      case C.LengthDelimited:
+      case B.LengthDelimited:
         let i = this.uint32();
         this.pos += i;
         break;
-      case C.StartGroup:
+      case B.StartGroup:
         for (; ; ) {
-          const [n, f] = this.tag();
-          if (f === C.EndGroup) {
+          const [n, s] = this.tag();
+          if (s === B.EndGroup) {
             if (r !== void 0 && n !== r)
               throw new Error("invalid end group tag");
             break;
           }
-          this.skip(f, n);
+          this.skip(s, n);
         }
         break;
       default:
         throw new Error("cant skip wire type " + e);
     }
-    return this.assertBounds(), this.buf.subarray(o, this.pos);
+    return this.assertBounds(), this.buf.subarray(u, this.pos);
   }
   /**
    * Throws error if position in byte array is out of range.
@@ -431,20 +431,20 @@ class k {
    * Read a `int64` field, a signed 64-bit varint.
    */
   int64() {
-    return D.dec(...this.varint64());
+    return C.dec(...this.varint64());
   }
   /**
    * Read a `uint64` field, an unsigned 64-bit varint.
    */
   uint64() {
-    return D.uDec(...this.varint64());
+    return C.uDec(...this.varint64());
   }
   /**
    * Read a `sint64` field, a signed, zig-zag-encoded 64-bit varint.
    */
   sint64() {
-    let [e, r] = this.varint64(), o = -(e & 1);
-    return e = (e >>> 1 | (r & 1) << 31) ^ o, r = r >>> 1 ^ o, D.dec(e, r);
+    let [e, r] = this.varint64(), u = -(e & 1);
+    return e = (e >>> 1 | (r & 1) << 31) ^ u, r = r >>> 1 ^ u, C.dec(e, r);
   }
   /**
    * Read a `bool` field, a variant.
@@ -469,13 +469,13 @@ class k {
    * Read a `fixed64` field, an unsigned, fixed-length 64 bit integer.
    */
   fixed64() {
-    return D.uDec(this.sfixed32(), this.sfixed32());
+    return C.uDec(this.sfixed32(), this.sfixed32());
   }
   /**
    * Read a `fixed64` field, a signed, fixed-length 64-bit integer.
    */
   sfixed64() {
-    return D.dec(this.sfixed32(), this.sfixed32());
+    return C.dec(this.sfixed32(), this.sfixed32());
   }
   /**
    * Read a `float` field, 32-bit floating point number.
@@ -503,42 +503,42 @@ class k {
     return this.decodeUtf8(this.bytes());
   }
 }
-function Nt(t) {
+function dt(t) {
   if (typeof t == "string")
     t = Number(t);
   else if (typeof t != "number")
     throw new Error("invalid int32: " + typeof t);
-  if (!Number.isInteger(t) || t > tr || t < er)
+  if (!Number.isInteger(t) || t > Je || t < Re)
     throw new Error("invalid int32: " + t);
 }
-function Dt(t) {
+function Ot(t) {
   if (typeof t == "string")
     t = Number(t);
   else if (typeof t != "number")
     throw new Error("invalid uint32: " + typeof t);
-  if (!Number.isInteger(t) || t > je || t < 0)
+  if (!Number.isInteger(t) || t > Me || t < 0)
     throw new Error("invalid uint32: " + t);
 }
-function rr(t) {
+function Ie(t) {
   if (typeof t == "string") {
     const e = t;
     if (t = Number(t), Number.isNaN(t) && e !== "NaN")
       throw new Error("invalid float32: " + e);
   } else if (typeof t != "number")
     throw new Error("invalid float32: " + typeof t);
-  if (Number.isFinite(t) && (t > Ze || t < Qe))
+  if (Number.isFinite(t) && (t > Te || t < Pe))
     throw new Error("invalid float32: " + t);
 }
-function Ct() {
+function _t() {
   return { t: 0, x: 0, y: 0, heading: 0, vl: 0, vr: 0, omega: 0, al: 0, ar: 0, alpha: 0, fl: 0, fr: 0 };
 }
-const W = {
-  encode(t, e = new S()) {
+const U = {
+  encode(t, e = new w()) {
     return t.t !== 0 && e.uint32(9).double(t.t), t.x !== 0 && e.uint32(17).double(t.x), t.y !== 0 && e.uint32(25).double(t.y), t.heading !== 0 && e.uint32(33).double(t.heading), t.vl !== 0 && e.uint32(41).double(t.vl), t.vr !== 0 && e.uint32(49).double(t.vr), t.omega !== 0 && e.uint32(57).double(t.omega), t.al !== 0 && e.uint32(65).double(t.al), t.ar !== 0 && e.uint32(73).double(t.ar), t.alpha !== 0 && e.uint32(81).double(t.alpha), t.fl !== 0 && e.uint32(89).double(t.fl), t.fr !== 0 && e.uint32(97).double(t.fr), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ct();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = _t();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -622,18 +622,18 @@ const W = {
   },
   fromJSON(t) {
     return {
-      t: I(t.t) ? globalThis.Number(t.t) : 0,
-      x: I(t.x) ? globalThis.Number(t.x) : 0,
-      y: I(t.y) ? globalThis.Number(t.y) : 0,
-      heading: I(t.heading) ? globalThis.Number(t.heading) : 0,
-      vl: I(t.vl) ? globalThis.Number(t.vl) : 0,
-      vr: I(t.vr) ? globalThis.Number(t.vr) : 0,
-      omega: I(t.omega) ? globalThis.Number(t.omega) : 0,
-      al: I(t.al) ? globalThis.Number(t.al) : 0,
-      ar: I(t.ar) ? globalThis.Number(t.ar) : 0,
-      alpha: I(t.alpha) ? globalThis.Number(t.alpha) : 0,
-      fl: I(t.fl) ? globalThis.Number(t.fl) : 0,
-      fr: I(t.fr) ? globalThis.Number(t.fr) : 0
+      t: J(t.t) ? globalThis.Number(t.t) : 0,
+      x: J(t.x) ? globalThis.Number(t.x) : 0,
+      y: J(t.y) ? globalThis.Number(t.y) : 0,
+      heading: J(t.heading) ? globalThis.Number(t.heading) : 0,
+      vl: J(t.vl) ? globalThis.Number(t.vl) : 0,
+      vr: J(t.vr) ? globalThis.Number(t.vr) : 0,
+      omega: J(t.omega) ? globalThis.Number(t.omega) : 0,
+      al: J(t.al) ? globalThis.Number(t.al) : 0,
+      ar: J(t.ar) ? globalThis.Number(t.ar) : 0,
+      alpha: J(t.alpha) ? globalThis.Number(t.alpha) : 0,
+      fl: J(t.fl) ? globalThis.Number(t.fl) : 0,
+      fr: J(t.fr) ? globalThis.Number(t.fr) : 0
     };
   },
   toJSON(t) {
@@ -641,54 +641,54 @@ const W = {
     return t.t !== 0 && (e.t = t.t), t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), t.heading !== 0 && (e.heading = t.heading), t.vl !== 0 && (e.vl = t.vl), t.vr !== 0 && (e.vr = t.vr), t.omega !== 0 && (e.omega = t.omega), t.al !== 0 && (e.al = t.al), t.ar !== 0 && (e.ar = t.ar), t.alpha !== 0 && (e.alpha = t.alpha), t.fl !== 0 && (e.fl = t.fl), t.fr !== 0 && (e.fr = t.fr), e;
   },
   create(t) {
-    return W.fromPartial(t ?? {});
+    return U.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Ct();
+    const e = _t();
     return e.t = t.t ?? 0, e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.vl = t.vl ?? 0, e.vr = t.vr ?? 0, e.omega = t.omega ?? 0, e.al = t.al ?? 0, e.ar = t.ar ?? 0, e.alpha = t.alpha ?? 0, e.fl = t.fl ?? 0, e.fr = t.fr ?? 0, e;
   }
 };
-function I(t) {
+function J(t) {
   return t != null;
 }
-var Me = /* @__PURE__ */ ((t) => (t[t.DRIVETYPE_SWERVE = 0] = "DRIVETYPE_SWERVE", t[t.DRIVETYPE_DIFFERENTIAL = 1] = "DRIVETYPE_DIFFERENTIAL", t[t.DRIVETYPE_MECANUM = 2] = "DRIVETYPE_MECANUM", t[t.UNRECOGNIZED = -1] = "UNRECOGNIZED", t))(Me || {});
-function Ot(t) {
+var fe = /* @__PURE__ */ ((t) => (t[t.DRIVE_TYPE_SWERVE = 0] = "DRIVE_TYPE_SWERVE", t[t.DRIVE_TYPE_DIFFERENTIAL = 1] = "DRIVE_TYPE_DIFFERENTIAL", t[t.DRIVE_TYPE_MECANUM = 2] = "DRIVE_TYPE_MECANUM", t[t.UNRECOGNIZED = -1] = "UNRECOGNIZED", t))(fe || {});
+function pt(t) {
   switch (t) {
     case 0:
-    case "DRIVETYPE_SWERVE":
+    case "DRIVE_TYPE_SWERVE":
       return 0;
     case 1:
-    case "DRIVETYPE_DIFFERENTIAL":
+    case "DRIVE_TYPE_DIFFERENTIAL":
       return 1;
     case 2:
-    case "DRIVETYPE_MECANUM":
+    case "DRIVE_TYPE_MECANUM":
       return 2;
     default:
       return -1;
   }
 }
-function Ae(t) {
+function ce(t) {
   switch (t) {
     case 0:
-      return "DRIVETYPE_SWERVE";
+      return "DRIVE_TYPE_SWERVE";
     case 1:
-      return "DRIVETYPE_DIFFERENTIAL";
+      return "DRIVE_TYPE_DIFFERENTIAL";
     case 2:
-      return "DRIVETYPE_MECANUM";
+      return "DRIVE_TYPE_MECANUM";
     default:
       return "UNRECOGNIZED";
   }
 }
-function Vt() {
+function Tt() {
   return { value: 0, expr: "" };
 }
 const y = {
-  encode(t, e = new S()) {
+  encode(t, e = new w()) {
     return t.value !== 0 && e.uint32(9).double(t.value), t.expr !== "" && e.uint32(18).string(t.expr), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Vt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Tt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -712,8 +712,8 @@ const y = {
   },
   fromJSON(t) {
     return {
-      value: Lt(t.value) ? globalThis.Number(t.value) : 0,
-      expr: Lt(t.expr) ? globalThis.String(t.expr) : ""
+      value: Pt(t.value) ? globalThis.Number(t.value) : 0,
+      expr: Pt(t.expr) ? globalThis.String(t.expr) : ""
     };
   },
   toJSON(t) {
@@ -724,106 +724,23 @@ const y = {
     return y.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Vt();
+    const e = Tt();
     return e.value = t.value ?? 0, e.expr = t.expr ?? "", e;
   }
 };
-function Lt(t) {
+function Pt(t) {
   return t != null;
 }
-function Ft() {
-  return { max: 0 };
+function Mt() {
+  return { max: null };
 }
-const V = {
-  encode(t, e = new S()) {
-    return t.max !== 0 && e.uint32(9).double(t.max), e;
+const D = {
+  encode(t, e = new w()) {
+    return t.max !== void 0 && t.max !== null && y.encode(t.max, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ft();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.max = r.double();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { max: Ie(t.max) ? globalThis.Number(t.max) : 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.max !== 0 && (e.max = t.max), e;
-  },
-  create(t) {
-    return V.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Ft();
-    return e.max = t.max ?? 0, e;
-  }
-};
-function Ut() {
-  return { test: "" };
-}
-const Re = {
-  encode(t, e = new S()) {
-    return t.test !== "" && e.uint32(10).string(t.test), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ut();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.test = r.string();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { test: Ie(t.test) ? globalThis.String(t.test) : "" };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.test !== "" && (e.test = t.test), e;
-  },
-  create(t) {
-    return Re.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Ut();
-    return e.test = t.test ?? "", e;
-  }
-};
-function Ie(t) {
-  return t != null;
-}
-function $t() {
-  return { max: void 0 };
-}
-const L = {
-  encode(t, e = new S()) {
-    return t.max !== void 0 && y.encode(t.max, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = $t();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Mt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -840,30 +757,30 @@ const L = {
     return i;
   },
   fromJSON(t) {
-    return { max: Be(t.max) ? y.fromJSON(t.max) : void 0 };
+    return { max: he(t.max) ? y.fromJSON(t.max) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.max !== void 0 && (e.max = y.toJSON(t.max)), e;
+    return t.max !== void 0 && t.max !== null && (e.max = y.toJSON(t.max)), e;
   },
   create(t) {
-    return L.fromPartial(t ?? {});
+    return D.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = $t();
-    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : void 0, e;
+    const e = Mt();
+    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : null, e;
   }
 };
-function zt() {
+function Jt() {
   return { test: "" };
 }
-const He = {
-  encode(t, e = new S()) {
+const de = {
+  encode(t, e = new w()) {
     return t.test !== "" && e.uint32(10).string(t.test), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = zt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Jt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -880,46 +797,44 @@ const He = {
     return i;
   },
   fromJSON(t) {
-    return { test: Be(t.test) ? globalThis.String(t.test) : "" };
+    return { test: he(t.test) ? globalThis.String(t.test) : "" };
   },
   toJSON(t) {
     const e = {};
     return t.test !== "" && (e.test = t.test), e;
   },
   create(t) {
-    return He.fromPartial(t ?? {});
+    return de.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = zt();
+    const e = Jt();
     return e.test = t.test ?? "", e;
   }
 };
-function Be(t) {
+function he(t) {
   return t != null;
 }
-const nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ae = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleMaxVelocity: V,
-  ExprMaxVelocity: L,
-  TestDouble: Re,
-  TestExpr: He
+  ExprMaxVelocity: D,
+  TestExpr: de
 }, Symbol.toStringTag, { value: "Module" }));
-function Gt() {
-  return { max: 0 };
+function Rt() {
+  return { max: null };
 }
 const F = {
-  encode(t, e = new S()) {
-    return t.max !== 0 && e.uint32(9).double(t.max), e;
+  encode(t, e = new w()) {
+    return t.max !== void 0 && t.max !== null && y.encode(t.max, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Gt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Rt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
-          if (n !== 9)
+          if (n !== 10)
             break;
-          i.max = r.double();
+          i.max = y.decode(r, r.uint32());
           continue;
         }
       }
@@ -930,81 +845,37 @@ const F = {
     return i;
   },
   fromJSON(t) {
-    return { max: ir(t.max) ? globalThis.Number(t.max) : 0 };
+    return { max: He(t.max) ? y.fromJSON(t.max) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.max !== 0 && (e.max = t.max), e;
+    return t.max !== void 0 && t.max !== null && (e.max = y.toJSON(t.max)), e;
   },
   create(t) {
     return F.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Gt();
-    return e.max = t.max ?? 0, e;
+    const e = Rt();
+    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : null, e;
   }
 };
-function ir(t) {
+function He(t) {
   return t != null;
 }
-function Wt() {
-  return { max: void 0 };
-}
-const U = {
-  encode(t, e = new S()) {
-    return t.max !== void 0 && y.encode(t.max, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Wt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.max = y.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { max: or(t.max) ? y.fromJSON(t.max) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.max !== void 0 && (e.max = y.toJSON(t.max)), e;
-  },
-  create(t) {
-    return U.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Wt();
-    return e.max = t.max !== void 0 && t.max !== null ? y.fromPartial(t.max) : void 0, e;
-  }
-};
-function or(t) {
-  return t != null;
-}
-const ar = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ce = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleMaxAcceleration: F,
-  ExprMaxAcceleration: U
+  ExprMaxAcceleration: F
 }, Symbol.toStringTag, { value: "Module" }));
-function Xt() {
+function It() {
   return {};
 }
-const X = {
-  encode(t, e = new S()) {
+const z = {
+  encode(t, e = new w()) {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Xt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = It();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
         break;
@@ -1019,22 +890,22 @@ const X = {
     return {};
   },
   create(t) {
-    return X.fromPartial(t ?? {});
+    return z.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return Xt();
+    return It();
   }
 };
-function qt() {
+function At() {
   return {};
 }
-const q = {
-  encode(t, e = new S()) {
+const G = {
+  encode(t, e = new w()) {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = qt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = At();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
         break;
@@ -1049,28 +920,28 @@ const q = {
     return {};
   },
   create(t) {
-    return q.fromPartial(t ?? {});
+    return G.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return qt();
+    return At();
   }
 };
-function Kt() {
+function Ht() {
   return { idx: 0 };
 }
-const K = {
-  encode(t, e = new S()) {
+const $ = {
+  encode(t, e = new w()) {
     return t.idx !== 0 && e.uint32(8).uint64(t.idx), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Kt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Ht();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 8)
             break;
-          i.idx = sr(r.uint64());
+          i.idx = Be(r.uint64());
           continue;
         }
       }
@@ -1081,59 +952,59 @@ const K = {
     return i;
   },
   fromJSON(t) {
-    return { idx: ct(t.idx) ? globalThis.Number(t.idx) : 0 };
+    return { idx: et(t.idx) ? globalThis.Number(t.idx) : 0 };
   },
   toJSON(t) {
     const e = {};
     return t.idx !== 0 && (e.idx = Math.round(t.idx)), e;
   },
   create(t) {
-    return K.fromPartial(t ?? {});
+    return $.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Kt();
+    const e = Ht();
     return e.idx = t.idx ?? 0, e;
   }
 };
-function Yt() {
-  return { id: void 0 };
+function Ct() {
+  return { id: null };
 }
-const P = {
-  encode(t, e = new S()) {
+const R = {
+  encode(t, e = new w()) {
     switch (t.id?.$case) {
       case "first":
-        X.encode(t.id.first, e.uint32(10).fork()).join();
+        z.encode(t.id.value, e.uint32(10).fork()).join();
         break;
       case "last":
-        q.encode(t.id.last, e.uint32(18).fork()).join();
+        G.encode(t.id.value, e.uint32(18).fork()).join();
         break;
       case "idx":
-        K.encode(t.id.idx, e.uint32(26).fork()).join();
+        $.encode(t.id.value, e.uint32(26).fork()).join();
         break;
     }
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Yt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Ct();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.id = { $case: "first", first: X.decode(r, r.uint32()) };
+          i.id = { $case: "first", value: z.decode(r, r.uint32()) };
           continue;
         }
         case 2: {
           if (n !== 18)
             break;
-          i.id = { $case: "last", last: q.decode(r, r.uint32()) };
+          i.id = { $case: "last", value: G.decode(r, r.uint32()) };
           continue;
         }
         case 3: {
           if (n !== 26)
             break;
-          i.id = { $case: "idx", idx: K.decode(r, r.uint32()) };
+          i.id = { $case: "idx", value: $.decode(r, r.uint32()) };
           continue;
         }
       }
@@ -1145,36 +1016,36 @@ const P = {
   },
   fromJSON(t) {
     return {
-      id: ct(t.first) ? { $case: "first", first: X.fromJSON(t.first) } : ct(t.last) ? { $case: "last", last: q.fromJSON(t.last) } : ct(t.idx) ? { $case: "idx", idx: K.fromJSON(t.idx) } : void 0
+      id: et(t.first) ? { $case: "first", value: z.fromJSON(t.first) } : et(t.last) ? { $case: "last", value: G.fromJSON(t.last) } : et(t.idx) ? { $case: "idx", value: $.fromJSON(t.idx) } : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.id?.$case === "first" ? e.first = X.toJSON(t.id.first) : t.id?.$case === "last" ? e.last = q.toJSON(t.id.last) : t.id?.$case === "idx" && (e.idx = K.toJSON(t.id.idx)), e;
+    return t.id?.$case === "first" ? e.first = z.toJSON(t.id.value) : t.id?.$case === "last" ? e.last = G.toJSON(t.id.value) : t.id?.$case === "idx" && (e.idx = $.toJSON(t.id.value)), e;
   },
   create(t) {
-    return P.fromPartial(t ?? {});
+    return R.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Yt();
+    const e = Ct();
     switch (t.id?.$case) {
       case "first": {
-        t.id?.first !== void 0 && t.id?.first !== null && (e.id = { $case: "first", first: X.fromPartial(t.id.first) });
+        t.id?.value !== void 0 && t.id?.value !== null && (e.id = { $case: "first", value: z.fromPartial(t.id.value) });
         break;
       }
       case "last": {
-        t.id?.last !== void 0 && t.id?.last !== null && (e.id = { $case: "last", last: q.fromPartial(t.id.last) });
+        t.id?.value !== void 0 && t.id?.value !== null && (e.id = { $case: "last", value: G.fromPartial(t.id.value) });
         break;
       }
       case "idx": {
-        t.id?.idx !== void 0 && t.id?.idx !== null && (e.id = { $case: "idx", idx: K.fromPartial(t.id.idx) });
+        t.id?.value !== void 0 && t.id?.value !== null && (e.id = { $case: "idx", value: $.fromPartial(t.id.value) });
         break;
       }
     }
     return e;
   }
 };
-function sr(t) {
+function Be(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -1182,27 +1053,27 @@ function sr(t) {
     throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
   return e;
 }
-function ct(t) {
+function et(t) {
   return t != null;
 }
-function Zt() {
-  return { enabled: !1, from: void 0, to: void 0, data: void 0 };
+function Bt() {
+  return { enabled: !1, from: null, to: null, data: null };
 }
-const Y = {
-  encode(t, e = new S()) {
-    switch (t.enabled !== !1 && e.uint32(8).bool(t.enabled), t.from !== void 0 && P.encode(t.from, e.uint32(18).fork()).join(), t.to !== void 0 && P.encode(t.to, e.uint32(26).fork()).join(), t.data?.$case) {
+const X = {
+  encode(t, e = new w()) {
+    switch (t.enabled !== !1 && e.uint32(8).bool(t.enabled), t.from !== void 0 && t.from !== null && R.encode(t.from, e.uint32(18).fork()).join(), t.to !== void 0 && t.to !== null && R.encode(t.to, e.uint32(26).fork()).join(), t.data?.$case) {
       case "maxVelocity":
-        V.encode(t.data.maxVelocity, e.uint32(34).fork()).join();
+        D.encode(t.data.value, e.uint32(34).fork()).join();
         break;
       case "maxAcceleration":
-        F.encode(t.data.maxAcceleration, e.uint32(42).fork()).join();
+        F.encode(t.data.value, e.uint32(42).fork()).join();
         break;
     }
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Zt();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Bt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -1214,28 +1085,25 @@ const Y = {
         case 2: {
           if (n !== 18)
             break;
-          i.from = P.decode(r, r.uint32());
+          i.from = R.decode(r, r.uint32());
           continue;
         }
         case 3: {
           if (n !== 26)
             break;
-          i.to = P.decode(r, r.uint32());
+          i.to = R.decode(r, r.uint32());
           continue;
         }
         case 4: {
           if (n !== 34)
             break;
-          i.data = { $case: "maxVelocity", maxVelocity: V.decode(r, r.uint32()) };
+          i.data = { $case: "maxVelocity", value: D.decode(r, r.uint32()) };
           continue;
         }
         case 5: {
           if (n !== 42)
             break;
-          i.data = {
-            $case: "maxAcceleration",
-            maxAcceleration: F.decode(r, r.uint32())
-          };
+          i.data = { $case: "maxAcceleration", value: F.decode(r, r.uint32()) };
           continue;
         }
       }
@@ -1247,148 +1115,48 @@ const Y = {
   },
   fromJSON(t) {
     return {
-      enabled: z(t.enabled) ? globalThis.Boolean(t.enabled) : !1,
-      from: z(t.from) ? P.fromJSON(t.from) : void 0,
-      to: z(t.to) ? P.fromJSON(t.to) : void 0,
-      data: z(t.maxVelocity) ? { $case: "maxVelocity", maxVelocity: V.fromJSON(t.maxVelocity) } : z(t.max_velocity) ? { $case: "maxVelocity", maxVelocity: V.fromJSON(t.max_velocity) } : z(t.maxAcceleration) ? { $case: "maxAcceleration", maxAcceleration: F.fromJSON(t.maxAcceleration) } : z(t.max_acceleration) ? { $case: "maxAcceleration", maxAcceleration: F.fromJSON(t.max_acceleration) } : void 0
+      enabled: V(t.enabled) ? globalThis.Boolean(t.enabled) : !1,
+      from: V(t.from) ? R.fromJSON(t.from) : null,
+      to: V(t.to) ? R.fromJSON(t.to) : null,
+      data: V(t.maxVelocity) ? { $case: "maxVelocity", value: D.fromJSON(t.maxVelocity) } : V(t.max_velocity) ? { $case: "maxVelocity", value: D.fromJSON(t.max_velocity) } : V(t.maxAcceleration) ? { $case: "maxAcceleration", value: F.fromJSON(t.maxAcceleration) } : V(t.max_acceleration) ? { $case: "maxAcceleration", value: F.fromJSON(t.max_acceleration) } : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.enabled !== !1 && (e.enabled = t.enabled), t.from !== void 0 && (e.from = P.toJSON(t.from)), t.to !== void 0 && (e.to = P.toJSON(t.to)), t.data?.$case === "maxVelocity" ? e.maxVelocity = V.toJSON(t.data.maxVelocity) : t.data?.$case === "maxAcceleration" && (e.maxAcceleration = F.toJSON(t.data.maxAcceleration)), e;
+    return t.enabled !== !1 && (e.enabled = t.enabled), t.from !== void 0 && t.from !== null && (e.from = R.toJSON(t.from)), t.to !== void 0 && t.to !== null && (e.to = R.toJSON(t.to)), t.data?.$case === "maxVelocity" ? e.maxVelocity = D.toJSON(t.data.value) : t.data?.$case === "maxAcceleration" && (e.maxAcceleration = F.toJSON(t.data.value)), e;
   },
   create(t) {
-    return Y.fromPartial(t ?? {});
+    return X.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Zt();
-    switch (e.enabled = t.enabled ?? !1, e.from = t.from !== void 0 && t.from !== null ? P.fromPartial(t.from) : void 0, e.to = t.to !== void 0 && t.to !== null ? P.fromPartial(t.to) : void 0, t.data?.$case) {
+    const e = Bt();
+    switch (e.enabled = t.enabled ?? !1, e.from = t.from !== void 0 && t.from !== null ? R.fromPartial(t.from) : null, e.to = t.to !== void 0 && t.to !== null ? R.fromPartial(t.to) : null, t.data?.$case) {
       case "maxVelocity": {
-        t.data?.maxVelocity !== void 0 && t.data?.maxVelocity !== null && (e.data = { $case: "maxVelocity", maxVelocity: V.fromPartial(t.data.maxVelocity) });
+        t.data?.value !== void 0 && t.data?.value !== null && (e.data = { $case: "maxVelocity", value: D.fromPartial(t.data.value) });
         break;
       }
       case "maxAcceleration": {
-        t.data?.maxAcceleration !== void 0 && t.data?.maxAcceleration !== null && (e.data = {
-          $case: "maxAcceleration",
-          maxAcceleration: F.fromPartial(t.data.maxAcceleration)
-        });
+        t.data?.value !== void 0 && t.data?.value !== null && (e.data = { $case: "maxAcceleration", value: F.fromPartial(t.data.value) });
         break;
       }
     }
     return e;
   }
 };
-function z(t) {
+function V(t) {
   return t != null;
 }
-function Qt() {
-  return { enabled: !1, from: void 0, to: void 0, data: void 0 };
-}
-const Z = {
-  encode(t, e = new S()) {
-    switch (t.enabled !== !1 && e.uint32(8).bool(t.enabled), t.from !== void 0 && P.encode(t.from, e.uint32(18).fork()).join(), t.to !== void 0 && P.encode(t.to, e.uint32(26).fork()).join(), t.data?.$case) {
-      case "maxVelocity":
-        L.encode(t.data.maxVelocity, e.uint32(34).fork()).join();
-        break;
-      case "maxAcceleration":
-        U.encode(t.data.maxAcceleration, e.uint32(42).fork()).join();
-        break;
-    }
-    return e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Qt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 8)
-            break;
-          i.enabled = r.bool();
-          continue;
-        }
-        case 2: {
-          if (n !== 18)
-            break;
-          i.from = P.decode(r, r.uint32());
-          continue;
-        }
-        case 3: {
-          if (n !== 26)
-            break;
-          i.to = P.decode(r, r.uint32());
-          continue;
-        }
-        case 4: {
-          if (n !== 34)
-            break;
-          i.data = { $case: "maxVelocity", maxVelocity: L.decode(r, r.uint32()) };
-          continue;
-        }
-        case 5: {
-          if (n !== 42)
-            break;
-          i.data = {
-            $case: "maxAcceleration",
-            maxAcceleration: U.decode(r, r.uint32())
-          };
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      enabled: G(t.enabled) ? globalThis.Boolean(t.enabled) : !1,
-      from: G(t.from) ? P.fromJSON(t.from) : void 0,
-      to: G(t.to) ? P.fromJSON(t.to) : void 0,
-      data: G(t.maxVelocity) ? { $case: "maxVelocity", maxVelocity: L.fromJSON(t.maxVelocity) } : G(t.max_velocity) ? { $case: "maxVelocity", maxVelocity: L.fromJSON(t.max_velocity) } : G(t.maxAcceleration) ? { $case: "maxAcceleration", maxAcceleration: U.fromJSON(t.maxAcceleration) } : G(t.max_acceleration) ? { $case: "maxAcceleration", maxAcceleration: U.fromJSON(t.max_acceleration) } : void 0
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.enabled !== !1 && (e.enabled = t.enabled), t.from !== void 0 && (e.from = P.toJSON(t.from)), t.to !== void 0 && (e.to = P.toJSON(t.to)), t.data?.$case === "maxVelocity" ? e.maxVelocity = L.toJSON(t.data.maxVelocity) : t.data?.$case === "maxAcceleration" && (e.maxAcceleration = U.toJSON(t.data.maxAcceleration)), e;
-  },
-  create(t) {
-    return Z.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = Qt();
-    switch (e.enabled = t.enabled ?? !1, e.from = t.from !== void 0 && t.from !== null ? P.fromPartial(t.from) : void 0, e.to = t.to !== void 0 && t.to !== null ? P.fromPartial(t.to) : void 0, t.data?.$case) {
-      case "maxVelocity": {
-        t.data?.maxVelocity !== void 0 && t.data?.maxVelocity !== null && (e.data = { $case: "maxVelocity", maxVelocity: L.fromPartial(t.data.maxVelocity) });
-        break;
-      }
-      case "maxAcceleration": {
-        t.data?.maxAcceleration !== void 0 && t.data?.maxAcceleration !== null && (e.data = {
-          $case: "maxAcceleration",
-          maxAcceleration: U.fromPartial(t.data.maxAcceleration)
-        });
-        break;
-      }
-    }
-    return e;
-  }
-};
-function G(t) {
-  return t != null;
-}
-const fr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const De = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleConstraint: Y,
-  ExprConstraint: Z,
-  max_acceleration: ar,
-  maxvelocity: nr
+  ExprConstraint: X,
+  max_acceleration: Ce,
+  maxvelocity: Ae
 }, Symbol.toStringTag, { value: "Module" }));
-function jt() {
+function Dt() {
   return {
-    x: 0,
-    y: 0,
-    heading: 0,
+    x: null,
+    y: null,
+    heading: null,
     intervals: 0,
     split: !1,
     fixTranslation: !1,
@@ -1396,124 +1164,13 @@ function jt() {
     overrideIntervals: !1
   };
 }
-const Q = {
-  encode(t, e = new S()) {
-    return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), t.heading !== 0 && e.uint32(25).double(t.heading), t.intervals !== 0 && e.uint32(32).uint64(t.intervals), t.split !== !1 && e.uint32(40).bool(t.split), t.fixTranslation !== !1 && e.uint32(48).bool(t.fixTranslation), t.fixHeading !== !1 && e.uint32(56).bool(t.fixHeading), t.overrideIntervals !== !1 && e.uint32(64).bool(t.overrideIntervals), e;
+const q = {
+  encode(t, e = new w()) {
+    return t.x !== void 0 && t.x !== null && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && t.y !== null && y.encode(t.y, e.uint32(18).fork()).join(), t.heading !== void 0 && t.heading !== null && y.encode(t.heading, e.uint32(26).fork()).join(), t.intervals !== 0 && e.uint32(32).uint64(t.intervals), t.split !== !1 && e.uint32(40).bool(t.split), t.fixTranslation !== !1 && e.uint32(48).bool(t.fixTranslation), t.fixHeading !== !1 && e.uint32(56).bool(t.fixHeading), t.overrideIntervals !== !1 && e.uint32(64).bool(t.overrideIntervals), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = jt();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.x = r.double();
-          continue;
-        }
-        case 2: {
-          if (n !== 17)
-            break;
-          i.y = r.double();
-          continue;
-        }
-        case 3: {
-          if (n !== 25)
-            break;
-          i.heading = r.double();
-          continue;
-        }
-        case 4: {
-          if (n !== 32)
-            break;
-          i.intervals = ur(r.uint64());
-          continue;
-        }
-        case 5: {
-          if (n !== 40)
-            break;
-          i.split = r.bool();
-          continue;
-        }
-        case 6: {
-          if (n !== 48)
-            break;
-          i.fixTranslation = r.bool();
-          continue;
-        }
-        case 7: {
-          if (n !== 56)
-            break;
-          i.fixHeading = r.bool();
-          continue;
-        }
-        case 8: {
-          if (n !== 64)
-            break;
-          i.overrideIntervals = r.bool();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      x: H(t.x) ? globalThis.Number(t.x) : 0,
-      y: H(t.y) ? globalThis.Number(t.y) : 0,
-      heading: H(t.heading) ? globalThis.Number(t.heading) : 0,
-      intervals: H(t.intervals) ? globalThis.Number(t.intervals) : 0,
-      split: H(t.split) ? globalThis.Boolean(t.split) : !1,
-      fixTranslation: H(t.fixTranslation) ? globalThis.Boolean(t.fixTranslation) : H(t.fix_translation) ? globalThis.Boolean(t.fix_translation) : !1,
-      fixHeading: H(t.fixHeading) ? globalThis.Boolean(t.fixHeading) : H(t.fix_heading) ? globalThis.Boolean(t.fix_heading) : !1,
-      overrideIntervals: H(t.overrideIntervals) ? globalThis.Boolean(t.overrideIntervals) : H(t.override_intervals) ? globalThis.Boolean(t.override_intervals) : !1
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), t.heading !== 0 && (e.heading = t.heading), t.intervals !== 0 && (e.intervals = Math.round(t.intervals)), t.split !== !1 && (e.split = t.split), t.fixTranslation !== !1 && (e.fixTranslation = t.fixTranslation), t.fixHeading !== !1 && (e.fixHeading = t.fixHeading), t.overrideIntervals !== !1 && (e.overrideIntervals = t.overrideIntervals), e;
-  },
-  create(t) {
-    return Q.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = jt();
-    return e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.intervals = t.intervals ?? 0, e.split = t.split ?? !1, e.fixTranslation = t.fixTranslation ?? !1, e.fixHeading = t.fixHeading ?? !1, e.overrideIntervals = t.overrideIntervals ?? !1, e;
-  }
-};
-function ur(t) {
-  const e = globalThis.Number(t.toString());
-  if (e > globalThis.Number.MAX_SAFE_INTEGER)
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  if (e < globalThis.Number.MIN_SAFE_INTEGER)
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  return e;
-}
-function H(t) {
-  return t != null;
-}
-function te() {
-  return {
-    x: void 0,
-    y: void 0,
-    heading: void 0,
-    intervals: 0,
-    split: !1,
-    fixTranslation: !1,
-    fixHeading: !1,
-    overrideIntervals: !1
-  };
-}
-const j = {
-  encode(t, e = new S()) {
-    return t.x !== void 0 && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && y.encode(t.y, e.uint32(18).fork()).join(), t.heading !== void 0 && y.encode(t.heading, e.uint32(26).fork()).join(), t.intervals !== 0 && e.uint32(32).uint64(t.intervals), t.split !== !1 && e.uint32(40).bool(t.split), t.fixTranslation !== !1 && e.uint32(48).bool(t.fixTranslation), t.fixHeading !== !1 && e.uint32(56).bool(t.fixHeading), t.overrideIntervals !== !1 && e.uint32(64).bool(t.overrideIntervals), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = te();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Dt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -1537,7 +1194,7 @@ const j = {
         case 4: {
           if (n !== 32)
             break;
-          i.intervals = dr(r.uint64());
+          i.intervals = Fe(r.uint64());
           continue;
         }
         case 5: {
@@ -1573,29 +1230,29 @@ const j = {
   },
   fromJSON(t) {
     return {
-      x: B(t.x) ? y.fromJSON(t.x) : void 0,
-      y: B(t.y) ? y.fromJSON(t.y) : void 0,
-      heading: B(t.heading) ? y.fromJSON(t.heading) : void 0,
-      intervals: B(t.intervals) ? globalThis.Number(t.intervals) : 0,
-      split: B(t.split) ? globalThis.Boolean(t.split) : !1,
-      fixTranslation: B(t.fixTranslation) ? globalThis.Boolean(t.fixTranslation) : B(t.fix_translation) ? globalThis.Boolean(t.fix_translation) : !1,
-      fixHeading: B(t.fixHeading) ? globalThis.Boolean(t.fixHeading) : B(t.fix_heading) ? globalThis.Boolean(t.fix_heading) : !1,
-      overrideIntervals: B(t.overrideIntervals) ? globalThis.Boolean(t.overrideIntervals) : B(t.override_intervals) ? globalThis.Boolean(t.override_intervals) : !1
+      x: H(t.x) ? y.fromJSON(t.x) : null,
+      y: H(t.y) ? y.fromJSON(t.y) : null,
+      heading: H(t.heading) ? y.fromJSON(t.heading) : null,
+      intervals: H(t.intervals) ? globalThis.Number(t.intervals) : 0,
+      split: H(t.split) ? globalThis.Boolean(t.split) : !1,
+      fixTranslation: H(t.fixTranslation) ? globalThis.Boolean(t.fixTranslation) : H(t.fix_translation) ? globalThis.Boolean(t.fix_translation) : !1,
+      fixHeading: H(t.fixHeading) ? globalThis.Boolean(t.fixHeading) : H(t.fix_heading) ? globalThis.Boolean(t.fix_heading) : !1,
+      overrideIntervals: H(t.overrideIntervals) ? globalThis.Boolean(t.overrideIntervals) : H(t.override_intervals) ? globalThis.Boolean(t.override_intervals) : !1
     };
   },
   toJSON(t) {
     const e = {};
-    return t.x !== void 0 && (e.x = y.toJSON(t.x)), t.y !== void 0 && (e.y = y.toJSON(t.y)), t.heading !== void 0 && (e.heading = y.toJSON(t.heading)), t.intervals !== 0 && (e.intervals = Math.round(t.intervals)), t.split !== !1 && (e.split = t.split), t.fixTranslation !== !1 && (e.fixTranslation = t.fixTranslation), t.fixHeading !== !1 && (e.fixHeading = t.fixHeading), t.overrideIntervals !== !1 && (e.overrideIntervals = t.overrideIntervals), e;
+    return t.x !== void 0 && t.x !== null && (e.x = y.toJSON(t.x)), t.y !== void 0 && t.y !== null && (e.y = y.toJSON(t.y)), t.heading !== void 0 && t.heading !== null && (e.heading = y.toJSON(t.heading)), t.intervals !== 0 && (e.intervals = Math.round(t.intervals)), t.split !== !1 && (e.split = t.split), t.fixTranslation !== !1 && (e.fixTranslation = t.fixTranslation), t.fixHeading !== !1 && (e.fixHeading = t.fixHeading), t.overrideIntervals !== !1 && (e.overrideIntervals = t.overrideIntervals), e;
   },
   create(t) {
-    return j.fromPartial(t ?? {});
+    return q.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = te();
-    return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : void 0, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : void 0, e.heading = t.heading !== void 0 && t.heading !== null ? y.fromPartial(t.heading) : void 0, e.intervals = t.intervals ?? 0, e.split = t.split ?? !1, e.fixTranslation = t.fixTranslation ?? !1, e.fixHeading = t.fixHeading ?? !1, e.overrideIntervals = t.overrideIntervals ?? !1, e;
+    const e = Dt();
+    return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : null, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : null, e.heading = t.heading !== void 0 && t.heading !== null ? y.fromPartial(t.heading) : null, e.intervals = t.intervals ?? 0, e.split = t.split ?? !1, e.fixTranslation = t.fixTranslation ?? !1, e.fixHeading = t.fixHeading ?? !1, e.overrideIntervals = t.overrideIntervals ?? !1, e;
   }
 };
-function dr(t) {
+function Fe(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -1603,93 +1260,28 @@ function dr(t) {
     throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
   return e;
 }
-function B(t) {
+function H(t) {
   return t != null;
 }
-const lr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Le = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleWaypoint: Q,
-  ExprWaypoint: j
+  ExprWaypoint: q
 }, Symbol.toStringTag, { value: "Module" }));
-function ee() {
-  return { targetDt: 0, waypoints: [], constraints: [] };
+function Ft() {
+  return { targetDt: null, waypoints: [], constraints: [] };
 }
-const tt = {
-  encode(t, e = new S()) {
-    t.targetDt !== 0 && e.uint32(9).double(t.targetDt);
+const I = {
+  encode(t, e = new w()) {
+    t.targetDt !== void 0 && t.targetDt !== null && y.encode(t.targetDt, e.uint32(10).fork()).join();
     for (const r of t.waypoints)
-      Q.encode(r, e.uint32(18).fork()).join();
+      q.encode(r, e.uint32(18).fork()).join();
     for (const r of t.constraints)
-      Y.encode(r, e.uint32(26).fork()).join();
+      X.encode(r, e.uint32(26).fork()).join();
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ee();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.targetDt = r.double();
-          continue;
-        }
-        case 2: {
-          if (n !== 18)
-            break;
-          i.waypoints.push(Q.decode(r, r.uint32()));
-          continue;
-        }
-        case 3: {
-          if (n !== 26)
-            break;
-          i.constraints.push(Y.decode(r, r.uint32()));
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      targetDt: re(t.targetDt) ? globalThis.Number(t.targetDt) : re(t.target_dt) ? globalThis.Number(t.target_dt) : 0,
-      waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => Q.fromJSON(e)) : [],
-      constraints: globalThis.Array.isArray(t?.constraints) ? t.constraints.map((e) => Y.fromJSON(e)) : []
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.targetDt !== 0 && (e.targetDt = t.targetDt), t.waypoints?.length && (e.waypoints = t.waypoints.map((r) => Q.toJSON(r))), t.constraints?.length && (e.constraints = t.constraints.map((r) => Y.toJSON(r))), e;
-  },
-  create(t) {
-    return tt.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = ee();
-    return e.targetDt = t.targetDt ?? 0, e.waypoints = t.waypoints?.map((r) => Q.fromPartial(r)) || [], e.constraints = t.constraints?.map((r) => Y.fromPartial(r)) || [], e;
-  }
-};
-function re(t) {
-  return t != null;
-}
-function ne() {
-  return { targetDt: void 0, waypoints: [], constraints: [] };
-}
-const et = {
-  encode(t, e = new S()) {
-    t.targetDt !== void 0 && y.encode(t.targetDt, e.uint32(10).fork()).join();
-    for (const r of t.waypoints)
-      j.encode(r, e.uint32(18).fork()).join();
-    for (const r of t.constraints)
-      Z.encode(r, e.uint32(26).fork()).join();
-    return e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ne();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Ft();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -1701,13 +1293,13 @@ const et = {
         case 2: {
           if (n !== 18)
             break;
-          i.waypoints.push(j.decode(r, r.uint32()));
+          i.waypoints.push(q.decode(r, r.uint32()));
           continue;
         }
         case 3: {
           if (n !== 26)
             break;
-          i.constraints.push(Z.decode(r, r.uint32()));
+          i.constraints.push(X.decode(r, r.uint32()));
           continue;
         }
       }
@@ -1719,291 +1311,36 @@ const et = {
   },
   fromJSON(t) {
     return {
-      targetDt: ie(t.targetDt) ? y.fromJSON(t.targetDt) : ie(t.target_dt) ? y.fromJSON(t.target_dt) : void 0,
-      waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => j.fromJSON(e)) : [],
-      constraints: globalThis.Array.isArray(t?.constraints) ? t.constraints.map((e) => Z.fromJSON(e)) : []
+      targetDt: Lt(t.targetDt) ? y.fromJSON(t.targetDt) : Lt(t.target_dt) ? y.fromJSON(t.target_dt) : null,
+      waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => q.fromJSON(e)) : [],
+      constraints: globalThis.Array.isArray(t?.constraints) ? t.constraints.map((e) => X.fromJSON(e)) : []
     };
   },
   toJSON(t) {
     const e = {};
-    return t.targetDt !== void 0 && (e.targetDt = y.toJSON(t.targetDt)), t.waypoints?.length && (e.waypoints = t.waypoints.map((r) => j.toJSON(r))), t.constraints?.length && (e.constraints = t.constraints.map((r) => Z.toJSON(r))), e;
+    return t.targetDt !== void 0 && t.targetDt !== null && (e.targetDt = y.toJSON(t.targetDt)), t.waypoints?.length && (e.waypoints = t.waypoints.map((r) => q.toJSON(r))), t.constraints?.length && (e.constraints = t.constraints.map((r) => X.toJSON(r))), e;
   },
   create(t) {
-    return et.fromPartial(t ?? {});
+    return I.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ne();
-    return e.targetDt = t.targetDt !== void 0 && t.targetDt !== null ? y.fromPartial(t.targetDt) : void 0, e.waypoints = t.waypoints?.map((r) => j.fromPartial(r)) || [], e.constraints = t.constraints?.map((r) => Z.fromPartial(r)) || [], e;
+    const e = Ft();
+    return e.targetDt = t.targetDt !== void 0 && t.targetDt !== null ? y.fromPartial(t.targetDt) : null, e.waypoints = t.waypoints?.map((r) => q.fromPartial(r)) || [], e.constraints = t.constraints?.map((r) => X.fromPartial(r)) || [], e;
   }
 };
-function ie(t) {
+function Lt(t) {
   return t != null;
 }
-function oe() {
-  return { x: 0, y: 0 };
+function Vt() {
+  return { x: null, y: null };
 }
-const w = {
-  encode(t, e = new S()) {
-    return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), e;
+const N = {
+  encode(t, e = new w()) {
+    return t.x !== void 0 && t.x !== null && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && t.y !== null && y.encode(t.y, e.uint32(18).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = oe();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.x = r.double();
-          continue;
-        }
-        case 2: {
-          if (n !== 17)
-            break;
-          i.y = r.double();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      x: T(t.x) ? globalThis.Number(t.x) : 0,
-      y: T(t.y) ? globalThis.Number(t.y) : 0
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), e;
-  },
-  create(t) {
-    return w.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = oe();
-    return e.x = t.x ?? 0, e.y = t.y ?? 0, e;
-  }
-};
-function ae() {
-  return { front: 0, left: 0, right: 0, back: 0 };
-}
-const rt = {
-  encode(t, e = new S()) {
-    return t.front !== 0 && e.uint32(9).double(t.front), t.left !== 0 && e.uint32(17).double(t.left), t.right !== 0 && e.uint32(25).double(t.right), t.back !== 0 && e.uint32(33).double(t.back), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ae();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.front = r.double();
-          continue;
-        }
-        case 2: {
-          if (n !== 17)
-            break;
-          i.left = r.double();
-          continue;
-        }
-        case 3: {
-          if (n !== 25)
-            break;
-          i.right = r.double();
-          continue;
-        }
-        case 4: {
-          if (n !== 33)
-            break;
-          i.back = r.double();
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      front: T(t.front) ? globalThis.Number(t.front) : 0,
-      left: T(t.left) ? globalThis.Number(t.left) : 0,
-      right: T(t.right) ? globalThis.Number(t.right) : 0,
-      back: T(t.back) ? globalThis.Number(t.back) : 0
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.front !== 0 && (e.front = t.front), t.left !== 0 && (e.left = t.left), t.right !== 0 && (e.right = t.right), t.back !== 0 && (e.back = t.back), e;
-  },
-  create(t) {
-    return rt.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = ae();
-    return e.front = t.front ?? 0, e.left = t.left ?? 0, e.right = t.right ?? 0, e.back = t.back ?? 0, e;
-  }
-};
-function se() {
-  return {
-    mass: 0,
-    inertia: 0,
-    gearing: 0,
-    radius: 0,
-    vmax: 0,
-    tmax: 0,
-    cof: 0,
-    differentialTrackWidth: 0,
-    bumper: void 0,
-    frontLeft: void 0,
-    frontRight: void 0,
-    backLeft: void 0,
-    backRight: void 0
-  };
-}
-const nt = {
-  encode(t, e = new S()) {
-    return t.mass !== 0 && e.uint32(9).double(t.mass), t.inertia !== 0 && e.uint32(17).double(t.inertia), t.gearing !== 0 && e.uint32(25).double(t.gearing), t.radius !== 0 && e.uint32(33).double(t.radius), t.vmax !== 0 && e.uint32(41).double(t.vmax), t.tmax !== 0 && e.uint32(49).double(t.tmax), t.cof !== 0 && e.uint32(57).double(t.cof), t.differentialTrackWidth !== 0 && e.uint32(65).double(t.differentialTrackWidth), t.bumper !== void 0 && rt.encode(t.bumper, e.uint32(74).fork()).join(), t.frontLeft !== void 0 && w.encode(t.frontLeft, e.uint32(82).fork()).join(), t.frontRight !== void 0 && w.encode(t.frontRight, e.uint32(90).fork()).join(), t.backLeft !== void 0 && w.encode(t.backLeft, e.uint32(98).fork()).join(), t.backRight !== void 0 && w.encode(t.backRight, e.uint32(106).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = se();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 9)
-            break;
-          i.mass = r.double();
-          continue;
-        }
-        case 2: {
-          if (n !== 17)
-            break;
-          i.inertia = r.double();
-          continue;
-        }
-        case 3: {
-          if (n !== 25)
-            break;
-          i.gearing = r.double();
-          continue;
-        }
-        case 4: {
-          if (n !== 33)
-            break;
-          i.radius = r.double();
-          continue;
-        }
-        case 5: {
-          if (n !== 41)
-            break;
-          i.vmax = r.double();
-          continue;
-        }
-        case 6: {
-          if (n !== 49)
-            break;
-          i.tmax = r.double();
-          continue;
-        }
-        case 7: {
-          if (n !== 57)
-            break;
-          i.cof = r.double();
-          continue;
-        }
-        case 8: {
-          if (n !== 65)
-            break;
-          i.differentialTrackWidth = r.double();
-          continue;
-        }
-        case 9: {
-          if (n !== 74)
-            break;
-          i.bumper = rt.decode(r, r.uint32());
-          continue;
-        }
-        case 10: {
-          if (n !== 82)
-            break;
-          i.frontLeft = w.decode(r, r.uint32());
-          continue;
-        }
-        case 11: {
-          if (n !== 90)
-            break;
-          i.frontRight = w.decode(r, r.uint32());
-          continue;
-        }
-        case 12: {
-          if (n !== 98)
-            break;
-          i.backLeft = w.decode(r, r.uint32());
-          continue;
-        }
-        case 13: {
-          if (n !== 106)
-            break;
-          i.backRight = w.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return {
-      mass: T(t.mass) ? globalThis.Number(t.mass) : 0,
-      inertia: T(t.inertia) ? globalThis.Number(t.inertia) : 0,
-      gearing: T(t.gearing) ? globalThis.Number(t.gearing) : 0,
-      radius: T(t.radius) ? globalThis.Number(t.radius) : 0,
-      vmax: T(t.vmax) ? globalThis.Number(t.vmax) : 0,
-      tmax: T(t.tmax) ? globalThis.Number(t.tmax) : 0,
-      cof: T(t.cof) ? globalThis.Number(t.cof) : 0,
-      differentialTrackWidth: T(t.differentialTrackWidth) ? globalThis.Number(t.differentialTrackWidth) : T(t.differential_track_width) ? globalThis.Number(t.differential_track_width) : 0,
-      bumper: T(t.bumper) ? rt.fromJSON(t.bumper) : void 0,
-      frontLeft: T(t.frontLeft) ? w.fromJSON(t.frontLeft) : T(t.front_left) ? w.fromJSON(t.front_left) : void 0,
-      frontRight: T(t.frontRight) ? w.fromJSON(t.frontRight) : T(t.front_right) ? w.fromJSON(t.front_right) : void 0,
-      backLeft: T(t.backLeft) ? w.fromJSON(t.backLeft) : T(t.back_left) ? w.fromJSON(t.back_left) : void 0,
-      backRight: T(t.backRight) ? w.fromJSON(t.backRight) : T(t.back_right) ? w.fromJSON(t.back_right) : void 0
-    };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.mass !== 0 && (e.mass = t.mass), t.inertia !== 0 && (e.inertia = t.inertia), t.gearing !== 0 && (e.gearing = t.gearing), t.radius !== 0 && (e.radius = t.radius), t.vmax !== 0 && (e.vmax = t.vmax), t.tmax !== 0 && (e.tmax = t.tmax), t.cof !== 0 && (e.cof = t.cof), t.differentialTrackWidth !== 0 && (e.differentialTrackWidth = t.differentialTrackWidth), t.bumper !== void 0 && (e.bumper = rt.toJSON(t.bumper)), t.frontLeft !== void 0 && (e.frontLeft = w.toJSON(t.frontLeft)), t.frontRight !== void 0 && (e.frontRight = w.toJSON(t.frontRight)), t.backLeft !== void 0 && (e.backLeft = w.toJSON(t.backLeft)), t.backRight !== void 0 && (e.backRight = w.toJSON(t.backRight)), e;
-  },
-  create(t) {
-    return nt.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = se();
-    return e.mass = t.mass ?? 0, e.inertia = t.inertia ?? 0, e.gearing = t.gearing ?? 0, e.radius = t.radius ?? 0, e.vmax = t.vmax ?? 0, e.tmax = t.tmax ?? 0, e.cof = t.cof ?? 0, e.differentialTrackWidth = t.differentialTrackWidth ?? 0, e.bumper = t.bumper !== void 0 && t.bumper !== null ? rt.fromPartial(t.bumper) : void 0, e.frontLeft = t.frontLeft !== void 0 && t.frontLeft !== null ? w.fromPartial(t.frontLeft) : void 0, e.frontRight = t.frontRight !== void 0 && t.frontRight !== null ? w.fromPartial(t.frontRight) : void 0, e.backLeft = t.backLeft !== void 0 && t.backLeft !== null ? w.fromPartial(t.backLeft) : void 0, e.backRight = t.backRight !== void 0 && t.backRight !== null ? w.fromPartial(t.backRight) : void 0, e;
-  }
-};
-function T(t) {
-  return t != null;
-}
-function fe() {
-  return { x: void 0, y: void 0 };
-}
-const O = {
-  encode(t, e = new S()) {
-    return t.x !== void 0 && y.encode(t.x, e.uint32(10).fork()).join(), t.y !== void 0 && y.encode(t.y, e.uint32(18).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = fe();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Vt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2026,33 +1363,30 @@ const O = {
     return i;
   },
   fromJSON(t) {
-    return {
-      x: E(t.x) ? y.fromJSON(t.x) : void 0,
-      y: E(t.y) ? y.fromJSON(t.y) : void 0
-    };
+    return { x: E(t.x) ? y.fromJSON(t.x) : null, y: E(t.y) ? y.fromJSON(t.y) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.x !== void 0 && (e.x = y.toJSON(t.x)), t.y !== void 0 && (e.y = y.toJSON(t.y)), e;
+    return t.x !== void 0 && t.x !== null && (e.x = y.toJSON(t.x)), t.y !== void 0 && t.y !== null && (e.y = y.toJSON(t.y)), e;
   },
   create(t) {
-    return O.fromPartial(t ?? {});
+    return N.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = fe();
-    return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : void 0, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : void 0, e;
+    const e = Vt();
+    return e.x = t.x !== void 0 && t.x !== null ? y.fromPartial(t.x) : null, e.y = t.y !== void 0 && t.y !== null ? y.fromPartial(t.y) : null, e;
   }
 };
-function ue() {
-  return { front: void 0, left: void 0, right: void 0, back: void 0 };
+function Ut() {
+  return { front: null, left: null, right: null, back: null };
 }
-const it = {
-  encode(t, e = new S()) {
-    return t.front !== void 0 && y.encode(t.front, e.uint32(10).fork()).join(), t.left !== void 0 && y.encode(t.left, e.uint32(18).fork()).join(), t.right !== void 0 && y.encode(t.right, e.uint32(26).fork()).join(), t.back !== void 0 && y.encode(t.back, e.uint32(34).fork()).join(), e;
+const W = {
+  encode(t, e = new w()) {
+    return t.front !== void 0 && t.front !== null && y.encode(t.front, e.uint32(10).fork()).join(), t.left !== void 0 && t.left !== null && y.encode(t.left, e.uint32(18).fork()).join(), t.right !== void 0 && t.right !== null && y.encode(t.right, e.uint32(26).fork()).join(), t.back !== void 0 && t.back !== null && y.encode(t.back, e.uint32(34).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ue();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Ut();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2088,48 +1422,48 @@ const it = {
   },
   fromJSON(t) {
     return {
-      front: E(t.front) ? y.fromJSON(t.front) : void 0,
-      left: E(t.left) ? y.fromJSON(t.left) : void 0,
-      right: E(t.right) ? y.fromJSON(t.right) : void 0,
-      back: E(t.back) ? y.fromJSON(t.back) : void 0
+      front: E(t.front) ? y.fromJSON(t.front) : null,
+      left: E(t.left) ? y.fromJSON(t.left) : null,
+      right: E(t.right) ? y.fromJSON(t.right) : null,
+      back: E(t.back) ? y.fromJSON(t.back) : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.front !== void 0 && (e.front = y.toJSON(t.front)), t.left !== void 0 && (e.left = y.toJSON(t.left)), t.right !== void 0 && (e.right = y.toJSON(t.right)), t.back !== void 0 && (e.back = y.toJSON(t.back)), e;
+    return t.front !== void 0 && t.front !== null && (e.front = y.toJSON(t.front)), t.left !== void 0 && t.left !== null && (e.left = y.toJSON(t.left)), t.right !== void 0 && t.right !== null && (e.right = y.toJSON(t.right)), t.back !== void 0 && t.back !== null && (e.back = y.toJSON(t.back)), e;
   },
   create(t) {
-    return it.fromPartial(t ?? {});
+    return W.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ue();
-    return e.front = t.front !== void 0 && t.front !== null ? y.fromPartial(t.front) : void 0, e.left = t.left !== void 0 && t.left !== null ? y.fromPartial(t.left) : void 0, e.right = t.right !== void 0 && t.right !== null ? y.fromPartial(t.right) : void 0, e.back = t.back !== void 0 && t.back !== null ? y.fromPartial(t.back) : void 0, e;
+    const e = Ut();
+    return e.front = t.front !== void 0 && t.front !== null ? y.fromPartial(t.front) : null, e.left = t.left !== void 0 && t.left !== null ? y.fromPartial(t.left) : null, e.right = t.right !== void 0 && t.right !== null ? y.fromPartial(t.right) : null, e.back = t.back !== void 0 && t.back !== null ? y.fromPartial(t.back) : null, e;
   }
 };
-function de() {
+function zt() {
   return {
-    mass: void 0,
-    inertia: void 0,
-    gearing: void 0,
-    radius: void 0,
-    vmax: void 0,
-    tmax: void 0,
-    cof: void 0,
-    differentialTrackWidth: void 0,
-    bumper: void 0,
-    frontLeft: void 0,
-    frontRight: void 0,
-    backLeft: void 0,
-    backRight: void 0
+    mass: null,
+    inertia: null,
+    gearing: null,
+    radius: null,
+    vmax: null,
+    tmax: null,
+    cof: null,
+    differentialTrackWidth: null,
+    bumper: null,
+    frontLeft: null,
+    frontRight: null,
+    backLeft: null,
+    backRight: null
   };
 }
-const ot = {
-  encode(t, e = new S()) {
-    return t.mass !== void 0 && y.encode(t.mass, e.uint32(10).fork()).join(), t.inertia !== void 0 && y.encode(t.inertia, e.uint32(18).fork()).join(), t.gearing !== void 0 && y.encode(t.gearing, e.uint32(26).fork()).join(), t.radius !== void 0 && y.encode(t.radius, e.uint32(34).fork()).join(), t.vmax !== void 0 && y.encode(t.vmax, e.uint32(42).fork()).join(), t.tmax !== void 0 && y.encode(t.tmax, e.uint32(50).fork()).join(), t.cof !== void 0 && y.encode(t.cof, e.uint32(58).fork()).join(), t.differentialTrackWidth !== void 0 && y.encode(t.differentialTrackWidth, e.uint32(66).fork()).join(), t.bumper !== void 0 && it.encode(t.bumper, e.uint32(74).fork()).join(), t.frontLeft !== void 0 && O.encode(t.frontLeft, e.uint32(82).fork()).join(), t.frontRight !== void 0 && O.encode(t.frontRight, e.uint32(90).fork()).join(), t.backLeft !== void 0 && O.encode(t.backLeft, e.uint32(98).fork()).join(), t.backRight !== void 0 && O.encode(t.backRight, e.uint32(106).fork()).join(), e;
+const A = {
+  encode(t, e = new w()) {
+    return t.mass !== void 0 && t.mass !== null && y.encode(t.mass, e.uint32(10).fork()).join(), t.inertia !== void 0 && t.inertia !== null && y.encode(t.inertia, e.uint32(18).fork()).join(), t.gearing !== void 0 && t.gearing !== null && y.encode(t.gearing, e.uint32(26).fork()).join(), t.radius !== void 0 && t.radius !== null && y.encode(t.radius, e.uint32(34).fork()).join(), t.vmax !== void 0 && t.vmax !== null && y.encode(t.vmax, e.uint32(42).fork()).join(), t.tmax !== void 0 && t.tmax !== null && y.encode(t.tmax, e.uint32(50).fork()).join(), t.cof !== void 0 && t.cof !== null && y.encode(t.cof, e.uint32(58).fork()).join(), t.differentialTrackWidth !== void 0 && t.differentialTrackWidth !== null && y.encode(t.differentialTrackWidth, e.uint32(66).fork()).join(), t.bumper !== void 0 && t.bumper !== null && W.encode(t.bumper, e.uint32(74).fork()).join(), t.frontLeft !== void 0 && t.frontLeft !== null && N.encode(t.frontLeft, e.uint32(82).fork()).join(), t.frontRight !== void 0 && t.frontRight !== null && N.encode(t.frontRight, e.uint32(90).fork()).join(), t.backLeft !== void 0 && t.backLeft !== null && N.encode(t.backLeft, e.uint32(98).fork()).join(), t.backRight !== void 0 && t.backRight !== null && N.encode(t.backRight, e.uint32(106).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = de();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = zt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2183,31 +1517,31 @@ const ot = {
         case 9: {
           if (n !== 74)
             break;
-          i.bumper = it.decode(r, r.uint32());
+          i.bumper = W.decode(r, r.uint32());
           continue;
         }
         case 10: {
           if (n !== 82)
             break;
-          i.frontLeft = O.decode(r, r.uint32());
+          i.frontLeft = N.decode(r, r.uint32());
           continue;
         }
         case 11: {
           if (n !== 90)
             break;
-          i.frontRight = O.decode(r, r.uint32());
+          i.frontRight = N.decode(r, r.uint32());
           continue;
         }
         case 12: {
           if (n !== 98)
             break;
-          i.backLeft = O.decode(r, r.uint32());
+          i.backLeft = N.decode(r, r.uint32());
           continue;
         }
         case 13: {
           if (n !== 106)
             break;
-          i.backRight = O.decode(r, r.uint32());
+          i.backRight = N.decode(r, r.uint32());
           continue;
         }
       }
@@ -2219,66 +1553,62 @@ const ot = {
   },
   fromJSON(t) {
     return {
-      mass: E(t.mass) ? y.fromJSON(t.mass) : void 0,
-      inertia: E(t.inertia) ? y.fromJSON(t.inertia) : void 0,
-      gearing: E(t.gearing) ? y.fromJSON(t.gearing) : void 0,
-      radius: E(t.radius) ? y.fromJSON(t.radius) : void 0,
-      vmax: E(t.vmax) ? y.fromJSON(t.vmax) : void 0,
-      tmax: E(t.tmax) ? y.fromJSON(t.tmax) : void 0,
-      cof: E(t.cof) ? y.fromJSON(t.cof) : void 0,
-      differentialTrackWidth: E(t.differentialTrackWidth) ? y.fromJSON(t.differentialTrackWidth) : E(t.differential_track_width) ? y.fromJSON(t.differential_track_width) : void 0,
-      bumper: E(t.bumper) ? it.fromJSON(t.bumper) : void 0,
-      frontLeft: E(t.frontLeft) ? O.fromJSON(t.frontLeft) : E(t.front_left) ? O.fromJSON(t.front_left) : void 0,
-      frontRight: E(t.frontRight) ? O.fromJSON(t.frontRight) : E(t.front_right) ? O.fromJSON(t.front_right) : void 0,
-      backLeft: E(t.backLeft) ? O.fromJSON(t.backLeft) : E(t.back_left) ? O.fromJSON(t.back_left) : void 0,
-      backRight: E(t.backRight) ? O.fromJSON(t.backRight) : E(t.back_right) ? O.fromJSON(t.back_right) : void 0
+      mass: E(t.mass) ? y.fromJSON(t.mass) : null,
+      inertia: E(t.inertia) ? y.fromJSON(t.inertia) : null,
+      gearing: E(t.gearing) ? y.fromJSON(t.gearing) : null,
+      radius: E(t.radius) ? y.fromJSON(t.radius) : null,
+      vmax: E(t.vmax) ? y.fromJSON(t.vmax) : null,
+      tmax: E(t.tmax) ? y.fromJSON(t.tmax) : null,
+      cof: E(t.cof) ? y.fromJSON(t.cof) : null,
+      differentialTrackWidth: E(t.differentialTrackWidth) ? y.fromJSON(t.differentialTrackWidth) : E(t.differential_track_width) ? y.fromJSON(t.differential_track_width) : null,
+      bumper: E(t.bumper) ? W.fromJSON(t.bumper) : null,
+      frontLeft: E(t.frontLeft) ? N.fromJSON(t.frontLeft) : E(t.front_left) ? N.fromJSON(t.front_left) : null,
+      frontRight: E(t.frontRight) ? N.fromJSON(t.frontRight) : E(t.front_right) ? N.fromJSON(t.front_right) : null,
+      backLeft: E(t.backLeft) ? N.fromJSON(t.backLeft) : E(t.back_left) ? N.fromJSON(t.back_left) : null,
+      backRight: E(t.backRight) ? N.fromJSON(t.backRight) : E(t.back_right) ? N.fromJSON(t.back_right) : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.mass !== void 0 && (e.mass = y.toJSON(t.mass)), t.inertia !== void 0 && (e.inertia = y.toJSON(t.inertia)), t.gearing !== void 0 && (e.gearing = y.toJSON(t.gearing)), t.radius !== void 0 && (e.radius = y.toJSON(t.radius)), t.vmax !== void 0 && (e.vmax = y.toJSON(t.vmax)), t.tmax !== void 0 && (e.tmax = y.toJSON(t.tmax)), t.cof !== void 0 && (e.cof = y.toJSON(t.cof)), t.differentialTrackWidth !== void 0 && (e.differentialTrackWidth = y.toJSON(t.differentialTrackWidth)), t.bumper !== void 0 && (e.bumper = it.toJSON(t.bumper)), t.frontLeft !== void 0 && (e.frontLeft = O.toJSON(t.frontLeft)), t.frontRight !== void 0 && (e.frontRight = O.toJSON(t.frontRight)), t.backLeft !== void 0 && (e.backLeft = O.toJSON(t.backLeft)), t.backRight !== void 0 && (e.backRight = O.toJSON(t.backRight)), e;
+    return t.mass !== void 0 && t.mass !== null && (e.mass = y.toJSON(t.mass)), t.inertia !== void 0 && t.inertia !== null && (e.inertia = y.toJSON(t.inertia)), t.gearing !== void 0 && t.gearing !== null && (e.gearing = y.toJSON(t.gearing)), t.radius !== void 0 && t.radius !== null && (e.radius = y.toJSON(t.radius)), t.vmax !== void 0 && t.vmax !== null && (e.vmax = y.toJSON(t.vmax)), t.tmax !== void 0 && t.tmax !== null && (e.tmax = y.toJSON(t.tmax)), t.cof !== void 0 && t.cof !== null && (e.cof = y.toJSON(t.cof)), t.differentialTrackWidth !== void 0 && t.differentialTrackWidth !== null && (e.differentialTrackWidth = y.toJSON(t.differentialTrackWidth)), t.bumper !== void 0 && t.bumper !== null && (e.bumper = W.toJSON(t.bumper)), t.frontLeft !== void 0 && t.frontLeft !== null && (e.frontLeft = N.toJSON(t.frontLeft)), t.frontRight !== void 0 && t.frontRight !== null && (e.frontRight = N.toJSON(t.frontRight)), t.backLeft !== void 0 && t.backLeft !== null && (e.backLeft = N.toJSON(t.backLeft)), t.backRight !== void 0 && t.backRight !== null && (e.backRight = N.toJSON(t.backRight)), e;
   },
   create(t) {
-    return ot.fromPartial(t ?? {});
+    return A.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = de();
-    return e.mass = t.mass !== void 0 && t.mass !== null ? y.fromPartial(t.mass) : void 0, e.inertia = t.inertia !== void 0 && t.inertia !== null ? y.fromPartial(t.inertia) : void 0, e.gearing = t.gearing !== void 0 && t.gearing !== null ? y.fromPartial(t.gearing) : void 0, e.radius = t.radius !== void 0 && t.radius !== null ? y.fromPartial(t.radius) : void 0, e.vmax = t.vmax !== void 0 && t.vmax !== null ? y.fromPartial(t.vmax) : void 0, e.tmax = t.tmax !== void 0 && t.tmax !== null ? y.fromPartial(t.tmax) : void 0, e.cof = t.cof !== void 0 && t.cof !== null ? y.fromPartial(t.cof) : void 0, e.differentialTrackWidth = t.differentialTrackWidth !== void 0 && t.differentialTrackWidth !== null ? y.fromPartial(t.differentialTrackWidth) : void 0, e.bumper = t.bumper !== void 0 && t.bumper !== null ? it.fromPartial(t.bumper) : void 0, e.frontLeft = t.frontLeft !== void 0 && t.frontLeft !== null ? O.fromPartial(t.frontLeft) : void 0, e.frontRight = t.frontRight !== void 0 && t.frontRight !== null ? O.fromPartial(t.frontRight) : void 0, e.backLeft = t.backLeft !== void 0 && t.backLeft !== null ? O.fromPartial(t.backLeft) : void 0, e.backRight = t.backRight !== void 0 && t.backRight !== null ? O.fromPartial(t.backRight) : void 0, e;
+    const e = zt();
+    return e.mass = t.mass !== void 0 && t.mass !== null ? y.fromPartial(t.mass) : null, e.inertia = t.inertia !== void 0 && t.inertia !== null ? y.fromPartial(t.inertia) : null, e.gearing = t.gearing !== void 0 && t.gearing !== null ? y.fromPartial(t.gearing) : null, e.radius = t.radius !== void 0 && t.radius !== null ? y.fromPartial(t.radius) : null, e.vmax = t.vmax !== void 0 && t.vmax !== null ? y.fromPartial(t.vmax) : null, e.tmax = t.tmax !== void 0 && t.tmax !== null ? y.fromPartial(t.tmax) : null, e.cof = t.cof !== void 0 && t.cof !== null ? y.fromPartial(t.cof) : null, e.differentialTrackWidth = t.differentialTrackWidth !== void 0 && t.differentialTrackWidth !== null ? y.fromPartial(t.differentialTrackWidth) : null, e.bumper = t.bumper !== void 0 && t.bumper !== null ? W.fromPartial(t.bumper) : null, e.frontLeft = t.frontLeft !== void 0 && t.frontLeft !== null ? N.fromPartial(t.frontLeft) : null, e.frontRight = t.frontRight !== void 0 && t.frontRight !== null ? N.fromPartial(t.frontRight) : null, e.backLeft = t.backLeft !== void 0 && t.backLeft !== null ? N.fromPartial(t.backLeft) : null, e.backRight = t.backRight !== void 0 && t.backRight !== null ? N.fromPartial(t.backRight) : null, e;
   }
 };
 function E(t) {
   return t != null;
 }
-const cr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ve = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleBumper: rt,
-  DoubleModule: w,
-  DoubleRobotConfig: nt,
-  ExprBumper: it,
-  ExprModule: O,
-  ExprRobotConfig: ot
-}, Symbol.toStringTag, { value: "Module" })), hr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  ExprBumper: W,
+  ExprModule: N,
+  ExprRobotConfig: A
+}, Symbol.toStringTag, { value: "Module" })), Ue = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DoubleParameters: tt,
-  ExprParameters: et,
-  WaypointID: P,
-  WaypointIDFirst: X,
-  WaypointIDLast: q,
-  WaypointIDX: K,
-  constraint: fr,
-  robotconfig: cr,
-  waypoint: lr
+  ExprParameters: I,
+  WaypointID: R,
+  WaypointIDFirst: z,
+  WaypointIDLast: G,
+  WaypointIDX: $,
+  constraint: De,
+  robotconfig: Ve,
+  waypoint: Le
 }, Symbol.toStringTag, { value: "Module" }));
-function le() {
-  return { name: "", config: void 0, driveType: 0 };
+function Gt() {
+  return { name: "", config: null, driveType: 0 };
 }
-const De = {
-  encode(t, e = new S()) {
-    return t.name !== "" && e.uint32(10).string(t.name), t.config !== void 0 && ot.encode(t.config, e.uint32(18).fork()).join(), t.driveType !== 0 && e.uint32(24).int32(t.driveType), e;
+const pe = {
+  encode(t, e = new w()) {
+    return t.name !== "" && e.uint32(10).string(t.name), t.config !== void 0 && t.config !== null && A.encode(t.config, e.uint32(18).fork()).join(), t.driveType !== 0 && e.uint32(24).int32(t.driveType), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = le();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Gt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2290,7 +1620,7 @@ const De = {
         case 2: {
           if (n !== 18)
             break;
-          i.config = ot.decode(r, r.uint32());
+          i.config = A.decode(r, r.uint32());
           continue;
         }
         case 3: {
@@ -2308,36 +1638,36 @@ const De = {
   },
   fromJSON(t) {
     return {
-      name: ut(t.name) ? globalThis.String(t.name) : "",
-      config: ut(t.config) ? ot.fromJSON(t.config) : void 0,
-      driveType: ut(t.driveType) ? Ot(t.driveType) : ut(t.drive_type) ? Ot(t.drive_type) : 0
+      name: Q(t.name) ? globalThis.String(t.name) : "",
+      config: Q(t.config) ? A.fromJSON(t.config) : null,
+      driveType: Q(t.driveType) ? pt(t.driveType) : Q(t.drive_type) ? pt(t.drive_type) : 0
     };
   },
   toJSON(t) {
     const e = {};
-    return t.name !== "" && (e.name = t.name), t.config !== void 0 && (e.config = ot.toJSON(t.config)), t.driveType !== 0 && (e.driveType = Ae(t.driveType)), e;
+    return t.name !== "" && (e.name = t.name), t.config !== void 0 && t.config !== null && (e.config = A.toJSON(t.config)), t.driveType !== 0 && (e.driveType = ce(t.driveType)), e;
   },
   create(t) {
-    return De.fromPartial(t ?? {});
+    return pe.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = le();
-    return e.name = t.name ?? "", e.config = t.config !== void 0 && t.config !== null ? ot.fromPartial(t.config) : void 0, e.driveType = t.driveType ?? 0, e;
+    const e = Gt();
+    return e.name = t.name ?? "", e.config = t.config !== void 0 && t.config !== null ? A.fromPartial(t.config) : null, e.driveType = t.driveType ?? 0, e;
   }
 };
-function ut(t) {
+function Q(t) {
   return t != null;
 }
-function ce() {
+function $t() {
   return { x: 0, y: 0 };
 }
-const _ = {
-  encode(t, e = new S()) {
+const O = {
+  encode(t, e = new w()) {
     return t.x !== 0 && e.uint32(9).double(t.x), t.y !== 0 && e.uint32(17).double(t.y), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ce();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = $t();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2361,8 +1691,8 @@ const _ = {
   },
   fromJSON(t) {
     return {
-      x: A(t.x) ? globalThis.Number(t.x) : 0,
-      y: A(t.y) ? globalThis.Number(t.y) : 0
+      x: P(t.x) ? globalThis.Number(t.x) : 0,
+      y: P(t.y) ? globalThis.Number(t.y) : 0
     };
   },
   toJSON(t) {
@@ -2370,14 +1700,14 @@ const _ = {
     return t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), e;
   },
   create(t) {
-    return _.fromPartial(t ?? {});
+    return O.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ce();
+    const e = $t();
     return e.x = t.x ?? 0, e.y = t.y ?? 0, e;
   }
 };
-function he() {
+function Xt() {
   return {
     t: 0,
     x: 0,
@@ -2389,19 +1719,19 @@ function he() {
     ax: 0,
     ay: 0,
     alpha: 0,
-    fl: void 0,
-    fr: void 0,
-    bl: void 0,
-    br: void 0
+    fl: null,
+    fr: null,
+    bl: null,
+    br: null
   };
 }
-const J = {
-  encode(t, e = new S()) {
-    return t.t !== 0 && e.uint32(9).double(t.t), t.x !== 0 && e.uint32(17).double(t.x), t.y !== 0 && e.uint32(25).double(t.y), t.heading !== 0 && e.uint32(33).double(t.heading), t.vx !== 0 && e.uint32(41).double(t.vx), t.vy !== 0 && e.uint32(49).double(t.vy), t.omega !== 0 && e.uint32(57).double(t.omega), t.ax !== 0 && e.uint32(65).double(t.ax), t.ay !== 0 && e.uint32(73).double(t.ay), t.alpha !== 0 && e.uint32(81).double(t.alpha), t.fl !== void 0 && _.encode(t.fl, e.uint32(90).fork()).join(), t.fr !== void 0 && _.encode(t.fr, e.uint32(98).fork()).join(), t.bl !== void 0 && _.encode(t.bl, e.uint32(106).fork()).join(), t.br !== void 0 && _.encode(t.br, e.uint32(114).fork()).join(), e;
+const _ = {
+  encode(t, e = new w()) {
+    return t.t !== 0 && e.uint32(9).double(t.t), t.x !== 0 && e.uint32(17).double(t.x), t.y !== 0 && e.uint32(25).double(t.y), t.heading !== 0 && e.uint32(33).double(t.heading), t.vx !== 0 && e.uint32(41).double(t.vx), t.vy !== 0 && e.uint32(49).double(t.vy), t.omega !== 0 && e.uint32(57).double(t.omega), t.ax !== 0 && e.uint32(65).double(t.ax), t.ay !== 0 && e.uint32(73).double(t.ay), t.alpha !== 0 && e.uint32(81).double(t.alpha), t.fl !== void 0 && t.fl !== null && O.encode(t.fl, e.uint32(90).fork()).join(), t.fr !== void 0 && t.fr !== null && O.encode(t.fr, e.uint32(98).fork()).join(), t.bl !== void 0 && t.bl !== null && O.encode(t.bl, e.uint32(106).fork()).join(), t.br !== void 0 && t.br !== null && O.encode(t.br, e.uint32(114).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = he();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Xt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2467,25 +1797,25 @@ const J = {
         case 11: {
           if (n !== 90)
             break;
-          i.fl = _.decode(r, r.uint32());
+          i.fl = O.decode(r, r.uint32());
           continue;
         }
         case 12: {
           if (n !== 98)
             break;
-          i.fr = _.decode(r, r.uint32());
+          i.fr = O.decode(r, r.uint32());
           continue;
         }
         case 13: {
           if (n !== 106)
             break;
-          i.bl = _.decode(r, r.uint32());
+          i.bl = O.decode(r, r.uint32());
           continue;
         }
         case 14: {
           if (n !== 114)
             break;
-          i.br = _.decode(r, r.uint32());
+          i.br = O.decode(r, r.uint32());
           continue;
         }
       }
@@ -2497,55 +1827,55 @@ const J = {
   },
   fromJSON(t) {
     return {
-      t: A(t.t) ? globalThis.Number(t.t) : 0,
-      x: A(t.x) ? globalThis.Number(t.x) : 0,
-      y: A(t.y) ? globalThis.Number(t.y) : 0,
-      heading: A(t.heading) ? globalThis.Number(t.heading) : 0,
-      vx: A(t.vx) ? globalThis.Number(t.vx) : 0,
-      vy: A(t.vy) ? globalThis.Number(t.vy) : 0,
-      omega: A(t.omega) ? globalThis.Number(t.omega) : 0,
-      ax: A(t.ax) ? globalThis.Number(t.ax) : 0,
-      ay: A(t.ay) ? globalThis.Number(t.ay) : 0,
-      alpha: A(t.alpha) ? globalThis.Number(t.alpha) : 0,
-      fl: A(t.fl) ? _.fromJSON(t.fl) : void 0,
-      fr: A(t.fr) ? _.fromJSON(t.fr) : void 0,
-      bl: A(t.bl) ? _.fromJSON(t.bl) : void 0,
-      br: A(t.br) ? _.fromJSON(t.br) : void 0
+      t: P(t.t) ? globalThis.Number(t.t) : 0,
+      x: P(t.x) ? globalThis.Number(t.x) : 0,
+      y: P(t.y) ? globalThis.Number(t.y) : 0,
+      heading: P(t.heading) ? globalThis.Number(t.heading) : 0,
+      vx: P(t.vx) ? globalThis.Number(t.vx) : 0,
+      vy: P(t.vy) ? globalThis.Number(t.vy) : 0,
+      omega: P(t.omega) ? globalThis.Number(t.omega) : 0,
+      ax: P(t.ax) ? globalThis.Number(t.ax) : 0,
+      ay: P(t.ay) ? globalThis.Number(t.ay) : 0,
+      alpha: P(t.alpha) ? globalThis.Number(t.alpha) : 0,
+      fl: P(t.fl) ? O.fromJSON(t.fl) : null,
+      fr: P(t.fr) ? O.fromJSON(t.fr) : null,
+      bl: P(t.bl) ? O.fromJSON(t.bl) : null,
+      br: P(t.br) ? O.fromJSON(t.br) : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.t !== 0 && (e.t = t.t), t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), t.heading !== 0 && (e.heading = t.heading), t.vx !== 0 && (e.vx = t.vx), t.vy !== 0 && (e.vy = t.vy), t.omega !== 0 && (e.omega = t.omega), t.ax !== 0 && (e.ax = t.ax), t.ay !== 0 && (e.ay = t.ay), t.alpha !== 0 && (e.alpha = t.alpha), t.fl !== void 0 && (e.fl = _.toJSON(t.fl)), t.fr !== void 0 && (e.fr = _.toJSON(t.fr)), t.bl !== void 0 && (e.bl = _.toJSON(t.bl)), t.br !== void 0 && (e.br = _.toJSON(t.br)), e;
+    return t.t !== 0 && (e.t = t.t), t.x !== 0 && (e.x = t.x), t.y !== 0 && (e.y = t.y), t.heading !== 0 && (e.heading = t.heading), t.vx !== 0 && (e.vx = t.vx), t.vy !== 0 && (e.vy = t.vy), t.omega !== 0 && (e.omega = t.omega), t.ax !== 0 && (e.ax = t.ax), t.ay !== 0 && (e.ay = t.ay), t.alpha !== 0 && (e.alpha = t.alpha), t.fl !== void 0 && t.fl !== null && (e.fl = O.toJSON(t.fl)), t.fr !== void 0 && t.fr !== null && (e.fr = O.toJSON(t.fr)), t.bl !== void 0 && t.bl !== null && (e.bl = O.toJSON(t.bl)), t.br !== void 0 && t.br !== null && (e.br = O.toJSON(t.br)), e;
   },
   create(t) {
-    return J.fromPartial(t ?? {});
+    return _.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = he();
-    return e.t = t.t ?? 0, e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.vx = t.vx ?? 0, e.vy = t.vy ?? 0, e.omega = t.omega ?? 0, e.ax = t.ax ?? 0, e.ay = t.ay ?? 0, e.alpha = t.alpha ?? 0, e.fl = t.fl !== void 0 && t.fl !== null ? _.fromPartial(t.fl) : void 0, e.fr = t.fr !== void 0 && t.fr !== null ? _.fromPartial(t.fr) : void 0, e.bl = t.bl !== void 0 && t.bl !== null ? _.fromPartial(t.bl) : void 0, e.br = t.br !== void 0 && t.br !== null ? _.fromPartial(t.br) : void 0, e;
+    const e = Xt();
+    return e.t = t.t ?? 0, e.x = t.x ?? 0, e.y = t.y ?? 0, e.heading = t.heading ?? 0, e.vx = t.vx ?? 0, e.vy = t.vy ?? 0, e.omega = t.omega ?? 0, e.ax = t.ax ?? 0, e.ay = t.ay ?? 0, e.alpha = t.alpha ?? 0, e.fl = t.fl !== void 0 && t.fl !== null ? O.fromPartial(t.fl) : null, e.fr = t.fr !== void 0 && t.fr !== null ? O.fromPartial(t.fr) : null, e.bl = t.bl !== void 0 && t.bl !== null ? O.fromPartial(t.bl) : null, e.br = t.br !== void 0 && t.br !== null ? O.fromPartial(t.br) : null, e;
   }
 };
-function A(t) {
+function P(t) {
   return t != null;
 }
-function pe() {
+function qt() {
   return { samples: [] };
 }
-const at = {
-  encode(t, e = new S()) {
+const K = {
+  encode(t, e = new w()) {
     for (const r of t.samples)
-      J.encode(r, e.uint32(10).fork()).join();
+      _.encode(r, e.uint32(10).fork()).join();
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = pe();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = qt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.samples.push(J.decode(r, r.uint32()));
+          i.samples.push(_.decode(r, r.uint32()));
           continue;
         }
       }
@@ -2557,39 +1887,39 @@ const at = {
   },
   fromJSON(t) {
     return {
-      samples: globalThis.Array.isArray(t?.samples) ? t.samples.map((e) => J.fromJSON(e)) : []
+      samples: globalThis.Array.isArray(t?.samples) ? t.samples.map((e) => _.fromJSON(e)) : []
     };
   },
   toJSON(t) {
     const e = {};
-    return t.samples?.length && (e.samples = t.samples.map((r) => J.toJSON(r))), e;
+    return t.samples?.length && (e.samples = t.samples.map((r) => _.toJSON(r))), e;
   },
   create(t) {
-    return at.fromPartial(t ?? {});
+    return K.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = pe();
-    return e.samples = t.samples?.map((r) => J.fromPartial(r)) || [], e;
+    const e = qt();
+    return e.samples = t.samples?.map((r) => _.fromPartial(r)) || [], e;
   }
 };
-function ve() {
+function Wt() {
   return { samples: [] };
 }
-const st = {
-  encode(t, e = new S()) {
+const Y = {
+  encode(t, e = new w()) {
     for (const r of t.samples)
-      W.encode(r, e.uint32(10).fork()).join();
+      U.encode(r, e.uint32(10).fork()).join();
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ve();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Wt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.samples.push(W.decode(r, r.uint32()));
+          i.samples.push(U.decode(r, r.uint32()));
           continue;
         }
       }
@@ -2601,32 +1931,32 @@ const st = {
   },
   fromJSON(t) {
     return {
-      samples: globalThis.Array.isArray(t?.samples) ? t.samples.map((e) => W.fromJSON(e)) : []
+      samples: globalThis.Array.isArray(t?.samples) ? t.samples.map((e) => U.fromJSON(e)) : []
     };
   },
   toJSON(t) {
     const e = {};
-    return t.samples?.length && (e.samples = t.samples.map((r) => W.toJSON(r))), e;
+    return t.samples?.length && (e.samples = t.samples.map((r) => U.toJSON(r))), e;
   },
   create(t) {
-    return st.fromPartial(t ?? {});
+    return Y.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ve();
-    return e.samples = t.samples?.map((r) => W.fromPartial(r)) || [], e;
+    const e = Wt();
+    return e.samples = t.samples?.map((r) => U.fromPartial(r)) || [], e;
   }
 };
-function ye() {
-  return { trajectory: void 0, splits: [], waypoints: [], config: void 0 };
+function Kt() {
+  return { trajectory: null, splits: [], waypoints: [], config: null };
 }
-const ft = {
-  encode(t, e = new S()) {
+const Z = {
+  encode(t, e = new w()) {
     switch (t.trajectory?.$case) {
       case "swerve":
-        at.encode(t.trajectory.swerve, e.uint32(10).fork()).join();
+        K.encode(t.trajectory.value, e.uint32(10).fork()).join();
         break;
       case "differential":
-        st.encode(t.trajectory.differential, e.uint32(18).fork()).join();
+        Y.encode(t.trajectory.value, e.uint32(18).fork()).join();
         break;
     }
     e.uint32(26).fork();
@@ -2635,37 +1965,34 @@ const ft = {
     e.join(), e.uint32(34).fork();
     for (const r of t.waypoints)
       e.double(r);
-    return e.join(), t.config !== void 0 && nt.encode(t.config, e.uint32(42).fork()).join(), e;
+    return e.join(), t.config !== void 0 && t.config !== null && A.encode(t.config, e.uint32(42).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ye();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Kt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.trajectory = { $case: "swerve", swerve: at.decode(r, r.uint32()) };
+          i.trajectory = { $case: "swerve", value: K.decode(r, r.uint32()) };
           continue;
         }
         case 2: {
           if (n !== 18)
             break;
-          i.trajectory = {
-            $case: "differential",
-            differential: st.decode(r, r.uint32())
-          };
+          i.trajectory = { $case: "differential", value: Y.decode(r, r.uint32()) };
           continue;
         }
         case 3: {
           if (n === 24) {
-            i.splits.push(me(r.uint64()));
+            i.splits.push(Yt(r.uint64()));
             continue;
           }
           if (n === 26) {
-            const f = r.uint32() + r.pos;
-            for (; r.pos < f; )
-              i.splits.push(me(r.uint64()));
+            const s = r.uint32() + r.pos;
+            for (; r.pos < s; )
+              i.splits.push(Yt(r.uint64()));
             continue;
           }
           break;
@@ -2676,8 +2003,8 @@ const ft = {
             continue;
           }
           if (n === 34) {
-            const f = r.uint32() + r.pos;
-            for (; r.pos < f; )
+            const s = r.uint32() + r.pos;
+            for (; r.pos < s; )
               i.waypoints.push(r.double());
             continue;
           }
@@ -2686,7 +2013,7 @@ const ft = {
         case 5: {
           if (n !== 42)
             break;
-          i.config = nt.decode(r, r.uint32());
+          i.config = A.decode(r, r.uint32());
           continue;
         }
       }
@@ -2698,38 +2025,38 @@ const ft = {
   },
   fromJSON(t) {
     return {
-      trajectory: wt(t.swerve) ? { $case: "swerve", swerve: at.fromJSON(t.swerve) } : wt(t.differential) ? { $case: "differential", differential: st.fromJSON(t.differential) } : void 0,
+      trajectory: ht(t.swerve) ? { $case: "swerve", value: K.fromJSON(t.swerve) } : ht(t.differential) ? { $case: "differential", value: Y.fromJSON(t.differential) } : null,
       splits: globalThis.Array.isArray(t?.splits) ? t.splits.map((e) => globalThis.Number(e)) : [],
       waypoints: globalThis.Array.isArray(t?.waypoints) ? t.waypoints.map((e) => globalThis.Number(e)) : [],
-      config: wt(t.config) ? nt.fromJSON(t.config) : void 0
+      config: ht(t.config) ? A.fromJSON(t.config) : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.trajectory?.$case === "swerve" ? e.swerve = at.toJSON(t.trajectory.swerve) : t.trajectory?.$case === "differential" && (e.differential = st.toJSON(t.trajectory.differential)), t.splits?.length && (e.splits = t.splits.map((r) => Math.round(r))), t.waypoints?.length && (e.waypoints = t.waypoints), t.config !== void 0 && (e.config = nt.toJSON(t.config)), e;
+    return t.trajectory?.$case === "swerve" ? e.swerve = K.toJSON(t.trajectory.value) : t.trajectory?.$case === "differential" && (e.differential = Y.toJSON(t.trajectory.value)), t.splits?.length && (e.splits = t.splits.map((r) => Math.round(r))), t.waypoints?.length && (e.waypoints = t.waypoints), t.config !== void 0 && t.config !== null && (e.config = A.toJSON(t.config)), e;
   },
   create(t) {
-    return ft.fromPartial(t ?? {});
+    return Z.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ye();
+    const e = Kt();
     switch (t.trajectory?.$case) {
       case "swerve": {
-        t.trajectory?.swerve !== void 0 && t.trajectory?.swerve !== null && (e.trajectory = { $case: "swerve", swerve: at.fromPartial(t.trajectory.swerve) });
+        t.trajectory?.value !== void 0 && t.trajectory?.value !== null && (e.trajectory = { $case: "swerve", value: K.fromPartial(t.trajectory.value) });
         break;
       }
       case "differential": {
-        t.trajectory?.differential !== void 0 && t.trajectory?.differential !== null && (e.trajectory = {
+        t.trajectory?.value !== void 0 && t.trajectory?.value !== null && (e.trajectory = {
           $case: "differential",
-          differential: st.fromPartial(t.trajectory.differential)
+          value: Y.fromPartial(t.trajectory.value)
         });
         break;
       }
     }
-    return e.splits = t.splits?.map((r) => r) || [], e.waypoints = t.waypoints?.map((r) => r) || [], e.config = t.config !== void 0 && t.config !== null ? nt.fromPartial(t.config) : void 0, e;
+    return e.splits = t.splits?.map((r) => r) || [], e.waypoints = t.waypoints?.map((r) => r) || [], e.config = t.config !== void 0 && t.config !== null ? A.fromPartial(t.config) : void 0, e;
   }
 };
-function me(t) {
+function Yt(t) {
   const e = globalThis.Number(t.toString());
   if (e > globalThis.Number.MAX_SAFE_INTEGER)
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
@@ -2737,19 +2064,19 @@ function me(t) {
     throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
   return e;
 }
-function wt(t) {
+function ht(t) {
   return t != null;
 }
-function be() {
-  return { name: "", params: void 0, snapshot: void 0, trajectory: void 0 };
+function Zt() {
+  return { name: "", params: null, snapshot: null, trajectory: null };
 }
-const M = {
-  encode(t, e = new S()) {
-    return t.name !== "" && e.uint32(10).string(t.name), t.params !== void 0 && et.encode(t.params, e.uint32(18).fork()).join(), t.snapshot !== void 0 && tt.encode(t.snapshot, e.uint32(26).fork()).join(), t.trajectory !== void 0 && ft.encode(t.trajectory, e.uint32(34).fork()).join(), e;
+const T = {
+  encode(t, e = new w()) {
+    return t.name !== "" && e.uint32(10).string(t.name), t.params !== void 0 && t.params !== null && I.encode(t.params, e.uint32(18).fork()).join(), t.snapshot !== void 0 && t.snapshot !== null && I.encode(t.snapshot, e.uint32(26).fork()).join(), t.trajectory !== void 0 && t.trajectory !== null && Z.encode(t.trajectory, e.uint32(34).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = be();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Zt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
@@ -2761,19 +2088,19 @@ const M = {
         case 2: {
           if (n !== 18)
             break;
-          i.params = et.decode(r, r.uint32());
+          i.params = I.decode(r, r.uint32());
           continue;
         }
         case 3: {
           if (n !== 26)
             break;
-          i.snapshot = tt.decode(r, r.uint32());
+          i.snapshot = I.decode(r, r.uint32());
           continue;
         }
         case 4: {
           if (n !== 34)
             break;
-          i.trajectory = ft.decode(r, r.uint32());
+          i.trajectory = Z.decode(r, r.uint32());
           continue;
         }
       }
@@ -2785,59 +2112,59 @@ const M = {
   },
   fromJSON(t) {
     return {
-      name: dt(t.name) ? globalThis.String(t.name) : "",
-      params: dt(t.params) ? et.fromJSON(t.params) : void 0,
-      snapshot: dt(t.snapshot) ? tt.fromJSON(t.snapshot) : void 0,
-      trajectory: dt(t.trajectory) ? ft.fromJSON(t.trajectory) : void 0
+      name: j(t.name) ? globalThis.String(t.name) : "",
+      params: j(t.params) ? I.fromJSON(t.params) : null,
+      snapshot: j(t.snapshot) ? I.fromJSON(t.snapshot) : null,
+      trajectory: j(t.trajectory) ? Z.fromJSON(t.trajectory) : null
     };
   },
   toJSON(t) {
     const e = {};
-    return t.name !== "" && (e.name = t.name), t.params !== void 0 && (e.params = et.toJSON(t.params)), t.snapshot !== void 0 && (e.snapshot = tt.toJSON(t.snapshot)), t.trajectory !== void 0 && (e.trajectory = ft.toJSON(t.trajectory)), e;
+    return t.name !== "" && (e.name = t.name), t.params !== void 0 && t.params !== null && (e.params = I.toJSON(t.params)), t.snapshot !== void 0 && t.snapshot !== null && (e.snapshot = I.toJSON(t.snapshot)), t.trajectory !== void 0 && t.trajectory !== null && (e.trajectory = Z.toJSON(t.trajectory)), e;
   },
   create(t) {
-    return M.fromPartial(t ?? {});
+    return T.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = be();
-    return e.name = t.name ?? "", e.params = t.params !== void 0 && t.params !== null ? et.fromPartial(t.params) : void 0, e.snapshot = t.snapshot !== void 0 && t.snapshot !== null ? tt.fromPartial(t.snapshot) : void 0, e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? ft.fromPartial(t.trajectory) : void 0, e;
+    const e = Zt();
+    return e.name = t.name ?? "", e.params = t.params !== void 0 && t.params !== null ? I.fromPartial(t.params) : null, e.snapshot = t.snapshot !== void 0 && t.snapshot !== null ? I.fromPartial(t.snapshot) : void 0, e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? Z.fromPartial(t.trajectory) : void 0, e;
   }
 };
-function dt(t) {
+function j(t) {
   return t != null;
 }
-const wr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const je = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  DifferentialSample: W,
-  DifferentialTrajectory: st,
-  DriveType: Me,
+  DifferentialSample: U,
+  DifferentialTrajectory: Y,
+  DriveType: fe,
   Expr: y,
-  ForceVector: _,
-  GenerationOutput: ft,
-  ProjectFile: De,
-  SwerveSample: J,
-  SwerveTrajectory: at,
-  TrajectoryFile: M,
-  driveTypeFromJSON: Ot,
-  driveTypeToJSON: Ae,
-  parameters: hr
+  ForceVector: O,
+  GenerationOutput: Z,
+  ProjectFile: pe,
+  SwerveSample: _,
+  SwerveTrajectory: K,
+  TrajectoryFile: T,
+  driveTypeFromJSON: pt,
+  driveTypeToJSON: ce,
+  parameters: Ue
 }, Symbol.toStringTag, { value: "Module" }));
-function xe() {
-  return { sample: void 0 };
+function Qt() {
+  return { sample: null };
 }
-const vt = {
-  encode(t, e = new S()) {
-    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
+const it = {
+  encode(t, e = new w()) {
+    return t.sample !== void 0 && t.sample !== null && _.encode(t.sample, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = xe();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = Qt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.sample = J.decode(r, r.uint32());
+          i.sample = _.decode(r, r.uint32());
           continue;
         }
       }
@@ -2848,79 +2175,36 @@ const vt = {
     return i;
   },
   fromJSON(t) {
-    return { sample: Ce(t.sample) ? J.fromJSON(t.sample) : void 0 };
+    return { sample: ve(t.sample) ? _.fromJSON(t.sample) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
+    return t.sample !== void 0 && t.sample !== null && (e.sample = _.toJSON(t.sample)), e;
   },
   create(t) {
-    return vt.fromPartial(t ?? {});
+    return it.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = xe();
-    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
+    const e = Qt();
+    return e.sample = t.sample !== void 0 && t.sample !== null ? _.fromPartial(t.sample) : null, e;
   }
 };
-function ke() {
-  return { sample: void 0 };
-}
-const Et = {
-  encode(t, e = new S()) {
-    return t.sample !== void 0 && J.encode(t.sample, e.uint32(10).fork()).join(), e;
-  },
-  decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ke();
-    for (; r.pos < o; ) {
-      const n = r.uint32();
-      switch (n >>> 3) {
-        case 1: {
-          if (n !== 10)
-            break;
-          i.sample = J.decode(r, r.uint32());
-          continue;
-        }
-      }
-      if ((n & 7) === 4 || n === 0)
-        break;
-      r.skip(n & 7);
-    }
-    return i;
-  },
-  fromJSON(t) {
-    return { sample: Ce(t.sample) ? J.fromJSON(t.sample) : void 0 };
-  },
-  toJSON(t) {
-    const e = {};
-    return t.sample !== void 0 && (e.sample = J.toJSON(t.sample)), e;
-  },
-  create(t) {
-    return Et.fromPartial(t ?? {});
-  },
-  fromPartial(t) {
-    const e = ke();
-    return e.sample = t.sample !== void 0 && t.sample !== null ? J.fromPartial(t.sample) : void 0, e;
-  }
-};
-function Ce(t) {
-  return t != null;
-}
-function ge() {
-  return { trajectory: void 0 };
+function jt() {
+  return { sample: null };
 }
 const yt = {
-  encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+  encode(t, e = new w()) {
+    return t.sample !== void 0 && t.sample !== null && _.encode(t.sample, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = ge();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = jt();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.trajectory = M.decode(r, r.uint32());
+          i.sample = _.decode(r, r.uint32());
           continue;
         }
       }
@@ -2931,36 +2215,39 @@ const yt = {
     return i;
   },
   fromJSON(t) {
-    return { trajectory: Ve(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+    return { sample: ve(t.sample) ? _.fromJSON(t.sample) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
+    return t.sample !== void 0 && t.sample !== null && (e.sample = _.toJSON(t.sample)), e;
   },
   create(t) {
     return yt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = ge();
-    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
+    const e = jt();
+    return e.sample = t.sample !== void 0 && t.sample !== null ? _.fromPartial(t.sample) : null, e;
   }
 };
-function Se() {
-  return { trajectory: void 0 };
+function ve(t) {
+  return t != null;
 }
-const _t = {
-  encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+function te() {
+  return { trajectory: null };
+}
+const ot = {
+  encode(t, e = new w()) {
+    return t.trajectory !== void 0 && t.trajectory !== null && T.encode(t.trajectory, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Se();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = te();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.trajectory = M.decode(r, r.uint32());
+          i.trajectory = T.decode(r, r.uint32());
           continue;
         }
       }
@@ -2971,39 +2258,36 @@ const _t = {
     return i;
   },
   fromJSON(t) {
-    return { trajectory: Ve(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+    return { trajectory: ye(t.trajectory) ? T.fromJSON(t.trajectory) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
+    return t.trajectory !== void 0 && t.trajectory !== null && (e.trajectory = T.toJSON(t.trajectory)), e;
   },
   create(t) {
-    return _t.fromPartial(t ?? {});
+    return ot.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Se();
-    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
+    const e = te();
+    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? T.fromPartial(t.trajectory) : null, e;
   }
 };
-function Ve(t) {
-  return t != null;
+function ee() {
+  return { trajectory: null };
 }
-function Ne() {
-  return { trajectory: void 0 };
-}
-const Pt = {
-  encode(t, e = new S()) {
-    return t.trajectory !== void 0 && M.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+const bt = {
+  encode(t, e = new w()) {
+    return t.trajectory !== void 0 && t.trajectory !== null && T.encode(t.trajectory, e.uint32(10).fork()).join(), e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ne();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = ee();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       switch (n >>> 3) {
         case 1: {
           if (n !== 10)
             break;
-          i.trajectory = M.decode(r, r.uint32());
+          i.trajectory = T.decode(r, r.uint32());
           continue;
         }
       }
@@ -3014,414 +2298,457 @@ const Pt = {
     return i;
   },
   fromJSON(t) {
-    return { trajectory: pr(t.trajectory) ? M.fromJSON(t.trajectory) : void 0 };
+    return { trajectory: ye(t.trajectory) ? T.fromJSON(t.trajectory) : null };
   },
   toJSON(t) {
     const e = {};
-    return t.trajectory !== void 0 && (e.trajectory = M.toJSON(t.trajectory)), e;
+    return t.trajectory !== void 0 && t.trajectory !== null && (e.trajectory = T.toJSON(t.trajectory)), e;
   },
   create(t) {
-    return Pt.fromPartial(t ?? {});
+    return bt.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    const e = Ne();
-    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? M.fromPartial(t.trajectory) : void 0, e;
+    const e = ee();
+    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? T.fromPartial(t.trajectory) : null, e;
   }
 };
-function pr(t) {
+function ye(t) {
   return t != null;
 }
-const vr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+function re() {
+  return { trajectory: null };
+}
+const mt = {
+  encode(t, e = new w()) {
+    return t.trajectory !== void 0 && t.trajectory !== null && T.encode(t.trajectory, e.uint32(10).fork()).join(), e;
+  },
+  decode(t, e) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = re();
+    for (; r.pos < u; ) {
+      const n = r.uint32();
+      switch (n >>> 3) {
+        case 1: {
+          if (n !== 10)
+            break;
+          i.trajectory = T.decode(r, r.uint32());
+          continue;
+        }
+      }
+      if ((n & 7) === 4 || n === 0)
+        break;
+      r.skip(n & 7);
+    }
+    return i;
+  },
+  fromJSON(t) {
+    return { trajectory: ze(t.trajectory) ? T.fromJSON(t.trajectory) : null };
+  },
+  toJSON(t) {
+    const e = {};
+    return t.trajectory !== void 0 && t.trajectory !== null && (e.trajectory = T.toJSON(t.trajectory)), e;
+  },
+  create(t) {
+    return mt.fromPartial(t ?? {});
+  },
+  fromPartial(t) {
+    const e = re();
+    return e.trajectory = t.trajectory !== void 0 && t.trajectory !== null ? T.fromPartial(t.trajectory) : null, e;
+  }
+};
+function ze(t) {
+  return t != null;
+}
+const Ge = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  EchoSwerveSampleRequest: vt,
-  EchoSwerveSampleResponse: Et,
-  GenerateRequest: yt,
-  GenerateResponse: _t,
-  GetDefaultTrajectoryResponse: Pt
+  EchoSwerveSampleRequest: it,
+  EchoSwerveSampleResponse: yt,
+  GenerateRequest: ot,
+  GenerateResponse: bt,
+  GetDefaultTrajectoryResponse: mt
 }, Symbol.toStringTag, { value: "Module" }));
-var ht = { exports: {} }, yr = ht.exports, we;
-function mr() {
-  return we || (we = 1, (function(t, e) {
-    (function(r, o) {
-      t.exports = o();
-    })(yr, (function() {
+var rt = { exports: {} }, $e = rt.exports, ne;
+function Xe() {
+  return ne || (ne = 1, (function(t, e) {
+    (function(r, u) {
+      t.exports = u();
+    })($e, (function() {
       return r = { 418: function(i, n) {
-        (function(f, s) {
-          for (var m in s) f[m] = s[m];
-        })(n, (function(f) {
-          var s = {};
-          function m(u) {
-            if (s[u]) return s[u].exports;
-            var l = s[u] = { i: u, l: !1, exports: {} };
-            return f[u].call(l.exports, l, l.exports, m), l.l = !0, l.exports;
+        (function(s, a) {
+          for (var b in a) s[b] = a[b];
+        })(n, (function(s) {
+          var a = {};
+          function b(l) {
+            if (a[l]) return a[l].exports;
+            var c = a[l] = { i: l, l: !1, exports: {} };
+            return s[l].call(c.exports, c, c.exports, b), c.l = !0, c.exports;
           }
-          return m.m = f, m.c = s, m.i = function(u) {
-            return u;
-          }, m.d = function(u, l, b) {
-            m.o(u, l) || Object.defineProperty(u, l, { configurable: !1, enumerable: !0, get: b });
-          }, m.n = function(u) {
-            var l = u && u.__esModule ? function() {
-              return u.default;
+          return b.m = s, b.c = a, b.i = function(l) {
+            return l;
+          }, b.d = function(l, c, m) {
+            b.o(l, c) || Object.defineProperty(l, c, { configurable: !1, enumerable: !0, get: m });
+          }, b.n = function(l) {
+            var c = l && l.__esModule ? function() {
+              return l.default;
             } : function() {
-              return u;
+              return l;
             };
-            return m.d(l, "a", l), l;
-          }, m.o = function(u, l) {
-            return Object.prototype.hasOwnProperty.call(u, l);
-          }, m.p = "", m(m.s = 1);
-        })([function(f, s, m) {
-          Object.defineProperty(s, "__esModule", { value: !0 });
-          var u = m(3), l = (function() {
-            function b(d, h) {
-              d === void 0 && (d = {}), h === void 0 && (h = { splitValues: !1 });
+            return b.d(c, "a", c), c;
+          }, b.o = function(l, c) {
+            return Object.prototype.hasOwnProperty.call(l, c);
+          }, b.p = "", b(b.s = 1);
+        })([function(s, a, b) {
+          Object.defineProperty(a, "__esModule", { value: !0 });
+          var l = b(3), c = (function() {
+            function m(f, h) {
+              f === void 0 && (f = {}), h === void 0 && (h = { splitValues: !1 });
               var p, v = this;
-              this.headersMap = {}, d && (typeof Headers < "u" && d instanceof Headers ? u.getHeaderKeys(d).forEach((function(a) {
-                u.getHeaderValues(d, a).forEach((function(c) {
-                  h.splitValues ? v.append(a, u.splitHeaderValue(c)) : v.append(a, c);
+              this.headersMap = {}, f && (typeof Headers < "u" && f instanceof Headers ? l.getHeaderKeys(f).forEach((function(o) {
+                l.getHeaderValues(f, o).forEach((function(d) {
+                  h.splitValues ? v.append(o, l.splitHeaderValue(d)) : v.append(o, d);
                 }));
-              })) : typeof (p = d) == "object" && typeof p.headersMap == "object" && typeof p.forEach == "function" ? d.forEach((function(a, c) {
-                v.append(a, c);
-              })) : typeof Map < "u" && d instanceof Map ? d.forEach((function(a, c) {
-                v.append(c, a);
-              })) : typeof d == "string" ? this.appendFromString(d) : typeof d == "object" && Object.getOwnPropertyNames(d).forEach((function(a) {
-                var c = d[a];
-                Array.isArray(c) ? c.forEach((function(x) {
-                  v.append(a, x);
-                })) : v.append(a, c);
+              })) : typeof (p = f) == "object" && typeof p.headersMap == "object" && typeof p.forEach == "function" ? f.forEach((function(o, d) {
+                v.append(o, d);
+              })) : typeof Map < "u" && f instanceof Map ? f.forEach((function(o, d) {
+                v.append(d, o);
+              })) : typeof f == "string" ? this.appendFromString(f) : typeof f == "object" && Object.getOwnPropertyNames(f).forEach((function(o) {
+                var d = f[o];
+                Array.isArray(d) ? d.forEach((function(x) {
+                  v.append(o, x);
+                })) : v.append(o, d);
               })));
             }
-            return b.prototype.appendFromString = function(d) {
-              for (var h = d.split(`\r
+            return m.prototype.appendFromString = function(f) {
+              for (var h = f.split(`\r
 `), p = 0; p < h.length; p++) {
-                var v = h[p], a = v.indexOf(":");
-                if (a > 0) {
-                  var c = v.substring(0, a).trim(), x = v.substring(a + 1).trim();
-                  this.append(c, x);
+                var v = h[p], o = v.indexOf(":");
+                if (o > 0) {
+                  var d = v.substring(0, o).trim(), x = v.substring(o + 1).trim();
+                  this.append(d, x);
                 }
               }
-            }, b.prototype.delete = function(d, h) {
-              var p = u.normalizeName(d);
+            }, m.prototype.delete = function(f, h) {
+              var p = l.normalizeName(f);
               if (h === void 0) delete this.headersMap[p];
               else {
                 var v = this.headersMap[p];
                 if (v) {
-                  var a = v.indexOf(h);
-                  a >= 0 && v.splice(a, 1), v.length === 0 && delete this.headersMap[p];
+                  var o = v.indexOf(h);
+                  o >= 0 && v.splice(o, 1), v.length === 0 && delete this.headersMap[p];
                 }
               }
-            }, b.prototype.append = function(d, h) {
-              var p = this, v = u.normalizeName(d);
-              Array.isArray(this.headersMap[v]) || (this.headersMap[v] = []), Array.isArray(h) ? h.forEach((function(a) {
-                p.headersMap[v].push(u.normalizeValue(a));
-              })) : this.headersMap[v].push(u.normalizeValue(h));
-            }, b.prototype.set = function(d, h) {
-              var p = u.normalizeName(d);
+            }, m.prototype.append = function(f, h) {
+              var p = this, v = l.normalizeName(f);
+              Array.isArray(this.headersMap[v]) || (this.headersMap[v] = []), Array.isArray(h) ? h.forEach((function(o) {
+                p.headersMap[v].push(l.normalizeValue(o));
+              })) : this.headersMap[v].push(l.normalizeValue(h));
+            }, m.prototype.set = function(f, h) {
+              var p = l.normalizeName(f);
               if (Array.isArray(h)) {
                 var v = [];
-                h.forEach((function(a) {
-                  v.push(u.normalizeValue(a));
+                h.forEach((function(o) {
+                  v.push(l.normalizeValue(o));
                 })), this.headersMap[p] = v;
-              } else this.headersMap[p] = [u.normalizeValue(h)];
-            }, b.prototype.has = function(d, h) {
-              var p = this.headersMap[u.normalizeName(d)];
+              } else this.headersMap[p] = [l.normalizeValue(h)];
+            }, m.prototype.has = function(f, h) {
+              var p = this.headersMap[l.normalizeName(f)];
               if (!Array.isArray(p)) return !1;
               if (h !== void 0) {
-                var v = u.normalizeValue(h);
+                var v = l.normalizeValue(h);
                 return p.indexOf(v) >= 0;
               }
               return !0;
-            }, b.prototype.get = function(d) {
-              var h = this.headersMap[u.normalizeName(d)];
+            }, m.prototype.get = function(f) {
+              var h = this.headersMap[l.normalizeName(f)];
               return h !== void 0 ? h.concat() : [];
-            }, b.prototype.forEach = function(d) {
+            }, m.prototype.forEach = function(f) {
               var h = this;
               Object.getOwnPropertyNames(this.headersMap).forEach((function(p) {
-                d(p, h.headersMap[p]);
+                f(p, h.headersMap[p]);
               }), this);
-            }, b.prototype.toHeaders = function() {
+            }, m.prototype.toHeaders = function() {
               if (typeof Headers < "u") {
-                var d = new Headers();
+                var f = new Headers();
                 return this.forEach((function(h, p) {
                   p.forEach((function(v) {
-                    d.append(h, v);
+                    f.append(h, v);
                   }));
-                })), d;
+                })), f;
               }
               throw new Error("Headers class is not defined");
-            }, b;
+            }, m;
           })();
-          s.BrowserHeaders = l;
-        }, function(f, s, m) {
-          Object.defineProperty(s, "__esModule", { value: !0 });
-          var u = m(0);
-          s.BrowserHeaders = u.BrowserHeaders;
-        }, function(f, s, m) {
-          Object.defineProperty(s, "__esModule", { value: !0 }), s.iterateHeaders = function(u, l) {
-            for (var b = u[Symbol.iterator](), d = b.next(); !d.done; ) l(d.value[0]), d = b.next();
-          }, s.iterateHeadersKeys = function(u, l) {
-            for (var b = u.keys(), d = b.next(); !d.done; ) l(d.value), d = b.next();
+          a.BrowserHeaders = c;
+        }, function(s, a, b) {
+          Object.defineProperty(a, "__esModule", { value: !0 });
+          var l = b(0);
+          a.BrowserHeaders = l.BrowserHeaders;
+        }, function(s, a, b) {
+          Object.defineProperty(a, "__esModule", { value: !0 }), a.iterateHeaders = function(l, c) {
+            for (var m = l[Symbol.iterator](), f = m.next(); !f.done; ) c(f.value[0]), f = m.next();
+          }, a.iterateHeadersKeys = function(l, c) {
+            for (var m = l.keys(), f = m.next(); !f.done; ) c(f.value), f = m.next();
           };
-        }, function(f, s, m) {
-          Object.defineProperty(s, "__esModule", { value: !0 });
-          var u = m(2);
-          s.normalizeName = function(l) {
-            if (typeof l != "string" && (l = String(l)), /[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(l)) throw new TypeError("Invalid character in header field name");
-            return l.toLowerCase();
-          }, s.normalizeValue = function(l) {
-            return typeof l != "string" && (l = String(l)), l;
-          }, s.getHeaderValues = function(l, b) {
-            var d = l;
-            if (d instanceof Headers && d.getAll) return d.getAll(b);
-            var h = d.get(b);
+        }, function(s, a, b) {
+          Object.defineProperty(a, "__esModule", { value: !0 });
+          var l = b(2);
+          a.normalizeName = function(c) {
+            if (typeof c != "string" && (c = String(c)), /[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(c)) throw new TypeError("Invalid character in header field name");
+            return c.toLowerCase();
+          }, a.normalizeValue = function(c) {
+            return typeof c != "string" && (c = String(c)), c;
+          }, a.getHeaderValues = function(c, m) {
+            var f = c;
+            if (f instanceof Headers && f.getAll) return f.getAll(m);
+            var h = f.get(m);
             return h && typeof h == "string" ? [h] : h;
-          }, s.getHeaderKeys = function(l) {
-            var b = l, d = {}, h = [];
-            return b.keys ? u.iterateHeadersKeys(b, (function(p) {
-              d[p] || (d[p] = !0, h.push(p));
-            })) : b.forEach ? b.forEach((function(p, v) {
-              d[v] || (d[v] = !0, h.push(v));
-            })) : u.iterateHeaders(b, (function(p) {
+          }, a.getHeaderKeys = function(c) {
+            var m = c, f = {}, h = [];
+            return m.keys ? l.iterateHeadersKeys(m, (function(p) {
+              f[p] || (f[p] = !0, h.push(p));
+            })) : m.forEach ? m.forEach((function(p, v) {
+              f[v] || (f[v] = !0, h.push(v));
+            })) : l.iterateHeaders(m, (function(p) {
               var v = p[0];
-              d[v] || (d[v] = !0, h.push(v));
+              f[v] || (f[v] = !0, h.push(v));
             })), h;
-          }, s.splitHeaderValue = function(l) {
-            var b = [];
-            return l.split(", ").forEach((function(d) {
-              d.split(",").forEach((function(h) {
-                b.push(h);
+          }, a.splitHeaderValue = function(c) {
+            var m = [];
+            return c.split(", ").forEach((function(f) {
+              f.split(",").forEach((function(h) {
+                m.push(h);
               }));
-            })), b;
+            })), m;
           };
         }]));
-      }, 617: function(i, n, f) {
+      }, 617: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.ChunkParser = n.ChunkType = n.encodeASCII = n.decodeASCII = void 0;
-        var s, m = f(65);
-        function u(a) {
-          return (c = a) === 9 || c === 10 || c === 13 || a >= 32 && a <= 126;
-          var c;
+        var a, b = s(65);
+        function l(o) {
+          return (d = o) === 9 || d === 10 || d === 13 || o >= 32 && o <= 126;
+          var d;
         }
-        function l(a) {
-          for (var c = 0; c !== a.length; ++c) if (!u(a[c])) throw new Error("Metadata is not valid (printable) ASCII");
-          return String.fromCharCode.apply(String, Array.prototype.slice.call(a));
+        function c(o) {
+          for (var d = 0; d !== o.length; ++d) if (!l(o[d])) throw new Error("Metadata is not valid (printable) ASCII");
+          return String.fromCharCode.apply(String, Array.prototype.slice.call(o));
         }
-        function b(a) {
-          return (128 & a.getUint8(0)) == 128;
+        function m(o) {
+          return (128 & o.getUint8(0)) == 128;
         }
-        function d(a) {
-          return a.getUint32(1, !1);
+        function f(o) {
+          return o.getUint32(1, !1);
         }
-        function h(a, c, x) {
-          return a.byteLength - c >= x;
+        function h(o, d, x) {
+          return o.byteLength - d >= x;
         }
-        function p(a, c, x) {
-          if (a.slice) return a.slice(c, x);
-          var g = a.length;
-          x !== void 0 && (g = x);
-          for (var N = new Uint8Array(g - c), R = 0, $ = c; $ < g; $++) N[R++] = a[$];
-          return N;
+        function p(o, d, x) {
+          if (o.slice) return o.slice(d, x);
+          var k = o.length;
+          x !== void 0 && (k = x);
+          for (var g = new Uint8Array(k - d), M = 0, L = d; L < k; L++) g[M++] = o[L];
+          return g;
         }
-        n.decodeASCII = l, n.encodeASCII = function(a) {
-          for (var c = new Uint8Array(a.length), x = 0; x !== a.length; ++x) {
-            var g = a.charCodeAt(x);
-            if (!u(g)) throw new Error("Metadata contains invalid ASCII");
-            c[x] = g;
+        n.decodeASCII = c, n.encodeASCII = function(o) {
+          for (var d = new Uint8Array(o.length), x = 0; x !== o.length; ++x) {
+            var k = o.charCodeAt(x);
+            if (!l(k)) throw new Error("Metadata contains invalid ASCII");
+            d[x] = k;
           }
-          return c;
-        }, (function(a) {
-          a[a.MESSAGE = 1] = "MESSAGE", a[a.TRAILERS = 2] = "TRAILERS";
-        })(s = n.ChunkType || (n.ChunkType = {}));
+          return d;
+        }, (function(o) {
+          o[o.MESSAGE = 1] = "MESSAGE", o[o.TRAILERS = 2] = "TRAILERS";
+        })(a = n.ChunkType || (n.ChunkType = {}));
         var v = (function() {
-          function a() {
+          function o() {
             this.buffer = null, this.position = 0;
           }
-          return a.prototype.parse = function(c, x) {
-            if (c.length === 0 && x) return [];
-            var g, N = [];
-            if (this.buffer == null) this.buffer = c, this.position = 0;
-            else if (this.position === this.buffer.byteLength) this.buffer = c, this.position = 0;
+          return o.prototype.parse = function(d, x) {
+            if (d.length === 0 && x) return [];
+            var k, g = [];
+            if (this.buffer == null) this.buffer = d, this.position = 0;
+            else if (this.position === this.buffer.byteLength) this.buffer = d, this.position = 0;
             else {
-              var R = this.buffer.byteLength - this.position, $ = new Uint8Array(R + c.byteLength), ze = p(this.buffer, this.position);
-              $.set(ze, 0);
-              var Ge = new Uint8Array(c);
-              $.set(Ge, R), this.buffer = $, this.position = 0;
+              var M = this.buffer.byteLength - this.position, L = new Uint8Array(M + d.byteLength), Se = p(this.buffer, this.position);
+              L.set(Se, 0);
+              var ge = new Uint8Array(d);
+              L.set(ge, M), this.buffer = L, this.position = 0;
             }
             for (; ; ) {
-              if (!h(this.buffer, this.position, 5)) return N;
-              var xt = p(this.buffer, this.position, this.position + 5), Jt = new DataView(xt.buffer, xt.byteOffset, xt.byteLength), kt = d(Jt);
-              if (!h(this.buffer, this.position, 5 + kt)) return N;
-              var Mt = p(this.buffer, this.position + 5, this.position + 5 + kt);
-              if (this.position += 5 + kt, b(Jt)) return N.push({ chunkType: s.TRAILERS, trailers: (g = Mt, new m.Metadata(l(g))) }), N;
-              N.push({ chunkType: s.MESSAGE, data: Mt });
+              if (!h(this.buffer, this.position, 5)) return g;
+              var ut = p(this.buffer, this.position, this.position + 5), xt = new DataView(ut.buffer, ut.byteOffset, ut.byteLength), lt = f(xt);
+              if (!h(this.buffer, this.position, 5 + lt)) return g;
+              var kt = p(this.buffer, this.position + 5, this.position + 5 + lt);
+              if (this.position += 5 + lt, m(xt)) return g.push({ chunkType: a.TRAILERS, trailers: (k = kt, new b.Metadata(c(k))) }), g;
+              g.push({ chunkType: a.MESSAGE, data: kt });
             }
-          }, a;
+          }, o;
         })();
         n.ChunkParser = v;
       }, 8: function(i, n) {
-        var f;
-        Object.defineProperty(n, "__esModule", { value: !0 }), n.httpStatusToCode = n.Code = void 0, (function(s) {
-          s[s.OK = 0] = "OK", s[s.Canceled = 1] = "Canceled", s[s.Unknown = 2] = "Unknown", s[s.InvalidArgument = 3] = "InvalidArgument", s[s.DeadlineExceeded = 4] = "DeadlineExceeded", s[s.NotFound = 5] = "NotFound", s[s.AlreadyExists = 6] = "AlreadyExists", s[s.PermissionDenied = 7] = "PermissionDenied", s[s.ResourceExhausted = 8] = "ResourceExhausted", s[s.FailedPrecondition = 9] = "FailedPrecondition", s[s.Aborted = 10] = "Aborted", s[s.OutOfRange = 11] = "OutOfRange", s[s.Unimplemented = 12] = "Unimplemented", s[s.Internal = 13] = "Internal", s[s.Unavailable = 14] = "Unavailable", s[s.DataLoss = 15] = "DataLoss", s[s.Unauthenticated = 16] = "Unauthenticated";
-        })(f = n.Code || (n.Code = {})), n.httpStatusToCode = function(s) {
-          switch (s) {
+        var s;
+        Object.defineProperty(n, "__esModule", { value: !0 }), n.httpStatusToCode = n.Code = void 0, (function(a) {
+          a[a.OK = 0] = "OK", a[a.Canceled = 1] = "Canceled", a[a.Unknown = 2] = "Unknown", a[a.InvalidArgument = 3] = "InvalidArgument", a[a.DeadlineExceeded = 4] = "DeadlineExceeded", a[a.NotFound = 5] = "NotFound", a[a.AlreadyExists = 6] = "AlreadyExists", a[a.PermissionDenied = 7] = "PermissionDenied", a[a.ResourceExhausted = 8] = "ResourceExhausted", a[a.FailedPrecondition = 9] = "FailedPrecondition", a[a.Aborted = 10] = "Aborted", a[a.OutOfRange = 11] = "OutOfRange", a[a.Unimplemented = 12] = "Unimplemented", a[a.Internal = 13] = "Internal", a[a.Unavailable = 14] = "Unavailable", a[a.DataLoss = 15] = "DataLoss", a[a.Unauthenticated = 16] = "Unauthenticated";
+        })(s = n.Code || (n.Code = {})), n.httpStatusToCode = function(a) {
+          switch (a) {
             case 0:
-              return f.Internal;
+              return s.Internal;
             case 200:
-              return f.OK;
+              return s.OK;
             case 400:
-              return f.InvalidArgument;
+              return s.InvalidArgument;
             case 401:
-              return f.Unauthenticated;
+              return s.Unauthenticated;
             case 403:
-              return f.PermissionDenied;
+              return s.PermissionDenied;
             case 404:
-              return f.NotFound;
+              return s.NotFound;
             case 409:
-              return f.Aborted;
+              return s.Aborted;
             case 412:
-              return f.FailedPrecondition;
+              return s.FailedPrecondition;
             case 429:
-              return f.ResourceExhausted;
+              return s.ResourceExhausted;
             case 499:
-              return f.Canceled;
+              return s.Canceled;
             case 500:
-              return f.Unknown;
+              return s.Unknown;
             case 501:
-              return f.Unimplemented;
+              return s.Unimplemented;
             case 503:
-              return f.Unavailable;
+              return s.Unavailable;
             case 504:
-              return f.DeadlineExceeded;
+              return s.DeadlineExceeded;
             default:
-              return f.Unknown;
+              return s.Unknown;
           }
         };
-      }, 934: function(i, n, f) {
+      }, 934: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.client = void 0;
-        var s = f(65), m = f(617), u = f(8), l = f(346), b = f(57), d = f(882);
-        n.client = function(v, a) {
-          return new h(v, a);
+        var a = s(65), b = s(617), l = s(8), c = s(346), m = s(57), f = s(882);
+        n.client = function(v, o) {
+          return new h(v, o);
         };
         var h = (function() {
-          function v(a, c) {
-            this.started = !1, this.sentFirstMessage = !1, this.completed = !1, this.closed = !1, this.finishedSending = !1, this.onHeadersCallbacks = [], this.onMessageCallbacks = [], this.onEndCallbacks = [], this.parser = new m.ChunkParser(), this.methodDefinition = a, this.props = c, this.createTransport();
+          function v(o, d) {
+            this.started = !1, this.sentFirstMessage = !1, this.completed = !1, this.closed = !1, this.finishedSending = !1, this.onHeadersCallbacks = [], this.onMessageCallbacks = [], this.onEndCallbacks = [], this.parser = new b.ChunkParser(), this.methodDefinition = o, this.props = d, this.createTransport();
           }
           return v.prototype.createTransport = function() {
-            var a = this.props.host + "/" + this.methodDefinition.service.serviceName + "/" + this.methodDefinition.methodName, c = { methodDefinition: this.methodDefinition, debug: this.props.debug || !1, url: a, onHeaders: this.onTransportHeaders.bind(this), onChunk: this.onTransportChunk.bind(this), onEnd: this.onTransportEnd.bind(this) };
-            this.props.transport ? this.transport = this.props.transport(c) : this.transport = b.makeDefaultTransport(c);
-          }, v.prototype.onTransportHeaders = function(a, c) {
-            if (this.props.debug && l.debug("onHeaders", a, c), this.closed) this.props.debug && l.debug("grpc.onHeaders received after request was closed - ignoring");
-            else if (c !== 0) {
-              this.responseHeaders = a, this.props.debug && l.debug("onHeaders.responseHeaders", JSON.stringify(this.responseHeaders, null, 2));
-              var x = p(a);
-              this.props.debug && l.debug("onHeaders.gRPCStatus", x);
-              var g = x && x >= 0 ? x : u.httpStatusToCode(c);
-              this.props.debug && l.debug("onHeaders.code", g);
-              var N = a.get("grpc-message") || [];
-              if (this.props.debug && l.debug("onHeaders.gRPCMessage", N), this.rawOnHeaders(a), g !== u.Code.OK) {
-                var R = this.decodeGRPCStatus(N[0]);
-                this.rawOnError(g, R, a);
+            var o = this.props.host + "/" + this.methodDefinition.service.serviceName + "/" + this.methodDefinition.methodName, d = { methodDefinition: this.methodDefinition, debug: this.props.debug || !1, url: o, onHeaders: this.onTransportHeaders.bind(this), onChunk: this.onTransportChunk.bind(this), onEnd: this.onTransportEnd.bind(this) };
+            this.props.transport ? this.transport = this.props.transport(d) : this.transport = m.makeDefaultTransport(d);
+          }, v.prototype.onTransportHeaders = function(o, d) {
+            if (this.props.debug && c.debug("onHeaders", o, d), this.closed) this.props.debug && c.debug("grpc.onHeaders received after request was closed - ignoring");
+            else if (d !== 0) {
+              this.responseHeaders = o, this.props.debug && c.debug("onHeaders.responseHeaders", JSON.stringify(this.responseHeaders, null, 2));
+              var x = p(o);
+              this.props.debug && c.debug("onHeaders.gRPCStatus", x);
+              var k = x && x >= 0 ? x : l.httpStatusToCode(d);
+              this.props.debug && c.debug("onHeaders.code", k);
+              var g = o.get("grpc-message") || [];
+              if (this.props.debug && c.debug("onHeaders.gRPCMessage", g), this.rawOnHeaders(o), k !== l.Code.OK) {
+                var M = this.decodeGRPCStatus(g[0]);
+                this.rawOnError(k, M, o);
               }
             }
-          }, v.prototype.onTransportChunk = function(a) {
-            var c = this;
-            if (this.closed) this.props.debug && l.debug("grpc.onChunk received after request was closed - ignoring");
+          }, v.prototype.onTransportChunk = function(o) {
+            var d = this;
+            if (this.closed) this.props.debug && c.debug("grpc.onChunk received after request was closed - ignoring");
             else {
               var x = [];
               try {
-                x = this.parser.parse(a);
-              } catch (g) {
-                return this.props.debug && l.debug("onChunk.parsing error", g, g.message), void this.rawOnError(u.Code.Internal, "parsing error: " + g.message);
+                x = this.parser.parse(o);
+              } catch (k) {
+                return this.props.debug && c.debug("onChunk.parsing error", k, k.message), void this.rawOnError(l.Code.Internal, "parsing error: " + k.message);
               }
-              x.forEach((function(g) {
-                if (g.chunkType === m.ChunkType.MESSAGE) {
-                  var N = c.methodDefinition.responseType.deserializeBinary(g.data);
-                  c.rawOnMessage(N);
-                } else g.chunkType === m.ChunkType.TRAILERS && (c.responseHeaders ? (c.responseTrailers = new s.Metadata(g.trailers), c.props.debug && l.debug("onChunk.trailers", c.responseTrailers)) : (c.responseHeaders = new s.Metadata(g.trailers), c.rawOnHeaders(c.responseHeaders)));
+              x.forEach((function(k) {
+                if (k.chunkType === b.ChunkType.MESSAGE) {
+                  var g = d.methodDefinition.responseType.deserializeBinary(k.data);
+                  d.rawOnMessage(g);
+                } else k.chunkType === b.ChunkType.TRAILERS && (d.responseHeaders ? (d.responseTrailers = new a.Metadata(k.trailers), d.props.debug && c.debug("onChunk.trailers", d.responseTrailers)) : (d.responseHeaders = new a.Metadata(k.trailers), d.rawOnHeaders(d.responseHeaders)));
               }));
             }
           }, v.prototype.onTransportEnd = function() {
-            if (this.props.debug && l.debug("grpc.onEnd"), this.closed) this.props.debug && l.debug("grpc.onEnd received after request was closed - ignoring");
+            if (this.props.debug && c.debug("grpc.onEnd"), this.closed) this.props.debug && c.debug("grpc.onEnd received after request was closed - ignoring");
             else if (this.responseTrailers !== void 0) {
-              var a = p(this.responseTrailers);
-              if (a !== null) {
-                var c = this.responseTrailers.get("grpc-message"), x = this.decodeGRPCStatus(c[0]);
-                this.rawOnEnd(a, x, this.responseTrailers);
-              } else this.rawOnError(u.Code.Internal, "Response closed without grpc-status (Trailers provided)");
+              var o = p(this.responseTrailers);
+              if (o !== null) {
+                var d = this.responseTrailers.get("grpc-message"), x = this.decodeGRPCStatus(d[0]);
+                this.rawOnEnd(o, x, this.responseTrailers);
+              } else this.rawOnError(l.Code.Internal, "Response closed without grpc-status (Trailers provided)");
             } else {
-              if (this.responseHeaders === void 0) return void this.rawOnError(u.Code.Unknown, "Response closed without headers");
-              var g = p(this.responseHeaders), N = this.responseHeaders.get("grpc-message");
-              if (this.props.debug && l.debug("grpc.headers only response ", g, N), g === null) return void this.rawOnEnd(u.Code.Unknown, "Response closed without grpc-status (Headers only)", this.responseHeaders);
-              var R = this.decodeGRPCStatus(N[0]);
-              this.rawOnEnd(g, R, this.responseHeaders);
+              if (this.responseHeaders === void 0) return void this.rawOnError(l.Code.Unknown, "Response closed without headers");
+              var k = p(this.responseHeaders), g = this.responseHeaders.get("grpc-message");
+              if (this.props.debug && c.debug("grpc.headers only response ", k, g), k === null) return void this.rawOnEnd(l.Code.Unknown, "Response closed without grpc-status (Headers only)", this.responseHeaders);
+              var M = this.decodeGRPCStatus(g[0]);
+              this.rawOnEnd(k, M, this.responseHeaders);
             }
-          }, v.prototype.decodeGRPCStatus = function(a) {
-            if (!a) return "";
+          }, v.prototype.decodeGRPCStatus = function(o) {
+            if (!o) return "";
             try {
-              return decodeURIComponent(a);
+              return decodeURIComponent(o);
             } catch {
-              return a;
+              return o;
             }
-          }, v.prototype.rawOnEnd = function(a, c, x) {
-            var g = this;
-            this.props.debug && l.debug("rawOnEnd", a, c, x), this.completed || (this.completed = !0, this.onEndCallbacks.forEach((function(N) {
-              if (!g.closed) try {
-                N(a, c, x);
-              } catch (R) {
+          }, v.prototype.rawOnEnd = function(o, d, x) {
+            var k = this;
+            this.props.debug && c.debug("rawOnEnd", o, d, x), this.completed || (this.completed = !0, this.onEndCallbacks.forEach((function(g) {
+              if (!k.closed) try {
+                g(o, d, x);
+              } catch (M) {
                 setTimeout((function() {
-                  throw R;
+                  throw M;
                 }), 0);
               }
             })));
-          }, v.prototype.rawOnHeaders = function(a) {
-            this.props.debug && l.debug("rawOnHeaders", a), this.completed || this.onHeadersCallbacks.forEach((function(c) {
+          }, v.prototype.rawOnHeaders = function(o) {
+            this.props.debug && c.debug("rawOnHeaders", o), this.completed || this.onHeadersCallbacks.forEach((function(d) {
               try {
-                c(a);
+                d(o);
               } catch (x) {
                 setTimeout((function() {
                   throw x;
                 }), 0);
               }
             }));
-          }, v.prototype.rawOnError = function(a, c, x) {
-            var g = this;
-            x === void 0 && (x = new s.Metadata()), this.props.debug && l.debug("rawOnError", a, c), this.completed || (this.completed = !0, this.onEndCallbacks.forEach((function(N) {
-              if (!g.closed) try {
-                N(a, c, x);
-              } catch (R) {
+          }, v.prototype.rawOnError = function(o, d, x) {
+            var k = this;
+            x === void 0 && (x = new a.Metadata()), this.props.debug && c.debug("rawOnError", o, d), this.completed || (this.completed = !0, this.onEndCallbacks.forEach((function(g) {
+              if (!k.closed) try {
+                g(o, d, x);
+              } catch (M) {
                 setTimeout((function() {
-                  throw R;
+                  throw M;
                 }), 0);
               }
             })));
-          }, v.prototype.rawOnMessage = function(a) {
-            var c = this;
-            this.props.debug && l.debug("rawOnMessage", a.toObject()), this.completed || this.closed || this.onMessageCallbacks.forEach((function(x) {
-              if (!c.closed) try {
-                x(a);
-              } catch (g) {
+          }, v.prototype.rawOnMessage = function(o) {
+            var d = this;
+            this.props.debug && c.debug("rawOnMessage", o.toObject()), this.completed || this.closed || this.onMessageCallbacks.forEach((function(x) {
+              if (!d.closed) try {
+                x(o);
+              } catch (k) {
                 setTimeout((function() {
-                  throw g;
+                  throw k;
                 }), 0);
               }
             }));
-          }, v.prototype.onHeaders = function(a) {
-            this.onHeadersCallbacks.push(a);
-          }, v.prototype.onMessage = function(a) {
-            this.onMessageCallbacks.push(a);
-          }, v.prototype.onEnd = function(a) {
-            this.onEndCallbacks.push(a);
-          }, v.prototype.start = function(a) {
+          }, v.prototype.onHeaders = function(o) {
+            this.onHeadersCallbacks.push(o);
+          }, v.prototype.onMessage = function(o) {
+            this.onMessageCallbacks.push(o);
+          }, v.prototype.onEnd = function(o) {
+            this.onEndCallbacks.push(o);
+          }, v.prototype.start = function(o) {
             if (this.started) throw new Error("Client already started - cannot .start()");
             this.started = !0;
-            var c = new s.Metadata(a || {});
-            c.set("content-type", "application/grpc-web+proto"), c.set("x-grpc-web", "1"), this.transport.start(c);
-          }, v.prototype.send = function(a) {
+            var d = new a.Metadata(o || {});
+            d.set("content-type", "application/grpc-web+proto"), d.set("x-grpc-web", "1"), this.transport.start(d);
+          }, v.prototype.send = function(o) {
             if (!this.started) throw new Error("Client not started - .start() must be called before .send()");
             if (this.closed) throw new Error("Client already closed - cannot .send()");
             if (this.finishedSending) throw new Error("Client already finished sending - cannot .send()");
             if (!this.methodDefinition.requestStream && this.sentFirstMessage) throw new Error("Message already sent for non-client-streaming method - cannot .send()");
             this.sentFirstMessage = !0;
-            var c = d.frameRequest(a);
-            this.transport.sendMessage(c);
+            var d = f.frameRequest(o);
+            this.transport.sendMessage(d);
           }, v.prototype.finishSend = function() {
             if (!this.started) throw new Error("Client not started - .finishSend() must be called before .close()");
             if (this.closed) throw new Error("Client already closed - cannot .send()");
@@ -3430,14 +2757,14 @@ function mr() {
           }, v.prototype.close = function() {
             if (!this.started) throw new Error("Client not started - .start() must be called before .close()");
             if (this.closed) throw new Error("Client already closed - cannot .close()");
-            this.closed = !0, this.props.debug && l.debug("request.abort aborting request"), this.transport.cancel();
+            this.closed = !0, this.props.debug && c.debug("request.abort aborting request"), this.transport.cancel();
           }, v;
         })();
         function p(v) {
-          var a = v.get("grpc-status") || [];
-          if (a.length > 0) try {
-            var c = a[0];
-            return parseInt(c, 10);
+          var o = v.get("grpc-status") || [];
+          if (o.length > 0) try {
+            var d = o[0];
+            return parseInt(d, 10);
           } catch {
             return null;
           }
@@ -3445,308 +2772,308 @@ function mr() {
         }
       }, 346: function(i, n) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.debug = void 0, n.debug = function() {
-          for (var f = [], s = 0; s < arguments.length; s++) f[s] = arguments[s];
-          console.debug ? console.debug.apply(null, f) : console.log.apply(null, f);
+          for (var s = [], a = 0; a < arguments.length; a++) s[a] = arguments[a];
+          console.debug ? console.debug.apply(null, s) : console.log.apply(null, s);
         };
-      }, 607: function(i, n, f) {
+      }, 607: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.grpc = void 0;
-        var s, m = f(418), u = f(57), l = f(229), b = f(540), d = f(210), h = f(859), p = f(8), v = f(938), a = f(35), c = f(934);
-        (s = n.grpc || (n.grpc = {})).setDefaultTransport = u.setDefaultTransportFactory, s.CrossBrowserHttpTransport = h.CrossBrowserHttpTransport, s.FetchReadableStreamTransport = l.FetchReadableStreamTransport, s.XhrTransport = d.XhrTransport, s.WebsocketTransport = b.WebsocketTransport, s.Code = p.Code, s.Metadata = m.BrowserHeaders, s.client = function(x, g) {
-          return c.client(x, g);
-        }, s.invoke = v.invoke, s.unary = a.unary;
-      }, 938: function(i, n, f) {
+        var a, b = s(418), l = s(57), c = s(229), m = s(540), f = s(210), h = s(859), p = s(8), v = s(938), o = s(35), d = s(934);
+        (a = n.grpc || (n.grpc = {})).setDefaultTransport = l.setDefaultTransportFactory, a.CrossBrowserHttpTransport = h.CrossBrowserHttpTransport, a.FetchReadableStreamTransport = c.FetchReadableStreamTransport, a.XhrTransport = f.XhrTransport, a.WebsocketTransport = m.WebsocketTransport, a.Code = p.Code, a.Metadata = b.BrowserHeaders, a.client = function(x, k) {
+          return d.client(x, k);
+        }, a.invoke = v.invoke, a.unary = o.unary;
+      }, 938: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.invoke = void 0;
-        var s = f(934);
-        n.invoke = function(m, u) {
-          if (m.requestStream) throw new Error(".invoke cannot be used with client-streaming methods. Use .client instead.");
-          var l = s.client(m, { host: u.host, transport: u.transport, debug: u.debug });
-          return u.onHeaders && l.onHeaders(u.onHeaders), u.onMessage && l.onMessage(u.onMessage), u.onEnd && l.onEnd(u.onEnd), l.start(u.metadata), l.send(u.request), l.finishSend(), { close: function() {
-            l.close();
+        var a = s(934);
+        n.invoke = function(b, l) {
+          if (b.requestStream) throw new Error(".invoke cannot be used with client-streaming methods. Use .client instead.");
+          var c = a.client(b, { host: l.host, transport: l.transport, debug: l.debug });
+          return l.onHeaders && c.onHeaders(l.onHeaders), l.onMessage && c.onMessage(l.onMessage), l.onEnd && c.onEnd(l.onEnd), c.start(l.metadata), c.send(l.request), c.finishSend(), { close: function() {
+            c.close();
           } };
         };
-      }, 65: function(i, n, f) {
+      }, 65: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.Metadata = void 0;
-        var s = f(418);
+        var a = s(418);
         Object.defineProperty(n, "Metadata", { enumerable: !0, get: function() {
-          return s.BrowserHeaders;
+          return a.BrowserHeaders;
         } });
-      }, 57: function(i, n, f) {
+      }, 57: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.makeDefaultTransport = n.setDefaultTransportFactory = void 0;
-        var s = f(859), m = function(u) {
-          return s.CrossBrowserHttpTransport({ withCredentials: !1 })(u);
+        var a = s(859), b = function(l) {
+          return a.CrossBrowserHttpTransport({ withCredentials: !1 })(l);
         };
-        n.setDefaultTransportFactory = function(u) {
-          m = u;
-        }, n.makeDefaultTransport = function(u) {
-          return m(u);
+        n.setDefaultTransportFactory = function(l) {
+          b = l;
+        }, n.makeDefaultTransport = function(l) {
+          return b(l);
         };
-      }, 229: function(i, n, f) {
-        var s = this && this.__assign || function() {
-          return (s = Object.assign || function(b) {
-            for (var d, h = 1, p = arguments.length; h < p; h++) for (var v in d = arguments[h]) Object.prototype.hasOwnProperty.call(d, v) && (b[v] = d[v]);
-            return b;
+      }, 229: function(i, n, s) {
+        var a = this && this.__assign || function() {
+          return (a = Object.assign || function(m) {
+            for (var f, h = 1, p = arguments.length; h < p; h++) for (var v in f = arguments[h]) Object.prototype.hasOwnProperty.call(f, v) && (m[v] = f[v]);
+            return m;
           }).apply(this, arguments);
         };
         Object.defineProperty(n, "__esModule", { value: !0 }), n.detectFetchSupport = n.FetchReadableStreamTransport = void 0;
-        var m = f(65), u = f(346);
-        n.FetchReadableStreamTransport = function(b) {
-          return function(d) {
+        var b = s(65), l = s(346);
+        n.FetchReadableStreamTransport = function(m) {
+          return function(f) {
             return (function(h, p) {
-              return h.debug && u.debug("fetchRequest", h), new l(h, p);
-            })(d, b);
+              return h.debug && l.debug("fetchRequest", h), new c(h, p);
+            })(f, m);
           };
         };
-        var l = (function() {
-          function b(d, h) {
-            this.cancelled = !1, this.controller = self.AbortController && new AbortController(), this.options = d, this.init = h;
+        var c = (function() {
+          function m(f, h) {
+            this.cancelled = !1, this.controller = self.AbortController && new AbortController(), this.options = f, this.init = h;
           }
-          return b.prototype.pump = function(d, h) {
+          return m.prototype.pump = function(f, h) {
             var p = this;
-            if (this.reader = d, this.cancelled) return this.options.debug && u.debug("Fetch.pump.cancel at first pump"), void this.reader.cancel().catch((function(v) {
-              p.options.debug && u.debug("Fetch.pump.reader.cancel exception", v);
+            if (this.reader = f, this.cancelled) return this.options.debug && l.debug("Fetch.pump.cancel at first pump"), void this.reader.cancel().catch((function(v) {
+              p.options.debug && l.debug("Fetch.pump.reader.cancel exception", v);
             }));
             this.reader.read().then((function(v) {
               if (v.done) return p.options.onEnd(), h;
               p.options.onChunk(v.value), p.pump(p.reader, h);
             })).catch((function(v) {
-              p.cancelled ? p.options.debug && u.debug("Fetch.catch - request cancelled") : (p.cancelled = !0, p.options.debug && u.debug("Fetch.catch", v.message), p.options.onEnd(v));
+              p.cancelled ? p.options.debug && l.debug("Fetch.catch - request cancelled") : (p.cancelled = !0, p.options.debug && l.debug("Fetch.catch", v.message), p.options.onEnd(v));
             }));
-          }, b.prototype.send = function(d) {
+          }, m.prototype.send = function(f) {
             var h = this;
-            fetch(this.options.url, s(s({}, this.init), { headers: this.metadata.toHeaders(), method: "POST", body: d, signal: this.controller && this.controller.signal })).then((function(p) {
-              if (h.options.debug && u.debug("Fetch.response", p), h.options.onHeaders(new m.Metadata(p.headers), p.status), !p.body) return p;
+            fetch(this.options.url, a(a({}, this.init), { headers: this.metadata.toHeaders(), method: "POST", body: f, signal: this.controller && this.controller.signal })).then((function(p) {
+              if (h.options.debug && l.debug("Fetch.response", p), h.options.onHeaders(new b.Metadata(p.headers), p.status), !p.body) return p;
               h.pump(p.body.getReader(), p);
             })).catch((function(p) {
-              h.cancelled ? h.options.debug && u.debug("Fetch.catch - request cancelled") : (h.cancelled = !0, h.options.debug && u.debug("Fetch.catch", p.message), h.options.onEnd(p));
+              h.cancelled ? h.options.debug && l.debug("Fetch.catch - request cancelled") : (h.cancelled = !0, h.options.debug && l.debug("Fetch.catch", p.message), h.options.onEnd(p));
             }));
-          }, b.prototype.sendMessage = function(d) {
-            this.send(d);
-          }, b.prototype.finishSend = function() {
-          }, b.prototype.start = function(d) {
-            this.metadata = d;
-          }, b.prototype.cancel = function() {
-            var d = this;
-            this.cancelled ? this.options.debug && u.debug("Fetch.cancel already cancelled") : (this.cancelled = !0, this.controller ? (this.options.debug && u.debug("Fetch.cancel.controller.abort"), this.controller.abort()) : this.options.debug && u.debug("Fetch.cancel.missing abort controller"), this.reader ? (this.options.debug && u.debug("Fetch.cancel.reader.cancel"), this.reader.cancel().catch((function(h) {
-              d.options.debug && u.debug("Fetch.cancel.reader.cancel exception", h);
-            }))) : this.options.debug && u.debug("Fetch.cancel before reader"));
-          }, b;
+          }, m.prototype.sendMessage = function(f) {
+            this.send(f);
+          }, m.prototype.finishSend = function() {
+          }, m.prototype.start = function(f) {
+            this.metadata = f;
+          }, m.prototype.cancel = function() {
+            var f = this;
+            this.cancelled ? this.options.debug && l.debug("Fetch.cancel already cancelled") : (this.cancelled = !0, this.controller ? (this.options.debug && l.debug("Fetch.cancel.controller.abort"), this.controller.abort()) : this.options.debug && l.debug("Fetch.cancel.missing abort controller"), this.reader ? (this.options.debug && l.debug("Fetch.cancel.reader.cancel"), this.reader.cancel().catch((function(h) {
+              f.options.debug && l.debug("Fetch.cancel.reader.cancel exception", h);
+            }))) : this.options.debug && l.debug("Fetch.cancel before reader"));
+          }, m;
         })();
         n.detectFetchSupport = function() {
           return typeof Response < "u" && Response.prototype.hasOwnProperty("body") && typeof Headers == "function";
         };
-      }, 859: function(i, n, f) {
+      }, 859: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.CrossBrowserHttpTransport = void 0;
-        var s = f(229), m = f(210);
-        n.CrossBrowserHttpTransport = function(u) {
-          if (s.detectFetchSupport()) {
-            var l = { credentials: u.withCredentials ? "include" : "same-origin" };
-            return s.FetchReadableStreamTransport(l);
+        var a = s(229), b = s(210);
+        n.CrossBrowserHttpTransport = function(l) {
+          if (a.detectFetchSupport()) {
+            var c = { credentials: l.withCredentials ? "include" : "same-origin" };
+            return a.FetchReadableStreamTransport(c);
           }
-          return m.XhrTransport({ withCredentials: u.withCredentials });
+          return b.XhrTransport({ withCredentials: l.withCredentials });
         };
-      }, 210: function(i, n, f) {
-        var s, m = this && this.__extends || (s = function(a, c) {
-          return (s = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(x, g) {
-            x.__proto__ = g;
-          } || function(x, g) {
-            for (var N in g) Object.prototype.hasOwnProperty.call(g, N) && (x[N] = g[N]);
-          })(a, c);
-        }, function(a, c) {
+      }, 210: function(i, n, s) {
+        var a, b = this && this.__extends || (a = function(o, d) {
+          return (a = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(x, k) {
+            x.__proto__ = k;
+          } || function(x, k) {
+            for (var g in k) Object.prototype.hasOwnProperty.call(k, g) && (x[g] = k[g]);
+          })(o, d);
+        }, function(o, d) {
           function x() {
-            this.constructor = a;
+            this.constructor = o;
           }
-          s(a, c), a.prototype = c === null ? Object.create(c) : (x.prototype = c.prototype, new x());
+          a(o, d), o.prototype = d === null ? Object.create(d) : (x.prototype = d.prototype, new x());
         });
         Object.defineProperty(n, "__esModule", { value: !0 }), n.stringToArrayBuffer = n.MozChunkedArrayBufferXHR = n.XHR = n.XhrTransport = void 0;
-        var u = f(65), l = f(346), b = f(849);
-        n.XhrTransport = function(a) {
-          return function(c) {
-            if (b.detectMozXHRSupport()) return new h(c, a);
-            if (b.detectXHROverrideMimeTypeSupport()) return new d(c, a);
+        var l = s(65), c = s(346), m = s(849);
+        n.XhrTransport = function(o) {
+          return function(d) {
+            if (m.detectMozXHRSupport()) return new h(d, o);
+            if (m.detectXHROverrideMimeTypeSupport()) return new f(d, o);
             throw new Error("This environment's XHR implementation cannot support binary transfer.");
           };
         };
-        var d = (function() {
-          function a(c, x) {
-            this.options = c, this.init = x;
+        var f = (function() {
+          function o(d, x) {
+            this.options = d, this.init = x;
           }
-          return a.prototype.onProgressEvent = function() {
-            this.options.debug && l.debug("XHR.onProgressEvent.length: ", this.xhr.response.length);
-            var c = this.xhr.response.substr(this.index);
+          return o.prototype.onProgressEvent = function() {
+            this.options.debug && c.debug("XHR.onProgressEvent.length: ", this.xhr.response.length);
+            var d = this.xhr.response.substr(this.index);
             this.index = this.xhr.response.length;
-            var x = v(c);
+            var x = v(d);
             this.options.onChunk(x);
-          }, a.prototype.onLoadEvent = function() {
-            this.options.debug && l.debug("XHR.onLoadEvent"), this.options.onEnd();
-          }, a.prototype.onStateChange = function() {
-            this.options.debug && l.debug("XHR.onStateChange", this.xhr.readyState), this.xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED && this.options.onHeaders(new u.Metadata(this.xhr.getAllResponseHeaders()), this.xhr.status);
-          }, a.prototype.sendMessage = function(c) {
-            this.xhr.send(c);
-          }, a.prototype.finishSend = function() {
-          }, a.prototype.start = function(c) {
+          }, o.prototype.onLoadEvent = function() {
+            this.options.debug && c.debug("XHR.onLoadEvent"), this.options.onEnd();
+          }, o.prototype.onStateChange = function() {
+            this.options.debug && c.debug("XHR.onStateChange", this.xhr.readyState), this.xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED && this.options.onHeaders(new l.Metadata(this.xhr.getAllResponseHeaders()), this.xhr.status);
+          }, o.prototype.sendMessage = function(d) {
+            this.xhr.send(d);
+          }, o.prototype.finishSend = function() {
+          }, o.prototype.start = function(d) {
             var x = this;
-            this.metadata = c;
-            var g = new XMLHttpRequest();
-            this.xhr = g, g.open("POST", this.options.url), this.configureXhr(), this.metadata.forEach((function(N, R) {
-              g.setRequestHeader(N, R.join(", "));
-            })), g.withCredentials = !!this.init.withCredentials, g.addEventListener("readystatechange", this.onStateChange.bind(this)), g.addEventListener("progress", this.onProgressEvent.bind(this)), g.addEventListener("loadend", this.onLoadEvent.bind(this)), g.addEventListener("error", (function(N) {
-              x.options.debug && l.debug("XHR.error", N), x.options.onEnd(N.error);
+            this.metadata = d;
+            var k = new XMLHttpRequest();
+            this.xhr = k, k.open("POST", this.options.url), this.configureXhr(), this.metadata.forEach((function(g, M) {
+              k.setRequestHeader(g, M.join(", "));
+            })), k.withCredentials = !!this.init.withCredentials, k.addEventListener("readystatechange", this.onStateChange.bind(this)), k.addEventListener("progress", this.onProgressEvent.bind(this)), k.addEventListener("loadend", this.onLoadEvent.bind(this)), k.addEventListener("error", (function(g) {
+              x.options.debug && c.debug("XHR.error", g), x.options.onEnd(g.error);
             }));
-          }, a.prototype.configureXhr = function() {
+          }, o.prototype.configureXhr = function() {
             this.xhr.responseType = "text", this.xhr.overrideMimeType("text/plain; charset=x-user-defined");
-          }, a.prototype.cancel = function() {
-            this.options.debug && l.debug("XHR.abort"), this.xhr.abort();
-          }, a;
+          }, o.prototype.cancel = function() {
+            this.options.debug && c.debug("XHR.abort"), this.xhr.abort();
+          }, o;
         })();
-        n.XHR = d;
-        var h = (function(a) {
-          function c() {
-            return a !== null && a.apply(this, arguments) || this;
+        n.XHR = f;
+        var h = (function(o) {
+          function d() {
+            return o !== null && o.apply(this, arguments) || this;
           }
-          return m(c, a), c.prototype.configureXhr = function() {
-            this.options.debug && l.debug("MozXHR.configureXhr: setting responseType to 'moz-chunked-arraybuffer'"), this.xhr.responseType = "moz-chunked-arraybuffer";
-          }, c.prototype.onProgressEvent = function() {
+          return b(d, o), d.prototype.configureXhr = function() {
+            this.options.debug && c.debug("MozXHR.configureXhr: setting responseType to 'moz-chunked-arraybuffer'"), this.xhr.responseType = "moz-chunked-arraybuffer";
+          }, d.prototype.onProgressEvent = function() {
             var x = this.xhr.response;
-            this.options.debug && l.debug("MozXHR.onProgressEvent: ", new Uint8Array(x)), this.options.onChunk(new Uint8Array(x));
-          }, c;
-        })(d);
-        function p(a, c) {
-          var x = a.charCodeAt(c);
+            this.options.debug && c.debug("MozXHR.onProgressEvent: ", new Uint8Array(x)), this.options.onChunk(new Uint8Array(x));
+          }, d;
+        })(f);
+        function p(o, d) {
+          var x = o.charCodeAt(d);
           if (x >= 55296 && x <= 56319) {
-            var g = a.charCodeAt(c + 1);
-            g >= 56320 && g <= 57343 && (x = 65536 + (x - 55296 << 10) + (g - 56320));
+            var k = o.charCodeAt(d + 1);
+            k >= 56320 && k <= 57343 && (x = 65536 + (x - 55296 << 10) + (k - 56320));
           }
           return x;
         }
-        function v(a) {
-          for (var c = new Uint8Array(a.length), x = 0, g = 0; g < a.length; g++) {
-            var N = String.prototype.codePointAt ? a.codePointAt(g) : p(a, g);
-            c[x++] = 255 & N;
+        function v(o) {
+          for (var d = new Uint8Array(o.length), x = 0, k = 0; k < o.length; k++) {
+            var g = String.prototype.codePointAt ? o.codePointAt(k) : p(o, k);
+            d[x++] = 255 & g;
           }
-          return c;
+          return d;
         }
         n.MozChunkedArrayBufferXHR = h, n.stringToArrayBuffer = v;
       }, 849: function(i, n) {
-        var f;
-        function s() {
-          if (f !== void 0) return f;
+        var s;
+        function a() {
+          if (s !== void 0) return s;
           if (XMLHttpRequest) {
-            f = new XMLHttpRequest();
+            s = new XMLHttpRequest();
             try {
-              f.open("GET", "https://localhost");
+              s.open("GET", "https://localhost");
             } catch {
             }
           }
-          return f;
+          return s;
         }
-        function m(u) {
-          var l = s();
-          if (!l) return !1;
+        function b(l) {
+          var c = a();
+          if (!c) return !1;
           try {
-            return l.responseType = u, l.responseType === u;
+            return c.responseType = l, c.responseType === l;
           } catch {
           }
           return !1;
         }
-        Object.defineProperty(n, "__esModule", { value: !0 }), n.detectXHROverrideMimeTypeSupport = n.detectMozXHRSupport = n.xhrSupportsResponseType = void 0, n.xhrSupportsResponseType = m, n.detectMozXHRSupport = function() {
-          return typeof XMLHttpRequest < "u" && m("moz-chunked-arraybuffer");
+        Object.defineProperty(n, "__esModule", { value: !0 }), n.detectXHROverrideMimeTypeSupport = n.detectMozXHRSupport = n.xhrSupportsResponseType = void 0, n.xhrSupportsResponseType = b, n.detectMozXHRSupport = function() {
+          return typeof XMLHttpRequest < "u" && b("moz-chunked-arraybuffer");
         }, n.detectXHROverrideMimeTypeSupport = function() {
           return typeof XMLHttpRequest < "u" && XMLHttpRequest.prototype.hasOwnProperty("overrideMimeType");
         };
-      }, 540: function(i, n, f) {
+      }, 540: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.WebsocketTransport = void 0;
-        var s, m = f(346), u = f(617);
-        (function(b) {
-          b[b.FINISH_SEND = 1] = "FINISH_SEND";
-        })(s || (s = {}));
-        var l = new Uint8Array([1]);
+        var a, b = s(346), l = s(617);
+        (function(m) {
+          m[m.FINISH_SEND = 1] = "FINISH_SEND";
+        })(a || (a = {}));
+        var c = new Uint8Array([1]);
         n.WebsocketTransport = function() {
-          return function(b) {
-            return (function(d) {
-              d.debug && m.debug("websocketRequest", d);
-              var h, p = (function(c) {
-                if (c.substr(0, 8) === "https://") return "wss://" + c.substr(8);
-                if (c.substr(0, 7) === "http://") return "ws://" + c.substr(7);
+          return function(m) {
+            return (function(f) {
+              f.debug && b.debug("websocketRequest", f);
+              var h, p = (function(d) {
+                if (d.substr(0, 8) === "https://") return "wss://" + d.substr(8);
+                if (d.substr(0, 7) === "http://") return "ws://" + d.substr(7);
                 throw new Error("Websocket transport constructed with non-https:// or http:// host.");
-              })(d.url), v = [];
-              function a(c) {
-                if (c === s.FINISH_SEND) h.send(l);
+              })(f.url), v = [];
+              function o(d) {
+                if (d === a.FINISH_SEND) h.send(c);
                 else {
-                  var x = c, g = new Int8Array(x.byteLength + 1);
-                  g.set(new Uint8Array([0])), g.set(x, 1), h.send(g);
+                  var x = d, k = new Int8Array(x.byteLength + 1);
+                  k.set(new Uint8Array([0])), k.set(x, 1), h.send(k);
                 }
               }
-              return { sendMessage: function(c) {
-                h && h.readyState !== h.CONNECTING ? a(c) : v.push(c);
+              return { sendMessage: function(d) {
+                h && h.readyState !== h.CONNECTING ? o(d) : v.push(d);
               }, finishSend: function() {
-                h && h.readyState !== h.CONNECTING ? a(s.FINISH_SEND) : v.push(s.FINISH_SEND);
-              }, start: function(c) {
+                h && h.readyState !== h.CONNECTING ? o(a.FINISH_SEND) : v.push(a.FINISH_SEND);
+              }, start: function(d) {
                 (h = new WebSocket(p, ["grpc-websockets"])).binaryType = "arraybuffer", h.onopen = function() {
                   var x;
-                  d.debug && m.debug("websocketRequest.onopen"), h.send((x = "", c.forEach((function(g, N) {
-                    x += g + ": " + N.join(", ") + `\r
+                  f.debug && b.debug("websocketRequest.onopen"), h.send((x = "", d.forEach((function(k, g) {
+                    x += k + ": " + g.join(", ") + `\r
 `;
-                  })), u.encodeASCII(x))), v.forEach((function(g) {
-                    a(g);
+                  })), l.encodeASCII(x))), v.forEach((function(k) {
+                    o(k);
                   }));
                 }, h.onclose = function(x) {
-                  d.debug && m.debug("websocketRequest.onclose", x), d.onEnd();
+                  f.debug && b.debug("websocketRequest.onclose", x), f.onEnd();
                 }, h.onerror = function(x) {
-                  d.debug && m.debug("websocketRequest.onerror", x);
+                  f.debug && b.debug("websocketRequest.onerror", x);
                 }, h.onmessage = function(x) {
-                  d.onChunk(new Uint8Array(x.data));
+                  f.onChunk(new Uint8Array(x.data));
                 };
               }, cancel: function() {
-                d.debug && m.debug("websocket.abort"), h.close();
+                f.debug && b.debug("websocket.abort"), h.close();
               } };
-            })(b);
+            })(m);
           };
         };
-      }, 35: function(i, n, f) {
+      }, 35: function(i, n, s) {
         Object.defineProperty(n, "__esModule", { value: !0 }), n.unary = void 0;
-        var s = f(65), m = f(934);
-        n.unary = function(u, l) {
-          if (u.responseStream) throw new Error(".unary cannot be used with server-streaming methods. Use .invoke or .client instead.");
-          if (u.requestStream) throw new Error(".unary cannot be used with client-streaming methods. Use .client instead.");
-          var b = null, d = null, h = m.client(u, { host: l.host, transport: l.transport, debug: l.debug });
+        var a = s(65), b = s(934);
+        n.unary = function(l, c) {
+          if (l.responseStream) throw new Error(".unary cannot be used with server-streaming methods. Use .invoke or .client instead.");
+          if (l.requestStream) throw new Error(".unary cannot be used with client-streaming methods. Use .client instead.");
+          var m = null, f = null, h = b.client(l, { host: c.host, transport: c.transport, debug: c.debug });
           return h.onHeaders((function(p) {
-            b = p;
+            m = p;
           })), h.onMessage((function(p) {
-            d = p;
-          })), h.onEnd((function(p, v, a) {
-            l.onEnd({ status: p, statusMessage: v, headers: b || new s.Metadata(), message: d, trailers: a });
-          })), h.start(l.metadata), h.send(l.request), h.finishSend(), { close: function() {
+            f = p;
+          })), h.onEnd((function(p, v, o) {
+            c.onEnd({ status: p, statusMessage: v, headers: m || new a.Metadata(), message: f, trailers: o });
+          })), h.start(c.metadata), h.send(c.request), h.finishSend(), { close: function() {
             h.close();
           } };
         };
       }, 882: function(i, n) {
-        Object.defineProperty(n, "__esModule", { value: !0 }), n.frameRequest = void 0, n.frameRequest = function(f) {
-          var s = f.serializeBinary(), m = new ArrayBuffer(s.byteLength + 5);
-          return new DataView(m, 1, 4).setUint32(0, s.length, !1), new Uint8Array(m, 5).set(s), new Uint8Array(m);
+        Object.defineProperty(n, "__esModule", { value: !0 }), n.frameRequest = void 0, n.frameRequest = function(s) {
+          var a = s.serializeBinary(), b = new ArrayBuffer(a.byteLength + 5);
+          return new DataView(b, 1, 4).setUint32(0, a.length, !1), new Uint8Array(b, 5).set(a), new Uint8Array(b);
         };
-      } }, o = {}, (function i(n) {
-        if (o[n]) return o[n].exports;
-        var f = o[n] = { exports: {} };
-        return r[n].call(f.exports, f, f.exports, i), f.exports;
+      } }, u = {}, (function i(n) {
+        if (u[n]) return u[n].exports;
+        var s = u[n] = { exports: {} };
+        return r[n].call(s.exports, s, s.exports, i), s.exports;
       })(607);
-      var r, o;
+      var r, u;
     }));
-  })(ht)), ht.exports;
+  })(rt)), rt.exports;
 }
-var Oe = mr(), pt = { exports: {} }, br = pt.exports, Te;
-function xr() {
-  return Te || (Te = 1, (function(t, e) {
-    (function(o, i) {
+var ie = Xe(), nt = { exports: {} }, qe = nt.exports, oe;
+function We() {
+  return oe || (oe = 1, (function(t, e) {
+    (function(u, i) {
       t.exports = i();
-    })(br, function() {
+    })(qe, function() {
       return (
         /******/
         (function(r) {
-          var o = {};
+          var u = {};
           function i(n) {
-            if (o[n])
-              return o[n].exports;
-            var f = o[n] = {
+            if (u[n])
+              return u[n].exports;
+            var s = u[n] = {
               /******/
               i: n,
               /******/
@@ -3755,22 +3082,22 @@ function xr() {
               exports: {}
               /******/
             };
-            return r[n].call(f.exports, f, f.exports, i), f.l = !0, f.exports;
+            return r[n].call(s.exports, s, s.exports, i), s.l = !0, s.exports;
           }
-          return i.m = r, i.c = o, i.i = function(n) {
+          return i.m = r, i.c = u, i.i = function(n) {
             return n;
-          }, i.d = function(n, f, s) {
-            i.o(n, f) || Object.defineProperty(n, f, {
+          }, i.d = function(n, s, a) {
+            i.o(n, s) || Object.defineProperty(n, s, {
               /******/
               configurable: !1,
               /******/
               enumerable: !0,
               /******/
-              get: s
+              get: a
               /******/
             });
           }, i.n = function(n) {
-            var f = n && n.__esModule ? (
+            var s = n && n.__esModule ? (
               /******/
               function() {
                 return n.default;
@@ -3781,200 +3108,200 @@ function xr() {
                 return n;
               }
             );
-            return i.d(f, "a", f), f;
-          }, i.o = function(n, f) {
-            return Object.prototype.hasOwnProperty.call(n, f);
+            return i.d(s, "a", s), s;
+          }, i.o = function(n, s) {
+            return Object.prototype.hasOwnProperty.call(n, s);
           }, i.p = "", i(i.s = 1);
         })([
           /* 0 */
           /***/
-          (function(r, o, i) {
-            Object.defineProperty(o, "__esModule", { value: !0 });
+          (function(r, u, i) {
+            Object.defineProperty(u, "__esModule", { value: !0 });
             var n = i(3);
-            function f(m) {
-              return typeof m == "object" && typeof m.headersMap == "object" && typeof m.forEach == "function";
+            function s(b) {
+              return typeof b == "object" && typeof b.headersMap == "object" && typeof b.forEach == "function";
             }
-            var s = (function() {
-              function m(u, l) {
-                u === void 0 && (u = {}), l === void 0 && (l = { splitValues: !1 });
-                var b = this;
-                if (this.headersMap = {}, u)
-                  if (typeof Headers < "u" && u instanceof Headers) {
-                    var d = n.getHeaderKeys(u);
-                    d.forEach(function(p) {
-                      var v = n.getHeaderValues(u, p);
-                      v.forEach(function(a) {
-                        l.splitValues ? b.append(p, n.splitHeaderValue(a)) : b.append(p, a);
+            var a = (function() {
+              function b(l, c) {
+                l === void 0 && (l = {}), c === void 0 && (c = { splitValues: !1 });
+                var m = this;
+                if (this.headersMap = {}, l)
+                  if (typeof Headers < "u" && l instanceof Headers) {
+                    var f = n.getHeaderKeys(l);
+                    f.forEach(function(p) {
+                      var v = n.getHeaderValues(l, p);
+                      v.forEach(function(o) {
+                        c.splitValues ? m.append(p, n.splitHeaderValue(o)) : m.append(p, o);
                       });
                     });
-                  } else if (f(u))
-                    u.forEach(function(p, v) {
-                      b.append(p, v);
+                  } else if (s(l))
+                    l.forEach(function(p, v) {
+                      m.append(p, v);
                     });
-                  else if (typeof Map < "u" && u instanceof Map) {
-                    var h = u;
+                  else if (typeof Map < "u" && l instanceof Map) {
+                    var h = l;
                     h.forEach(function(p, v) {
-                      b.append(v, p);
+                      m.append(v, p);
                     });
-                  } else typeof u == "string" ? this.appendFromString(u) : typeof u == "object" && Object.getOwnPropertyNames(u).forEach(function(p) {
-                    var v = u, a = v[p];
-                    Array.isArray(a) ? a.forEach(function(c) {
-                      b.append(p, c);
-                    }) : b.append(p, a);
+                  } else typeof l == "string" ? this.appendFromString(l) : typeof l == "object" && Object.getOwnPropertyNames(l).forEach(function(p) {
+                    var v = l, o = v[p];
+                    Array.isArray(o) ? o.forEach(function(d) {
+                      m.append(p, d);
+                    }) : m.append(p, o);
                   });
               }
-              return m.prototype.appendFromString = function(u) {
-                for (var l = u.split(`\r
-`), b = 0; b < l.length; b++) {
-                  var d = l[b], h = d.indexOf(":");
+              return b.prototype.appendFromString = function(l) {
+                for (var c = l.split(`\r
+`), m = 0; m < c.length; m++) {
+                  var f = c[m], h = f.indexOf(":");
                   if (h > 0) {
-                    var p = d.substring(0, h).trim(), v = d.substring(h + 1).trim();
+                    var p = f.substring(0, h).trim(), v = f.substring(h + 1).trim();
                     this.append(p, v);
                   }
                 }
-              }, m.prototype.delete = function(u, l) {
-                var b = n.normalizeName(u);
-                if (l === void 0)
-                  delete this.headersMap[b];
+              }, b.prototype.delete = function(l, c) {
+                var m = n.normalizeName(l);
+                if (c === void 0)
+                  delete this.headersMap[m];
                 else {
-                  var d = this.headersMap[b];
-                  if (d) {
-                    var h = d.indexOf(l);
-                    h >= 0 && d.splice(h, 1), d.length === 0 && delete this.headersMap[b];
+                  var f = this.headersMap[m];
+                  if (f) {
+                    var h = f.indexOf(c);
+                    h >= 0 && f.splice(h, 1), f.length === 0 && delete this.headersMap[m];
                   }
                 }
-              }, m.prototype.append = function(u, l) {
-                var b = this, d = n.normalizeName(u);
-                Array.isArray(this.headersMap[d]) || (this.headersMap[d] = []), Array.isArray(l) ? l.forEach(function(h) {
-                  b.headersMap[d].push(n.normalizeValue(h));
-                }) : this.headersMap[d].push(n.normalizeValue(l));
-              }, m.prototype.set = function(u, l) {
-                var b = n.normalizeName(u);
-                if (Array.isArray(l)) {
-                  var d = [];
-                  l.forEach(function(h) {
-                    d.push(n.normalizeValue(h));
-                  }), this.headersMap[b] = d;
+              }, b.prototype.append = function(l, c) {
+                var m = this, f = n.normalizeName(l);
+                Array.isArray(this.headersMap[f]) || (this.headersMap[f] = []), Array.isArray(c) ? c.forEach(function(h) {
+                  m.headersMap[f].push(n.normalizeValue(h));
+                }) : this.headersMap[f].push(n.normalizeValue(c));
+              }, b.prototype.set = function(l, c) {
+                var m = n.normalizeName(l);
+                if (Array.isArray(c)) {
+                  var f = [];
+                  c.forEach(function(h) {
+                    f.push(n.normalizeValue(h));
+                  }), this.headersMap[m] = f;
                 } else
-                  this.headersMap[b] = [n.normalizeValue(l)];
-              }, m.prototype.has = function(u, l) {
-                var b = this.headersMap[n.normalizeName(u)], d = Array.isArray(b);
-                if (!d)
+                  this.headersMap[m] = [n.normalizeValue(c)];
+              }, b.prototype.has = function(l, c) {
+                var m = this.headersMap[n.normalizeName(l)], f = Array.isArray(m);
+                if (!f)
                   return !1;
-                if (l !== void 0) {
-                  var h = n.normalizeValue(l);
-                  return b.indexOf(h) >= 0;
+                if (c !== void 0) {
+                  var h = n.normalizeValue(c);
+                  return m.indexOf(h) >= 0;
                 } else
                   return !0;
-              }, m.prototype.get = function(u) {
-                var l = this.headersMap[n.normalizeName(u)];
-                return l !== void 0 ? l.concat() : [];
-              }, m.prototype.forEach = function(u) {
-                var l = this;
-                Object.getOwnPropertyNames(this.headersMap).forEach(function(b) {
-                  u(b, l.headersMap[b]);
+              }, b.prototype.get = function(l) {
+                var c = this.headersMap[n.normalizeName(l)];
+                return c !== void 0 ? c.concat() : [];
+              }, b.prototype.forEach = function(l) {
+                var c = this;
+                Object.getOwnPropertyNames(this.headersMap).forEach(function(m) {
+                  l(m, c.headersMap[m]);
                 }, this);
-              }, m.prototype.toHeaders = function() {
+              }, b.prototype.toHeaders = function() {
                 if (typeof Headers < "u") {
-                  var u = new Headers();
-                  return this.forEach(function(l, b) {
-                    b.forEach(function(d) {
-                      u.append(l, d);
+                  var l = new Headers();
+                  return this.forEach(function(c, m) {
+                    m.forEach(function(f) {
+                      l.append(c, f);
                     });
-                  }), u;
+                  }), l;
                 } else
                   throw new Error("Headers class is not defined");
-              }, m;
+              }, b;
             })();
-            o.BrowserHeaders = s;
+            u.BrowserHeaders = a;
           }),
           /* 1 */
           /***/
-          (function(r, o, i) {
-            Object.defineProperty(o, "__esModule", { value: !0 });
+          (function(r, u, i) {
+            Object.defineProperty(u, "__esModule", { value: !0 });
             var n = i(0);
-            o.BrowserHeaders = n.BrowserHeaders;
+            u.BrowserHeaders = n.BrowserHeaders;
           }),
           /* 2 */
           /***/
-          (function(r, o, i) {
-            Object.defineProperty(o, "__esModule", { value: !0 });
-            function n(s, m) {
-              for (var u = s[Symbol.iterator](), l = u.next(); !l.done; )
-                m(l.value[0]), l = u.next();
+          (function(r, u, i) {
+            Object.defineProperty(u, "__esModule", { value: !0 });
+            function n(a, b) {
+              for (var l = a[Symbol.iterator](), c = l.next(); !c.done; )
+                b(c.value[0]), c = l.next();
             }
-            o.iterateHeaders = n;
-            function f(s, m) {
-              for (var u = s.keys(), l = u.next(); !l.done; )
-                m(l.value), l = u.next();
+            u.iterateHeaders = n;
+            function s(a, b) {
+              for (var l = a.keys(), c = l.next(); !c.done; )
+                b(c.value), c = l.next();
             }
-            o.iterateHeadersKeys = f;
+            u.iterateHeadersKeys = s;
           }),
           /* 3 */
           /***/
-          (function(r, o, i) {
-            Object.defineProperty(o, "__esModule", { value: !0 });
+          (function(r, u, i) {
+            Object.defineProperty(u, "__esModule", { value: !0 });
             var n = i(2);
-            function f(d) {
-              if (typeof d != "string" && (d = String(d)), /[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(d))
+            function s(f) {
+              if (typeof f != "string" && (f = String(f)), /[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(f))
                 throw new TypeError("Invalid character in header field name");
-              return d.toLowerCase();
+              return f.toLowerCase();
             }
-            o.normalizeName = f;
-            function s(d) {
-              return typeof d != "string" && (d = String(d)), d;
+            u.normalizeName = s;
+            function a(f) {
+              return typeof f != "string" && (f = String(f)), f;
             }
-            o.normalizeValue = s;
-            function m(d, h) {
-              var p = d;
+            u.normalizeValue = a;
+            function b(f, h) {
+              var p = f;
               if (p instanceof Headers && p.getAll)
                 return p.getAll(h);
               var v = p.get(h);
               return v && typeof v == "string" ? [v] : v;
             }
-            o.getHeaderValues = m;
-            function u(d) {
-              return d;
+            u.getHeaderValues = b;
+            function l(f) {
+              return f;
             }
-            function l(d) {
-              var h = d, p = {}, v = [];
-              return h.keys ? n.iterateHeadersKeys(h, function(a) {
-                p[a] || (p[a] = !0, v.push(a));
-              }) : h.forEach ? h.forEach(function(a, c) {
-                p[c] || (p[c] = !0, v.push(c));
-              }) : n.iterateHeaders(h, function(a) {
-                var c = a[0];
-                p[c] || (p[c] = !0, v.push(c));
+            function c(f) {
+              var h = f, p = {}, v = [];
+              return h.keys ? n.iterateHeadersKeys(h, function(o) {
+                p[o] || (p[o] = !0, v.push(o));
+              }) : h.forEach ? h.forEach(function(o, d) {
+                p[d] || (p[d] = !0, v.push(d));
+              }) : n.iterateHeaders(h, function(o) {
+                var d = o[0];
+                p[d] || (p[d] = !0, v.push(d));
               }), v;
             }
-            o.getHeaderKeys = l;
-            function b(d) {
-              var h = [], p = d.split(", ");
+            u.getHeaderKeys = c;
+            function m(f) {
+              var h = [], p = f.split(", ");
               return p.forEach(function(v) {
-                v.split(",").forEach(function(a) {
-                  h.push(a);
+                v.split(",").forEach(function(o) {
+                  h.push(o);
                 });
               }), h;
             }
-            o.splitHeaderValue = b;
+            u.splitHeaderValue = m;
           })
           /******/
         ])
       );
     });
-  })(pt)), pt.exports;
+  })(nt)), nt.exports;
 }
-var kr = xr();
-function Ee() {
+var Ke = We();
+function ae() {
   return {};
 }
-const mt = {
-  encode(t, e = new S()) {
+const at = {
+  encode(t, e = new w()) {
     return e;
   },
   decode(t, e) {
-    const r = t instanceof k ? t : new k(t), o = e === void 0 ? r.len : r.pos + e, i = Ee();
-    for (; r.pos < o; ) {
+    const r = t instanceof S ? t : new S(t), u = e === void 0 ? r.len : r.pos + e, i = ae();
+    for (; r.pos < u; ) {
       const n = r.uint32();
       if ((n & 7) === 4 || n === 0)
         break;
@@ -3989,40 +3316,40 @@ const mt = {
     return {};
   },
   create(t) {
-    return mt.fromPartial(t ?? {});
+    return at.fromPartial(t ?? {});
   },
   fromPartial(t) {
-    return Ee();
+    return ae();
   }
 };
-class gr {
+class Ye {
   rpc;
   constructor(e) {
     this.rpc = e, this.EchoSwerveSample = this.EchoSwerveSample.bind(this), this.Generate = this.Generate.bind(this), this.GetDefaultTrajectory = this.GetDefaultTrajectory.bind(this);
   }
   EchoSwerveSample(e, r) {
-    return this.rpc.unary(Le, vt.fromPartial(e), r);
+    return this.rpc.unary(be, it.fromPartial(e), r);
   }
   Generate(e, r) {
-    return this.rpc.unary(Fe, yt.fromPartial(e), r);
+    return this.rpc.unary(me, ot.fromPartial(e), r);
   }
   GetDefaultTrajectory(e, r) {
-    return this.rpc.unary(Ue, mt.fromPartial(e), r);
+    return this.rpc.unary(xe, at.fromPartial(e), r);
   }
 }
-const bt = { serviceName: "service.ChoreoService" }, Le = {
+const st = { serviceName: "service.ChoreoService" }, be = {
   methodName: "EchoSwerveSample",
-  service: bt,
+  service: st,
   requestStream: !1,
   responseStream: !1,
   requestType: {
     serializeBinary() {
-      return vt.encode(this).finish();
+      return it.encode(this).finish();
     }
   },
   responseType: {
     deserializeBinary(t) {
-      const e = Et.decode(t);
+      const e = yt.decode(t);
       return {
         ...e,
         toObject() {
@@ -4031,19 +3358,19 @@ const bt = { serviceName: "service.ChoreoService" }, Le = {
       };
     }
   }
-}, Fe = {
+}, me = {
   methodName: "Generate",
-  service: bt,
+  service: st,
   requestStream: !1,
   responseStream: !1,
   requestType: {
     serializeBinary() {
-      return yt.encode(this).finish();
+      return ot.encode(this).finish();
     }
   },
   responseType: {
     deserializeBinary(t) {
-      const e = _t.decode(t);
+      const e = bt.decode(t);
       return {
         ...e,
         toObject() {
@@ -4052,19 +3379,19 @@ const bt = { serviceName: "service.ChoreoService" }, Le = {
       };
     }
   }
-}, Ue = {
+}, xe = {
   methodName: "GetDefaultTrajectory",
-  service: bt,
+  service: st,
   requestStream: !1,
   responseStream: !1,
   requestType: {
     serializeBinary() {
-      return mt.encode(this).finish();
+      return at.encode(this).finish();
     }
   },
   responseType: {
     deserializeBinary(t) {
-      const e = Pt.decode(t);
+      const e = mt.decode(t);
       return {
         ...e,
         toObject() {
@@ -4074,58 +3401,58 @@ const bt = { serviceName: "service.ChoreoService" }, Le = {
     }
   }
 };
-class Sr {
+class Ze {
   host;
   options;
   constructor(e, r) {
     this.host = e, this.options = r;
   }
-  unary(e, r, o) {
-    const i = { ...r, ...e.requestType }, n = o && this.options.metadata ? new kr.BrowserHeaders({ ...this.options?.metadata.headersMap, ...o?.headersMap }) : o ?? this.options.metadata;
-    return new Promise((f, s) => {
-      Oe.grpc.unary(e, {
+  unary(e, r, u) {
+    const i = { ...r, ...e.requestType }, n = u && this.options.metadata ? new Ke.BrowserHeaders({ ...this.options?.metadata.headersMap, ...u?.headersMap }) : u ?? this.options.metadata;
+    return new Promise((s, a) => {
+      ie.grpc.unary(e, {
         request: i,
         host: this.host,
         metadata: n ?? {},
         ...this.options.transport !== void 0 ? { transport: this.options.transport } : {},
         debug: this.options.debug ?? !1,
-        onEnd: function(m) {
-          if (m.status === Oe.grpc.Code.OK)
-            f(m.message.toObject());
+        onEnd: function(b) {
+          if (b.status === ie.grpc.Code.OK)
+            s(b.message.toObject());
           else {
-            const u = new $e(m.statusMessage, m.status, m.trailers);
-            s(u);
+            const l = new ke(b.statusMessage, b.status, b.trailers);
+            a(l);
           }
         }
       });
     });
   }
 }
-class $e extends globalThis.Error {
-  constructor(e, r, o) {
-    super(e), this.code = r, this.metadata = o;
+class ke extends globalThis.Error {
+  constructor(e, r, u) {
+    super(e), this.code = r, this.metadata = u;
   }
 }
-const Or = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const tr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ChoreoServiceClientImpl: gr,
-  ChoreoServiceDesc: bt,
-  ChoreoServiceEchoSwerveSampleDesc: Le,
-  ChoreoServiceGenerateDesc: Fe,
-  ChoreoServiceGetDefaultTrajectoryDesc: Ue,
-  GrpcWebError: $e,
-  GrpcWebImpl: Sr,
-  commands: vr
-}, Symbol.toStringTag, { value: "Module" })), Nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  ChoreoServiceClientImpl: Ye,
+  ChoreoServiceDesc: st,
+  ChoreoServiceEchoSwerveSampleDesc: be,
+  ChoreoServiceGenerateDesc: me,
+  ChoreoServiceGetDefaultTrajectoryDesc: xe,
+  GrpcWebError: ke,
+  GrpcWebImpl: Ze,
+  commands: Ge
+}, Symbol.toStringTag, { value: "Module" })), Qe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Empty: mt
-}, Symbol.toStringTag, { value: "Module" })), Tr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  Empty: at
+}, Symbol.toStringTag, { value: "Module" })), er = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  protobuf: Nr
+  protobuf: Qe
 }, Symbol.toStringTag, { value: "Module" }));
 export {
-  wr as entity,
-  Tr as google,
-  Or as service
+  je as entity,
+  er as google,
+  tr as service
 };
 //# sourceMappingURL=index.mjs.map

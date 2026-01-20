@@ -5,5 +5,4 @@
 
 /* eslint-disable */
 
-export * from "./entity/parameters/robotconfig/double";
 export * from "./entity/parameters/robotconfig/expr";
